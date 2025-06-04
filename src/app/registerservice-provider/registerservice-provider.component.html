@@ -1,0 +1,14 @@
+<form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+  <input type="text" name="firstName" [(ngModel)]="form.firstName" placeholder="First Name" required />
+  <input type="text" name="lastName" [(ngModel)]="form.lastName" placeholder="Last Name" required />
+  <input type="text" name="mobileNumber" [(ngModel)]="form.mobileNumber" placeholder="Mobile Number" required />
+  <input type="email" name="email" [(ngModel)]="form.email" placeholder="Email" required />
+  <input type="text" name="category" [(ngModel)]="form.category" placeholder="Category" required />
+  <select name="gender" [(ngModel)]="form.gender" required>
+    <option value="" disabled selected>Select Gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+  </select>
+  <input type="file" (change)="onFileSelected($event)" required />
+  <button type="submit">Register</button>
+</form>

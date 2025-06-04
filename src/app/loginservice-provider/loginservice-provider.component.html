@@ -1,0 +1,6 @@
+<form (ngSubmit)="onLogin()" #loginForm="ngForm">
+  <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
+  <button type="submit">Login</button>
+</form>
+
+<p *ngIf="loginMessage">{{ loginMessage }}</p>

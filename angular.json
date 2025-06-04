@@ -29,10 +29,17 @@
       "src/assets/css/bootstrap.min.css",
       "src/assets/css/custom-style.css",
       "src/assets/css/loaders.css",
-      "src/assets/font-awesome/css/font-awesome.min.css"
+      "src/assets/font-awesome/css/font-awesome.min.css",
+      "node_modules/bootstrap/dist/css/bootstrap.min.css",
+      "src/styles.css"
     ],
-    "scripts": []
-  },
+    "scripts": [
+  "node_modules/jquery/dist/jquery.min.js",
+  "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+
+]
+
+},
 
           "configurations": {
             "production": {
@@ -104,5 +111,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "1275b37a-8493-48e6-a326-5dc3bea03d92"
   }
 }
