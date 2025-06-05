@@ -30,7 +30,6 @@
       "src/assets/css/custom-style.css",
       "src/assets/css/loaders.css",
       "src/assets/font-awesome/css/font-awesome.min.css",
-      "node_modules/bootstrap/dist/css/bootstrap.min.css",
       "src/styles.css"
     ],
     "scripts": [

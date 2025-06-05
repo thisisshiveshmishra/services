@@ -6,9 +6,14 @@
     <!-- Bootstrap CDN -->
 
 <!-- Font Awesome CDN -->
-   <body>
 
-    <nav class="navbar navbar-expand-md fixed-top top-nav">
+
+
+    <body>
+
+
+
+   <nav class="navbar navbar-expand-md fixed-top top-nav">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.html"><strong>Openfuture</strong></a>
         <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -178,111 +183,132 @@ Whether it's fixing a leak, finding a tutor, or planning an event — we help yo
     </section> -->
 
 
+    <!-- Testimonial Block 01-->
     <section id="testimonial" class="testimonial-section sec-bg-04 py-5 h-100">
-  <div class="container">
-    <div class="row">
-      <div class="head-box text-center mb-3 col-md-12 mt-5">
-        <h2 class="font-abril">What Our Clients Says About Us</h2>
-      </div>
-    </div>
+        <div class="container">
+            <div class="row">
+                <div class="head-box text-center mb-3 col-md-12 mt-5">
+                    <h2 class="font-abril">What Our Clients Says About Us</h2>
+                </div>
+            </div>
+            <div class="single-testimonial">
+            <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner pt-5" role="listbox">
+                <div class="carousel-item active">
+                    <div class="testimonial-box text-center">
+                        <div class="testimonial-content w-100 bg-faded">
+                            <p class="mb-0"><i class="fa fa-quote-left fa-3x" aria-hidden="true"></i></p>
+                            <p class="lead font-abril"> "My laptop suddenly stopped working right before a big client meeting. I booked a repair through the app and the technician arrived within 2 hours. He fixed it on the spot! I couldn't believe such smooth service existed."</p>
+                            <div class="testimonial-footer">
+                                <h4 class="mt-2 mb-0 text-primary">Sharda K.</h4>
+                                <p>-Akola</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="testimonial-box text-center">
+                        <div class="testimonial-content w-100 bg-faded">
+                            <p class="mb-0"><i class="fa fa-quote-left fa-3x" aria-hidden="true"></i></p>
+                            <p class="lead font-abril"> "Booked a home cleaning service just before Diwali — and it was a lifesaver. Professional, punctual, and pocket-friendly!"</p>
+                            <div class="testimonial-footer">
+                                <h4 class="mt-2 mb-0 text-primary">Samiksha M.</h4>
+                                <p>-Amravati</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="navigator-box">
+                    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                    <span class="fa fa-angle-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                    <span class="fa fa-angle-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
 
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-interval="false" data-bs-ride="false">
-      <div class="carousel-inner pt-5">
-        <!-- First testimonial -->
-        <div class="carousel-item active">
-          <div class="testimonial-box text-center">
-            <div class="testimonial-content w-100 bg-faded">
-              <p class="mb-0"><i class="fa fa-quote-left fa-3x"></i></p>
-              <p class="lead font-abril">"My laptop suddenly stopped working... He fixed it on the spot!"</p>
-              <div class="testimonial-footer">
-                <h4 class="mt-2 mb-0 text-primary">Sharda K.</h4>
-                <p>-Akola</p>
-              </div>
+    <!-- Contact Block -->
+   <section id="contact" class="contact-section h-100 bg-dark">
+  <div id="map" class="bg-overlay"></div>
+  <div class="container py-5">
+    <div class="col-lg-8 col-md-6 col-sm-10 form-sec bg-white my-5 p-5 mx-auto">
+      <form #feedbackForm="ngForm" (ngSubmit)="submitFeedback(feedbackForm)">
+        <h2 class="mb-4">Contact Us!</h2>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="sr-only" for="name">Full Name</label>
+              <input class="form-control" id="name" name="name" [(ngModel)]="feedback.name"
+                placeholder="Full Name" required onfocus="this.placeholder=''" onblur="this.placeholder='Full Name'" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="sr-only" for="phone">Phone Number</label>
+              <input class="form-control" id="phone" name="phone" [(ngModel)]="feedback.phone"
+                placeholder="Phone Number" required onfocus="this.placeholder=''" onblur="this.placeholder='Phone Number'" />
             </div>
           </div>
         </div>
 
-        <!-- Second testimonial -->
-        <div class="carousel-item">
-          <div class="testimonial-box text-center">
-            <div class="testimonial-content w-100 bg-faded">
-              <p class="mb-0"><i class="fa fa-quote-left fa-3x"></i></p>
-              <p class="lead font-abril">"Booked a home cleaning service just before Diwali — and it was a lifesaver."</p>
-              <div class="testimonial-footer">
-                <h4 class="mt-2 mb-0 text-primary">Samiksha M.</h4>
-                <p>-Amravati</p>
-              </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="sr-only" for="email">Email Address</label>
+              <input class="form-control" id="email" name="email" [(ngModel)]="feedback.email"
+                placeholder="Email Address" required onfocus="this.placeholder=''" onblur="this.placeholder='Email Address'" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="sr-only" for="address">Address</label>
+              <input class="form-control" id="address" name="address" [(ngModel)]="feedback.address"
+                placeholder="Enter Address" required onfocus="this.placeholder=''" onblur="this.placeholder='Enter Address'" />
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Navigation buttons -->
-      <div class="navigator-box">
-        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
-          <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
-          <span class="fa fa-angle-right fa-2x" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
+        <!-- Rating Dropdown -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <select class="form-control" name="rating" [(ngModel)]="feedback.rating" required>
+                <option value="" disabled selected>Select Rating</option>
+                <option *ngFor="let rate of [1, 2, 3, 4, 5]" [value]="rate">{{ rate }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message & Submit -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="sr-only" for="message">Message</label>
+              <textarea class="form-control" id="message" name="message" [(ngModel)]="feedback.message"
+                placeholder="Enter your message here!" rows="4" required onfocus="this.placeholder=''"
+                onblur="this.placeholder='Enter your message here!'"></textarea>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-capsul px-4" type="submit">Submit</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </section>
 
 
-    <!-- Contact Block -->
-    <section id="contact" class="contact-section h-100 bg-dark">
-        <div id="map" class="bg-overlay"></div>
-        <div class="container py-5">
-            <div class="col-lg-8 col-md-6 col-sm-10 form-sec bg-white my-5 p-5 mx-auto">
-                    <form>
-                    <h2 class="mb-4">Contact Us!</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="sr-only" for="formGroupExampleInput">Full Name</label>
-                                <input class="form-control" id="formGroupExampleInput" placeholder="Full Name" onfocus="this.placeholder=''" onblur="this.placeholder='Full Name'" type="text">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="sr-only" for="formGroupExampleInput2">Phone Number</label>
-                                <input class="form-control" id="formGroupExampleInput2" placeholder="Phone Number" onfocus="this.placeholder=''" onblur="this.placeholder='Phone Number'" type="text">
-                            </div>		
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="sr-only" for="formGroupExampleInput2">Email Address</label>
-                                <input class="form-control" id="formGroupExampleInput2" placeholder="Email Address" onfocus="this.placeholder=''" onblur="this.placeholder='Email Address'" type="email">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="sr-only" for="formGroupExampleInput2">Address</label>
-                                <input class="form-control" id="formGroupExampleInput2" placeholder="Enter Address" onfocus="this.placeholder=''" onblur="this.placeholder='Enter Address'" type="email">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="sr-only" for="formGroupExampleInput2">Message</label>
-                                <textarea class="form-control" placeholder="Enter your message here!" rows="4" onfocus="this.placeholder=''" onblur="this.placeholder='Enter your message here!'"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-capsul px-4">Submit</button>
-                            </div>		
-                        </div>
-                    </div>
-                </form>
-                </div>
-        </div>
-    </section>
+
 
     <!-- footer Block -->
     <div class="copy-footer bg-primary py-2">
