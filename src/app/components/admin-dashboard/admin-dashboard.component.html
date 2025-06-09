@@ -1,0 +1,36 @@
+<h2>Admin Dashboard - Service Providers</h2>
+<p *ngIf="message">{{ message }}</p>
+ 
+<table border="1" cellspacing="0" cellpadding="8">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Mobile</th>
+      <th>Email</th>
+      <th>Category</th>
+      <th>Gender</th>
+      <th>Approved</th>
+      <th>Profile Picture</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let provider of providers">
+      <td>{{ provider.id }}</td>
+      <td>{{ provider.firstName }} {{ provider.lastName }}</td>
+      <td>{{ provider.mobileNumber }}</td>
+      <td>{{ provider.email }}</td>
+      <td>{{ provider.category }}</td>
+      <td>{{ provider.gender }}</td>
+      <td>{{ provider.approved ? 'Yes' : 'No' }}</td>
+      <td>
+        <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" />
+      </td>
+      <td>
+        <button *ngIf="!provider.approved" (click)="approve(provider.id)">Approve</button>
+        <span *ngIf="provider.approved">Approved</span>
+      </td>
+    </tr>
+  </tbody>
+</table>

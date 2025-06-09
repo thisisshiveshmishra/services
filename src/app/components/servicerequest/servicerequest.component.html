@@ -1,0 +1,100 @@
+<div class="container">
+  <h2>Raise Service Request</h2>
+
+  <form [formGroup]="serviceRequestForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>Name:</label>
+      <input formControlName="name" />
+            <div *ngIf="serviceRequestForm.controls['name'].invalid">
+            Name is required and max 50 chars.
+      </div>
+    </div>
+
+    <div>
+      <label>Surname:</label>
+      <input formControlName="surname" />
+      <div *ngIf="serviceRequestForm.controls['surname'].invalid">
+        Surname is required and max 50 chars.
+      </div>
+    </div>
+
+    <div>
+      <label>Contact Number:</label>
+      <input formControlName="contactNumber" />
+      <div *ngIf="serviceRequestForm.controls['contactNumber'].invalid">
+        Contact number must be exactly 10 digits.
+      </div>
+    </div>
+
+    <div>
+      <label>Email:</label>
+      <input formControlName="email" />
+      <div *ngIf="serviceRequestForm.controls['email'].invalid">
+        Enter a valid email.
+      </div>
+    </div>
+
+    <div>
+      <label>Location:</label>
+      <input formControlName="location" />
+      <div *ngIf="serviceRequestForm.controls['location'].invalid">
+        Location is required.
+      </div>
+    </div>
+
+    <div>
+  <label>Category:</label>
+  <select formControlName="category">
+    <option value="">-- Select a category --</option>
+    <option *ngFor="let cat of categories" [value]="cat">
+      {{ cat.replaceAll('_', ' ') }}
+    </option>
+  </select>
+  <div *ngIf="serviceRequestForm.controls['category'].invalid && serviceRequestForm.controls['category'].touched">
+    Category is required.
+  </div>
+</div>
+
+    <div>
+      <label>Query:</label>
+      <textarea formControlName="query"></textarea>
+    </div>
+
+    <button type="submit" [disabled]="serviceRequestForm.invalid">Submit Request</button>
+  </form>
+
+  <hr />
+
+  <h3>All Service Requests</h3>
+  <div *ngIf="message">{{ message }}</div>
+
+  <ul>
+    <li *ngFor="let req of requests">
+      {{ req.id }} - {{ req.name }} {{ req.surname }} - {{ req.email }}
+      <button (click)="selectRequest(req)">Select</button>
+      <button (click)="deleteRequest(req.id!)">Delete</button>
+    </li>
+  </ul>
+
+  <div *ngIf="selectedRequest">
+    <h3>Selected Request (ID: {{ selectedRequest.id }})</h3>
+    <pre>{{ selectedRequest | json }}</pre>
+
+    <button (click)="updateRequest(selectedRequest.id!)">Update Selected Request</button>
+  </div>
+
+  <hr />
+
+  <!-- Example search -->
+  <div>
+    <h3>Search Requests</h3>
+    <input #searchName placeholder="Search by Name" />
+    <button (click)="getRequestByName(searchName.value)">Search</button>
+
+    <input #searchEmail placeholder="Search by Email" />
+    <button (click)="getRequestByEmail(searchEmail.value)">Search</button>
+
+    <input #searchId type="number" placeholder="Search by ID" />
+<button (click)="getRequestById(+searchId.value)">Search</button>
+  </div>
+</div>
