@@ -70,6 +70,7 @@ export class ServiceproviderdashboardComponent {
 
  loadProviderByEmail(email: string) {
   this.serviceproviderService.getProviderByEmail(email).subscribe(data => {
+     this.providerId = data.id;  // ✅ Save the ID here
     this.editForm.patchValue(data);
     console.log('Data from DB:', data);
 
@@ -91,6 +92,7 @@ export class ServiceproviderdashboardComponent {
 
 onSubmit() {
   const formValues = this.editForm.value;
+  console.log('OnSubmit formvalues:',formValues);
 
   if (!this.providerId) {
     console.error('Provider ID is missing.');
