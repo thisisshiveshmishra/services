@@ -108,7 +108,7 @@ onSubmit() {
 
   this.serviceproviderService.updateProvider(this.providerId, formData).subscribe({
     next: (response) => {
-      alert('Prpfile updated successfully!');
+      alert('Profile updated successfully!');
       console.log('Update successful', response);
     },
     error: (err) => {
