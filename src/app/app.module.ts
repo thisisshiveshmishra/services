@@ -14,6 +14,7 @@ import { ServicerequestComponent } from './components/servicerequest/servicerequ
 import { ServiceproviderdashboardComponent } from './components/serviceproviderdashboard/serviceproviderdashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { DummyComponent } from './components/dummy/dummy.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
    LoginserviceProviderComponent,
    RegisterserviceProviderComponent,
    ServicerequestComponent,
-   ServiceproviderdashboardComponent
+   ServiceproviderdashboardComponent,
+   DummyComponent
    
     
   ],

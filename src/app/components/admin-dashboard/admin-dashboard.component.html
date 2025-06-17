@@ -10,6 +10,7 @@
       <th>Email</th>
       <th>Category</th>
       <th>Gender</th>
+      <th>Location</th>
       <th>Approved</th>
       <th>Profile Picture</th>
       <th>Action</th>
@@ -23,7 +24,9 @@
       <td>{{ provider.email }}</td>
       <td>{{ provider.category }}</td>
       <td>{{ provider.gender }}</td>
+      <td>{{ provider.location }}</td>
       <td>{{ provider.approved ? 'Yes' : 'No' }}</td>
+      
       <td>
         <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" />
       </td>

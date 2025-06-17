@@ -1,0 +1,101 @@
+<!-- <div class="search-container">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <div>
+      <label>Category:</label>
+      <select formControlName="category">
+        <option value="">Select Category</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Location:</label>
+      <input type="text" formControlName="location" placeholder="Enter Location" />
+    </div>
+
+    <button type="submit">Search</button>
+  </form>
+
+  <div *ngIf="results.length">
+    <h3>Results:</h3>
+    <ul>
+      <li *ngFor="let provider of results">
+        {{ provider.firstName }} {{ provider.lastName }} - {{ provider.location }} ({{ provider.category }})
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!results.length && submitted">
+    <p>No providers found.</p>
+  </div>
+</div> -->
+
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <!-- <link href="css/main.css" rel="stylesheet" /> -->
+  </head>
+  <body>
+    <div class="s01">
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+        <fieldset>
+          <legend>Discover the Amazing Services</legend>
+        </fieldset>
+        <div class="inner-form">
+          <div class="input-field first-wrap">
+            <select formControlName="category">
+              <option value="">Select Category</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+            
+          </div>
+          
+           <div class="input-field second-wrap">
+    <input
+      type="text"
+      formControlName="location"
+      placeholder="Enter Location"
+      (input)="onLocationInput()"
+      (focus)="showLocationSuggestions = true"
+      (blur)="hideSuggestionsWithDelay()"
+      autocomplete="off"
+    />
+
+    <ul class="suggestions" *ngIf="filteredLocations.length && showLocationSuggestions">
+      <li *ngFor="let loc of filteredLocations" (mousedown)="selectLocation(loc)">
+        {{ loc }}
+      </li>
+    </ul>
+  </div>
+
+          <div class="input-field third-wrap">
+            <button class="btn-search" type="submit">Search</button>
+          </div>
+        </div>
+
+            <!-- Result section -->
+
+        <div *ngIf="results.length">
+            <h3 style="color: white;">Results:</h3>
+                <ul style="color: white;">
+                    <li *ngFor="let provider of results" >
+                        {{ provider.firstName }} {{ provider.lastName }} - {{ provider.location }} ({{ provider.category }})
+                    </li>
+                </ul>
+        </div>
+
+        <div *ngIf="!results.length && submitted">
+            <p style="color: white;">No providers found.</p>
+        </div>
+      </form>
+
+      
+    </div>
+  </body>
+</html>
