@@ -1,0 +1,88 @@
+.full-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #e6e6e6;
+  font-family: 'Arial', sans-serif;
+}
+
+.card-container {
+  position: relative;
+  width: 350px;
+  height: 550px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+}
+
+.background-image {
+  background-image: url('https://i.imgur.com/N7rlQYt.jpeg'); /* Replace with your image URL or local path */
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  filter: brightness(0.7);
+  position: absolute;
+  z-index: 1;
+}
+
+.form-content {
+  position: absolute;
+  z-index: 2;
+  background-color: #ffffffdd;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+}
+
+.form-content h2.title {
+  font-size: 20px;
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.form-content input,
+.form-content select,
+.form-content textarea {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.form-content textarea {
+  resize: none;
+}
+
+.form-content button {
+  width: 100%;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.form-content button:hover {
+  background-color: #000;
+}
+
+.toggle-link {
+  margin-top: 15px;
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}

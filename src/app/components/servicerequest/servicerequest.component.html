@@ -1,0 +1,22 @@
+<div class="full-page">
+  <div class="card-container">
+    <div class="background-image"></div>
+    <div class="form-content">
+      <h2 class="title">Raise Service Request</h2>
+      <form [formGroup]="serviceRequestForm" (ngSubmit)="onSubmit()">
+        <input type="text" placeholder="Name" formControlName="name" />
+        <input type="text" placeholder="Surname" formControlName="surname" />
+        <input type="text" placeholder="Contact Number" formControlName="contactNumber" />
+        <input type="email" placeholder="Email" formControlName="email" />
+        <input type="text" placeholder="Location" formControlName="location" />
+        <select formControlName="category">
+          <option value="">-- Select Category --</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <textarea rows="3" placeholder="Your Query" formControlName="query"></textarea>
+        <button type="submit" [disabled]="serviceRequestForm.invalid">Submit Request</button>
+      </form>
+    </div>
+  </div>
+  <div class="toggle-link">Service Request</div>
+</div>

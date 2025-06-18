@@ -1,0 +1,123 @@
+/* Reset and Base Styles */
+html,
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #008cba;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container to center the content */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Card-style content box */
+.content {
+  background-color: white;
+  width: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive image styling */
+img.cld-responsive {
+  width: 100%;
+  height: 180px; /* Adjust as needed */
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Form title styling */
+.form-title {
+  padding: 10px 40px 0px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Form spacing */
+form {
+  padding: 0px 40px 20px;
+}
+
+/* Input and Select field base styles */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='file'],
+select {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px 0;
+  font-size: 14px;
+  background-color: transparent;
+}
+
+/* Hover effect for fields */
+input[type='text']:hover,
+input[type='email']:hover,
+input[type='password']:hover,
+input[type='file']:hover,
+select:hover {
+  background-color: #f1f1f1;
+}
+
+/* Mobile number and gender beside each other */
+.beside {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Equal width inside beside group */
+.beside input,
+.beside select {
+  width: 48%;
+}
+
+/* Button style */
+button {
+  color: #ffffff;
+  background-color: #202521;
+  height: 40px;
+  width: 100%;
+  margin-top: 15px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  font-size: 16px;
+  transition: background-color 0.4s;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: #333333;
+}
+
+/* Optional: Responsive tweaks */
+@media (max-width: 576px) {
+  .content {
+    width: 100%;
+    margin: 10px;
+  }
+
+  .form-title {
+    font-size: 20px;
+    padding: 10px 20px 0;
+  }
+
+  form {
+    padding: 0px 20px 20px;
+  }
+}
