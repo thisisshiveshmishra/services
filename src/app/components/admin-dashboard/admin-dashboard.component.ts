@@ -9,22 +9,30 @@ import { FeedbackService } from 'src/app/services/feedback.service';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent {
-   showSection = '';         // For toggling visibility (optional if you're using activeSection only)
-  activeSection = 'providers'; // Default section to show
+  activeSection = 'providers';
   providers: any[] = [];
+  filteredProviders: any[] = [];
+
   feedbacks: any[] = [];
-  message = '';
+
   serviceRequests: any[] = [];
+  filteredRequests: any[] = [];
+
+  message = '';
+
+  // Filters
+  providerNameFilter = '';
+  providerLocationFilter = '';
+  providerCategoryFilter = '';
+
+  requestLocationFilter = '';
+  requestCategoryFilter = '';
 
   constructor(
     private service: ServiceProviderService,
     private feedbackService: FeedbackService,
-    private adminService: AdminService // ✅ Inject AdminService
+    private adminService: AdminService
   ) {}
-
-  setActiveSection(section: string): void {
-    this.activeSection = section;
-  }
 
   ngOnInit(): void {
     this.loadProviders();
@@ -32,12 +40,25 @@ export class AdminDashboardComponent {
     this.fetchAllServiceRequests();
   }
 
-  loadProviders() {
-    this.service.getAllProviders().subscribe({
-      next: (data) => this.providers = data,
-      error: () => this.message = 'Failed to load service providers.'
-    });
+  setActiveSection(section: string): void {
+    this.activeSection = section;
+    this.message = '';
   }
+
+  loadProviders() {
+  this.service.getAllProviders().subscribe({
+    next: (data) => {
+      console.log('Providers fetched:', data);
+      this.providers = data;
+      this.filterProviders();
+    },
+    error: (err) => {
+      console.error('Failed to load providers:', err);
+      this.message = 'Failed to load service providers.';
+    }
+  });
+}
+
 
   loadFeedbacks() {
     this.feedbackService.getAllFeedback().subscribe({
@@ -57,12 +78,31 @@ export class AdminDashboardComponent {
   }
 
   fetchAllServiceRequests() {
-    this.adminService.getAllServiceRequests().subscribe({
-      next: (res) => this.serviceRequests = res,
-      error: (err) => {
-        console.error('Error fetching service requests', err);
-        this.message = 'Failed to load service requests.';
-      }
-    });
+  this.adminService.getAllServiceRequests().subscribe({
+    next: (res) => {
+      console.log('Service requests fetched:', res);
+      this.serviceRequests = res;
+      this.filterRequests();
+    },
+    error: (err) => {
+      console.error('Error fetching service requests:', err);
+      this.message = 'Failed to load service requests.';
+    }
+  });
+}
+
+  filterProviders() {
+    this.filteredProviders = this.providers.filter(p =>
+      (!this.providerNameFilter || (p.firstName + ' ' + p.lastName).toLowerCase().includes(this.providerNameFilter.toLowerCase())) &&
+      (!this.providerLocationFilter || p.location?.toLowerCase().includes(this.providerLocationFilter.toLowerCase())) &&
+      (!this.providerCategoryFilter || p.category?.toLowerCase().includes(this.providerCategoryFilter.toLowerCase()))
+    );
+  }
+
+  filterRequests() {
+    this.filteredRequests = this.serviceRequests.filter(r =>
+      (!this.requestLocationFilter || r.location?.toLowerCase().includes(this.requestLocationFilter.toLowerCase())) &&
+      (!this.requestCategoryFilter || r.category?.toLowerCase().includes(this.requestCategoryFilter.toLowerCase()))
+    );
   }
 }

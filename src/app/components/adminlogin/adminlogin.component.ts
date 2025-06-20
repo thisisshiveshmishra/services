@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
 
 
@@ -17,7 +18,7 @@ export class AdminLoginComponent implements OnInit {
   passwordFieldType = 'password';
   isSignupMode = false;
 
-  constructor(private fb: FormBuilder, private adminService: AdminService) {}
+  constructor(private fb: FormBuilder, private adminService: AdminService ,private router:Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -50,6 +51,7 @@ export class AdminLoginComponent implements OnInit {
     // Call login API
     console.log('Login Data:', this.loginForm.value);
     window.alert('Login Successful');
+    this.router.navigate(['/admindashboard']);
   }
 
   onRegisterSubmit(): void {
@@ -63,21 +65,16 @@ export class AdminLoginComponent implements OnInit {
     });
   }
 
-  triggerLogin(event: Event) {
+ triggerRegister(event: Event) {
   event.preventDefault();
   const chk = document.getElementById('chk') as HTMLInputElement;
-  if (chk) {
-    chk.checked = true;
-  }
+  chk.checked = true;
 }
 
-
-triggerRegister(event: Event) {
+triggerLogin(event: Event) {
   event.preventDefault();
   const chk = document.getElementById('chk') as HTMLInputElement;
-  if (chk) {
-    chk.checked = false;
-  }
+  chk.checked = false;
 }
 
 }

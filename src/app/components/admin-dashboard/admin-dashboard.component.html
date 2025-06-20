@@ -2,18 +2,23 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <button (click)="setActiveSection('providers')">Service Providers</button>
-<button (click)="setActiveSection('feedbacks')">Feedbacks</button>
-<button (click)="setActiveSection('requests')">Service Requests</button>
-
+    <button (click)="setActiveSection('feedbacks')">Feedbacks</button>
+    <button (click)="setActiveSection('requests')">Service Requests</button>
   </div>
 
   <!-- Main Content -->
   <div class="content">
     <p *ngIf="message" class="message">{{ message }}</p>
 
-    <!-- Service Providers Table -->
+    <!-- Service Providers Section -->
     <div *ngIf="activeSection === 'providers'">
       <h2>Admin Dashboard - Service Providers</h2>
+
+      <!-- Filters -->
+      <input type="text" [(ngModel)]="providerNameFilter" placeholder="Filter by Name" (input)="filterProviders()" />
+      <input type="text" [(ngModel)]="providerLocationFilter" placeholder="Filter by Location" (input)="filterProviders()" />
+      <input type="text" [(ngModel)]="providerCategoryFilter" placeholder="Filter by Category" (input)="filterProviders()" />
+
       <table border="1" cellspacing="0" cellpadding="8">
         <thead>
           <tr>
@@ -23,19 +28,24 @@
             <th>Email</th>
             <th>Category</th>
             <th>Gender</th>
+            <th>Location</th>
             <th>Approved</th>
             <th>Profile Picture</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let provider of providers">
+          <tr *ngIf="filteredProviders.length === 0">
+            <td colspan="10">No data found.</td>
+          </tr>
+          <tr *ngFor="let provider of filteredProviders">
             <td>{{ provider.id }}</td>
             <td>{{ provider.firstName }} {{ provider.lastName }}</td>
             <td>{{ provider.mobileNumber }}</td>
             <td>{{ provider.email }}</td>
             <td>{{ provider.category }}</td>
             <td>{{ provider.gender }}</td>
+            <td>{{ provider.location }}</td>
             <td>{{ provider.approved ? 'Yes' : 'No' }}</td>
             <td>
               <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" />
@@ -49,7 +59,7 @@
       </table>
     </div>
 
-    <!-- Feedbacks Table -->
+    <!-- Feedbacks Section -->
     <div *ngIf="activeSection === 'feedbacks'">
       <h2>Feedback List</h2>
       <table border="1" cellspacing="0" cellpadding="8">
@@ -74,9 +84,14 @@
       </table>
     </div>
 
-    <!-- Service Requests Table -->
+    <!-- Service Requests Section -->
     <div *ngIf="activeSection === 'requests'">
       <h2>Raised Service Requests</h2>
+
+      <!-- Filters -->
+      <input type="text" [(ngModel)]="requestLocationFilter" placeholder="Filter by Location" (input)="filterRequests()" />
+      <input type="text" [(ngModel)]="requestCategoryFilter" placeholder="Filter by Category" (input)="filterRequests()" />
+
       <table border="1" cellspacing="0" cellpadding="8">
         <thead>
           <tr>
@@ -85,17 +100,22 @@
             <th>Email</th>
             <th>Mobile</th>
             <th>Category</th>
-            <th>Message</th>
+            <th>Location</th>
+            
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let request of serviceRequests">
+          <tr *ngIf="filteredRequests.length === 0">
+            <td colspan="7">No data found.</td>
+          </tr>
+          <tr *ngFor="let request of filteredRequests">
             <td>{{ request.id }}</td>
             <td>{{ request.name }}</td>
             <td>{{ request.email }}</td>
-            <td>{{ request.mobile }}</td>
+            <td>{{ request.contactNumber }}</td>
             <td>{{ request.category }}</td>
-            <td>{{ request.message }}</td>
+            <td>{{ request.location }}</td>
+          
           </tr>
         </tbody>
       </table>
