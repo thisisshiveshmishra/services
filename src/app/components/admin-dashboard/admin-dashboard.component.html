@@ -14,10 +14,28 @@
     <div *ngIf="activeSection === 'providers'">
       <h2>Admin Dashboard - Service Providers</h2>
 
-      <!-- Filters -->
-      <input type="text" [(ngModel)]="providerNameFilter" placeholder="Filter by Name" (input)="filterProviders()" />
-      <input type="text" [(ngModel)]="providerLocationFilter" placeholder="Filter by Location" (input)="filterProviders()" />
-      <input type="text" [(ngModel)]="providerCategoryFilter" placeholder="Filter by Category" (input)="filterProviders()" />
+    <!-- Filters -->
+<div class="filters">
+  <input
+    type="text"
+    [(ngModel)]="providerNameFilter"
+    placeholder="Filter by Name"
+    (input)="filterProviders()"
+  />
+  <input
+    type="text"
+    [(ngModel)]="providerLocationFilter"
+    placeholder="Filter by Location"
+    (input)="filterProviders()"
+  />
+  <input
+    type="text"
+    [(ngModel)]="providerCategoryFilter"
+    placeholder="Filter by Category"
+    (input)="filterProviders()"
+  />
+</div>
+
 
       <table border="1" cellspacing="0" cellpadding="8">
         <thead>
@@ -88,9 +106,22 @@
     <div *ngIf="activeSection === 'requests'">
       <h2>Raised Service Requests</h2>
 
-      <!-- Filters -->
-      <input type="text" [(ngModel)]="requestLocationFilter" placeholder="Filter by Location" (input)="filterRequests()" />
-      <input type="text" [(ngModel)]="requestCategoryFilter" placeholder="Filter by Category" (input)="filterRequests()" />
+       <!-- Filters -->
+  <div class="requests-filters">
+    <input
+      type="text"
+      [(ngModel)]="requestLocationFilter"
+      placeholder="Filter by Location"
+      (input)="filterRequests()"
+    />
+    <input
+      type="text"
+      [(ngModel)]="requestCategoryFilter"
+      placeholder="Filter by Category"
+      (input)="filterRequests()"
+    />
+  </div>
+
 
       <table border="1" cellspacing="0" cellpadding="8">
         <thead>
@@ -98,6 +129,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Gender</th>
             <th>Mobile</th>
             <th>Category</th>
             <th>Location</th>
@@ -112,6 +144,7 @@
             <td>{{ request.id }}</td>
             <td>{{ request.name }}</td>
             <td>{{ request.email }}</td>
+            <td>{{ request.gender }}</td>
             <td>{{ request.contactNumber }}</td>
             <td>{{ request.category }}</td>
             <td>{{ request.location }}</td>

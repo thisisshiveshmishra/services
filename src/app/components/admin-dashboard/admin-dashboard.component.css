@@ -72,3 +72,115 @@ tr:nth-child(even) {
   margin-bottom: 20px;
   font-weight: bold;
 }
+
+
+
+/* Wrap the filter inputs in a flex container for better layout */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Style the inputs */
+.filters input[type="text"] {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05); /* light background for contrast */
+  color: #333;
+  font-size: 14px;
+  width: 220px;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Placeholder style */
+.filters input[type="text"]::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* Hover/focus styles */
+.filters input[type="text"]:hover,
+.filters input[type="text"]:focus {
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+
+
+/* Filters container — wrap the two filters */
+.requests-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Style the filter inputs */
+.requests-filters input[type="text"] {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+  font-size: 14px;
+  min-width: 200px;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.requests-filters input[type="text"]::placeholder {
+  color: #777;
+  font-style: italic;
+}
+
+.requests-filters input[type="text"]:hover,
+.requests-filters input[type="text"]:focus {
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+/* Service Requests Table Styling */
+.requests-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  color: #fff;
+}
+
+.requests-table thead {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.requests-table thead th {
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  color: #ff6600;
+}
+
+.requests-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s ease;
+}
+
+.requests-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.requests-table tbody td {
+  padding: 12px;
+  color: #eee;
+  font-size: 14px;
+}
+
+.requests-table tbody td[colspan="7"] {
+  text-align: center;
+  color: #ccc;
+  padding: 20px;
+}

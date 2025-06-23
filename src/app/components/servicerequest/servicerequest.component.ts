@@ -49,6 +49,7 @@ export class ServicerequestComponent {
       surname: ['', [Validators.required, Validators.maxLength(50)]],
       contactNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       email: ['', [Validators.required, Validators.email]],
+        gender: ['', Validators.required],
       location: ['', Validators.required],
       category: [''],  // optional, add Validators.required if needed
       query: ['']      // transient field
@@ -66,10 +67,12 @@ export class ServicerequestComponent {
     this.serviceRequestService.createServiceRequest(newRequest).subscribe({
       next: (res) => {
         this.message = `Service request created with ID: ${res.id}`;
+        alert('✅ Service request submitted successfully!');        
         this.serviceRequestForm.reset();
         this.loadAllRequests();
       },
       error: (err) => {
+              alert('❌ Failed to submit request. Please try again.');
         this.message = `Error creating request: ${err.message}`;
       }
     });

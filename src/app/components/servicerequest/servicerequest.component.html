@@ -8,6 +8,15 @@
         <input type="text" placeholder="Surname" formControlName="surname" />
         <input type="text" placeholder="Contact Number" formControlName="contactNumber" />
         <input type="email" placeholder="Email" formControlName="email" />
+
+         <!-- ✅ Added Gender -->
+        <select formControlName="gender" required>
+          <option value="" disabled selected>-- Select Gender --</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+
         <input type="text" placeholder="Location" formControlName="location" />
         <select formControlName="category">
           <option value="">-- Select Category --</option>
@@ -18,5 +27,5 @@
       </form>
     </div>
   </div>
-  <div class="toggle-link">Service Request</div>
+
 </div>
