@@ -2,12 +2,12 @@
   <div class="card-container">
     <div class="background-image"></div>
     <div class="form-content">
-      <h2 class="title">Raise Service Request</h2>
-      <form [formGroup]="serviceRequestForm" (ngSubmit)="onSubmit()">
+      <h2 class="title" style="color: black;">Raise Service Request</h2>
+      <form [formGroup]="serviceRequestForm" (ngSubmit)="onSubmit()" >
         <input type="text" placeholder="Name" formControlName="name" />
         <input type="text" placeholder="Surname" formControlName="surname" />
         <input type="text" placeholder="Contact Number" formControlName="contactNumber" />
-        <input type="email" placeholder="Email" formControlName="email" />
+        <input type="email" placeholder="Email" formControlName="email"  />
 
          <!-- ✅ Added Gender -->
         <select formControlName="gender" required>
