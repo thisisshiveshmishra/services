@@ -18,10 +18,23 @@
         </select>
 
         <input type="text" placeholder="Location" formControlName="location" />
-        <select formControlName="category">
-          <option value="">-- Select Category --</option>
-          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-        </select>
+        <!-- Category Select -->
+<select formControlName="category" (change)="onCategoryChange($event)">
+  <option value="">-- Select Category --</option>
+  <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+  <option value="Other">Other</option> <!-- ✅ Other option -->
+</select>
+
+<!-- Conditionally show input for custom category -->
+<div *ngIf="serviceRequestForm.get('category')?.value === 'Other'">
+  <input
+    type="text"
+    placeholder="Please enter your service category"
+    formControlName="customCategory"
+    class="form-control mt-2"
+  />
+</div>
+
         <textarea rows="3" placeholder="Your Query" formControlName="query"></textarea>
         <button type="submit" [disabled]="serviceRequestForm.invalid">Submit Request</button>
       </form>

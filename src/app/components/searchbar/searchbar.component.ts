@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { catchError } from 'rxjs';
 import { Serviceprovider } from 'src/app/model/serviceprovider';
 import { SearchRequest, ServiceProviderService } from 'src/app/services/service-provider.service';
 
@@ -9,35 +10,20 @@ import { SearchRequest, ServiceProviderService } from 'src/app/services/service-
   styleUrls: ['./searchbar.component.css']
 })
 export class SearchbarComponent {
-  searchForm!: FormGroup;
+   searchForm!: FormGroup;
   results: Serviceprovider[] = [];
   submitted = false;
-  providers: any[] = [];
+  providers: Serviceprovider[] = [];
   availableLocations: string[] = [];
+  availableCategories: string[] = []; // NEW — dynamic categories
   filteredLocations: string[] = [];
-  selectedLocation: string = '';
   showLocationSuggestions: boolean = false;
+  selectedProvider: Serviceprovider | null = null;
+  providerImages: string[] = [];
+  isModalOpen = false; // control visibility
+
+
   message = '';
-
-  categories = [
-    'MOTOR_GARAGE_REPAIRING',
-    'HOSPITAL',
-    'SPORTS_REGARDS',
-    'LAPTOP_REPAIRING',
-    'HOTELS',
-    'MOB_REPAIRING',
-    'EMOTIONAL_GUIDER',
-    'HEALTH_ADVISER',
-    'BEAUTY_PARLORS',
-    'RENT_ROOM_ADVISER',
-    'SOFTWARE_QA',
-    'DATA_SCIENCE',
-    'SOFTWARE_DEVELOPER',
-    'CYBER_SECURITY',
-    'WATER_SUPPLIER_RO',
-    'TOURIST_GUIDER'
-  ];
-
 
   constructor(
     private fb: FormBuilder,
@@ -47,61 +33,68 @@ export class SearchbarComponent {
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       category: [''],
-      location: ['']
+      location: [''],
     });
 
-
-    this.getAllProviders();
+    this.getAllProviders(); // Fetch all
   }
 
   onSearch(): void {
     this.submitted = true;
-
+    this.message = '';
     const searchPayload: SearchRequest = {
       category: this.searchForm.value.category,
-      location: this.searchForm.value.location
+      location: this.searchForm.value.location,
     };
 
+    console.log(searchPayload,'this is the search Request');
+    
     this.serviceProviderService.searchProviders(searchPayload).subscribe({
-      next: (data) => this.results = data,
+      next: (data) => {
+        this.results = data;
+        console.log('Data Found From Backend',data);
+        if (this.results.length === 0) {
+          this.message = 'No providers found.';
+        }
+      },
       error: (err) => {
         console.error('Search failed:', err);
         this.results = [];
-      }
+        this.message = 'Error during search';
+      },
     });
   }
 
-
-   getAllProviders(): void {
-    this.serviceProviderService.getAllProviders().subscribe(data => {
+  getAllProviders(): void {
+    this.serviceProviderService.getAllProviders().subscribe((data) => {
       this.providers = data;
 
       // Extract unique non-empty locations
       this.availableLocations = Array.from(
-        new Set(data.map(provider => provider.location).filter(loc => !!loc))
+        new Set(data.map((provider) => provider.location).filter((loc) => !!loc))
       );
 
+      // ✅ Extract unique categories
+      this.availableCategories = Array.from(
+        new Set(data.map((provider) => provider.category).filter((cat) => !!cat))
+      );
+
+      console.log('Available Categories:', this.availableCategories);
       console.log('Available Locations:', this.availableLocations);
     });
   }
 
   onLocationInput(): void {
-const input = this.searchForm.get('location')?.value?.toLowerCase() || '';
-
-    this.filteredLocations = this.availableLocations.filter(loc =>
+    const input = this.searchForm.get('location')?.value?.toLowerCase() || '';
+    this.filteredLocations = this.availableLocations.filter((loc) =>
       loc.toLowerCase().includes(input)
     );
 
     this.showLocationSuggestions = true;
-
-    // console.log('Filtered:', this.filteredLocations);
-    console.log('User Input:', input);
-console.log('Filtered Locations:', this.filteredLocations);
-
   }
 
   selectLocation(loc: string): void {
-this.searchForm.get('location')?.setValue(loc);
+    this.searchForm.get('location')?.setValue(loc);
     this.showLocationSuggestions = false;
   }
 
@@ -110,6 +103,22 @@ this.searchForm.get('location')?.setValue(loc);
       this.showLocationSuggestions = false;
     }, 200);
   }
+
+
+  viewProvider(id?: number): void {
+  if (!id) return;
+  this.serviceProviderService.getProviderById(id).subscribe(provider => {
+    this.selectedProvider = provider;
+    this.serviceProviderService.getProviderImages(id).subscribe(images => {
+      this.providerImages = images;
+      this.isModalOpen = true; // show modal
+    });
+  });
 }
 
-
+closeModal(): void {
+  this.isModalOpen = false;
+  this.selectedProvider = null;
+  this.providerImages = [];
+}
+}

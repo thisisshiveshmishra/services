@@ -15,10 +15,11 @@
         </fieldset>
         <div class="inner-form">
           <div class="input-field first-wrap">
-            <select formControlName="category">
-              <option value="">Select Category</option>
-              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-            </select>
+           <select formControlName="category">
+  <option value="">Select Category</option>
+  <option *ngFor="let cat of availableCategories" [value]="cat">{{ cat }}</option>
+</select>
+
 
           </div>
 
@@ -49,9 +50,11 @@
 <div class="results-container" *ngIf="results.length">
   <h3>Results:</h3>
   <ul>
-    <li *ngFor="let provider of results">
-      {{ provider.firstName }} {{ provider.lastName }} — {{ provider.location }} ({{ provider.category }}) {{provider.mobileNumber}} 
-    </li>
+    <li *ngFor="let provider of results" (click)="provider.id && viewProvider(provider.id)">
+  {{ provider.firstName }} {{ provider.lastName }} — {{ provider.location }} ({{provider.mobileNumber}})
+</li>
+
+
   </ul>
 </div>
 
@@ -65,4 +68,121 @@
     </div>
   </body>
 </html>
- 
+
+
+
+
+ <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     [ngClass]="{ show: isModalOpen }" [ngStyle]="{ display: isModalOpen ? 'block' : 'none' }">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Provider Details</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true"><i class="fa fa-close"></i></span>
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" *ngIf="selectedProvider">
+
+        <div class="row g-0">
+
+          <!-- Provider info -->
+          <div class="col-md-8 border-right">
+            <div class="status p-3">
+
+              <table class="table table-borderless">
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="d-flex flex-column">
+                        <span class="heading d-block">Name</span>
+                        <span class="subheadings">{{ selectedProvider.firstName }} {{ selectedProvider.lastName }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex flex-column">
+                        <span class="heading d-block">Location</span>
+                        <span class="subheadings">{{ selectedProvider.location }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex flex-column">
+                        <span class="heading d-block">Mobile</span>
+                        <span class="subheadings">{{ selectedProvider.mobileNumber }}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="d-flex flex-column">
+                        <span class="heading d-block">Category</span>
+                        <span class="subheadings">{{ selectedProvider.category }}</span>
+                      </div>
+                    </td>
+                    <td colspan="2"></td>
+                  </tr>
+
+                  <!-- Images section -->
+                  <tr>
+                    <td colspan="3">
+                      <div class="d-flex flex-column">
+                        <span class="heading d-block">Images</span>
+                        <span class="d-flex flex-row gallery">
+                          <img *ngFor="let img of providerImages"
+                               [src]="'data:image/jpeg;base64,' + img"
+                               width="50"
+                               class="rounded mr-2" />
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+          <!-- Right column with profile (you can customize this further) -->
+          <div class="col-md-4">
+            <div class="p-2 text-center">
+              <div class="profile">
+                <img *ngIf="selectedProvider.profilePicture"
+     [src]="'data:image/jpeg;base64,' + selectedProvider.profilePicture"
+     width="100"
+     class="rounded-circle img-thumbnail" />
+
+                <span class="d-block mt-3 font-weight-bold">{{ selectedProvider.firstName }} {{ selectedProvider.lastName }}</span>
+              </div>
+
+              <!-- <div class="about-doctor mt-3">
+                <table class="table table-borderless">
+                  <tbody>
+                    <tr>
+                      
+                      <td>
+                        <div class="d-flex flex-column">
+                          <span class="heading d-block">Specialist</span>
+                          <span class="subheadings">{{ selectedProvider.category }}</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

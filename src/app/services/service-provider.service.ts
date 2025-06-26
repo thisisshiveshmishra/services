@@ -94,5 +94,12 @@ getImages(providerId: number) {
   return this.http.get<string[]>(`${NAV_URL}/providers/${providerId}/images`);
 }
 
+getProviderById(id: number): Observable<Serviceprovider> {
+  return this.http.get<Serviceprovider>(`${NAV_URL}/providers/${id}`);
+}
+
+getProviderImages(id: number): Observable<string[]> {
+  return this.http.get<string[]>(`${NAV_URL}/providers/${id}/images`);
+}
 
 }

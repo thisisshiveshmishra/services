@@ -78,25 +78,29 @@ export class ServiceproviderdashboardComponent {
   }
 
   uploadImages() {
-    if (!this.selectedImages.length) return;
+  if (!this.selectedImages.length) return;
 
-    const formData = new FormData();
-    this.selectedImages.forEach((img) => formData.append('images', img));
+  const formData = new FormData();
+  this.selectedImages.forEach((img) => formData.append('images', img));
 
-   this.serviceproviderService.uploadImages(this.providerId, formData).subscribe(
-  () => {
-    this.selectedImages = [];
-    this.selectedImagePreviews = [];
-    this.fetchUploadedImages();
+  this.serviceproviderService.uploadImages(this.providerId, formData).subscribe(
+    () => {
+       // ❌ Error handler
+      console.error('Error uploading images');
+      alert('Error uploading images. Please try again.');
+    },
+    (error) => {
+     
+      // ✅ Success handler
+      alert('Images uploaded successfully! ✅');  // Show success message
+      this.selectedImages = [];                    // Clear file selection
+      this.selectedImagePreviews = [];              // Clear preview
+      this.refreshPage();             
+      this.fetchUploadedImages();                  // Fetch updated list
+    }
+  );
+}
 
-  },
-  (error) => {
-    console.error('Error uploading images', error);
-     alert('Images uploaded successfully! ✅');  // ✅ Message displayed here
-         this.fetchUploadedImages();
-  }
-);
-  }
 
   fetchUploadedImages() {
     this.serviceproviderService.getImages(this.providerId).subscribe(
@@ -118,16 +122,29 @@ export class ServiceproviderdashboardComponent {
       formData.append('image', this.selectedFile);
     }
 
-    this.serviceproviderService.updateProvider(this.providerId, formData).subscribe(
-      () => alert('Profile updated successfully!'),
-      (err) => console.error('Update failed', err)
-    );
+     this.serviceproviderService.updateProvider(this.providerId, formData).subscribe(
+    () => {
+      // First alert
+      alert('Profile updated successfully!');
+      // ✅ Show second alert
+      alert('Please wait till the admin approves the request.');
+      // ✅ Redirect to login page
+      this.router.navigate(['/loginserviceprovider']);
+    },
+    (err) => console.error('Update failed', err)
+  );
 
-    alert('Please wait till Admin.');
+   
+
   }
 
   logout() {
     localStorage.removeItem('providerEmail');
     this.router.navigate(['/loginserviceprovider']);
   }
+
+  refreshPage(): void {
+  window.location.reload();
+}
+
 }

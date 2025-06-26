@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceRequest } from 'src/app/model/service-request';
+import { ServiceProviderService } from 'src/app/services/service-provider.service';
 import { ServiceRequestServiceService } from 'src/app/services/service-request-service.service';
 
 @Component({
@@ -13,34 +14,23 @@ export class ServicerequestComponent {
   requests: ServiceRequest[] = [];
   selectedRequest?: ServiceRequest;
   message = '';
-  categories: string[] = [
-  'MOTOR_GARAGE_REPAIRING',
-  'HOSPITAL',
-  'SPORTS_REGARDS',
-  'LAPTOP_REPAIRING',
-  'HOTELS',
-  'MOB_REPAIRING',
-  'EMOTIONAL_GUIDER',
-  'HEALTH_ADVISER',
-  'BEAUTY_PARLORS',
-  'RENT_ROOM_ADVISER',
-  'SOFTWARE_QA',
-  'DATA_SCIENCE',
-  'SOFTWARE_DEVELOPER',
-  'CYBER_SECURITY',
-  'WATER_SUPPLIER_RO',
-  'TOURIST_GUIDER'
-];
+  categories: string[] = [];
+    showCustomCategoryInput = false; // ✅ Track other category input visibility
+
+
 
 
   constructor(
     private fb: FormBuilder,
-    private serviceRequestService: ServiceRequestServiceService
+    private serviceRequestService: ServiceRequestServiceService,
+    private serviceprovider: ServiceProviderService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.loadAllRequests();
+      this.loadCategoriesFromServiceProviders(); // ✅ new method
+
   }
 
   initForm(): void {
@@ -52,31 +42,67 @@ export class ServicerequestComponent {
         gender: ['', Validators.required],
       location: ['', Validators.required],
       category: [''],  // optional, add Validators.required if needed
+      customCategory: [''], // Input shown if "Other" is selected
       query: ['']      // transient field
     });
   }
 
-  // Create new service request
-  onSubmit(): void {
-    if (this.serviceRequestForm.invalid) {
-      this.message = 'Please fix errors in the form.';
-      return;
-    }
-    const newRequest: ServiceRequest = this.serviceRequestForm.value;
+  loadCategoriesFromServiceProviders(): void {
+  this.serviceprovider.getAllProviders().subscribe({
+    next: (providers) => {
+      // Extract unique categories
+      const uniqueCategories = Array.from(
+        new Set(providers.map(p => p.category).filter(Boolean))
+      );
 
-    this.serviceRequestService.createServiceRequest(newRequest).subscribe({
-      next: (res) => {
-        this.message = `Service request created with ID: ${res.id}`;
-        alert('✅ Service request submitted successfully!');        
-        this.serviceRequestForm.reset();
-        this.loadAllRequests();
-      },
-      error: (err) => {
-              alert('❌ Failed to submit request. Please try again.');
-        this.message = `Error creating request: ${err.message}`;
-      }
-    });
+      this.categories = uniqueCategories;
+    },
+    error: (err) => {
+      console.error('Error loading service providers', err);
+    }
+  });
+}
+
+  onCategoryChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.showCustomCategoryInput = selectElement.value === 'Other';
+    if (!this.showCustomCategoryInput) {
+      this.serviceRequestForm.get('customCategory')?.reset();
+    }
   }
+
+
+onSubmit(): void {
+  if (this.serviceRequestForm.invalid) {
+    this.message = 'Please fix errors in the form.';
+    return;
+  }
+
+  const newRequest: ServiceRequest = { ...this.serviceRequestForm.value };
+  const customCategory = this.serviceRequestForm.get('customCategory')?.value;
+
+  // ✅ Use customCategory if 'Other' is selected
+  if (newRequest.category === 'Other' && customCategory) {
+    newRequest.category = customCategory;
+  }
+
+  // ✅ Delete the extra property before submission
+  delete (newRequest as any).customCategory;
+
+  this.serviceRequestService.createServiceRequest(newRequest).subscribe({
+    next: (res) => {
+      this.message = `Service request created with ID: ${res.id}`;
+      alert('✅ Service request submitted successfully!');
+      this.serviceRequestForm.reset();
+      this.loadAllRequests();
+    },
+    error: (err) => {
+      alert('❌ Failed to submit request. Please try again.');
+      this.message = `Error creating request: ${err.message}`;
+    }
+  });
+}
+
 
   // Load all service requests
   loadAllRequests(): void {
