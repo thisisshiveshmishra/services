@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './components/adminlogin/adminlogin.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 
 
@@ -30,6 +31,7 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
    AdminDashboardComponent,
    AdminLoginComponent,
    SearchbarComponent,
+   ResetPasswordComponent,
    
 
 

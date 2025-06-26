@@ -26,20 +26,20 @@ export class ServiceProviderService {
   constructor(private http: HttpClient) {}
 
   registerProvider(formData: FormData): Observable<any> {
-    return this.http.post(`${NAV_URL}/providers/register`, formData);
+    return this.http.post(`${NAV_URL}/providers/save`, formData);
   }
 
- login(email: string, password: string): Observable<any> {
+
+login(email: string, password: string): Observable<any> {
   const params = new HttpParams()
     .set('email', email)
     .set('password', password);
 
-  return this.http.post(`${NAV_URL}/providers/login`, null, {
+  return this.http.get(`${NAV_URL}/providers/login`, {
     params,
-    responseType: 'text'
+    responseType: 'text',
   });
 }
-
 
   getAllProviders(): Observable<any[]> {
     return this.http.get<any[]>(`${NAV_URL}/providers`);
@@ -68,6 +68,31 @@ export class ServiceProviderService {
 
   }
 
+
+  // service-provider.service.ts
+forgotPassword(email: string, newPassword: string): Observable<string> {
+  const params = new HttpParams()
+    .set('email', email)
+    .set('newPassword', newPassword);
+
+  return this.http.put(`${NAV_URL}/providers/forgot-password`, null, {
+    params,
+    responseType: 'text',
+  });
+}
+
+saveProvider(formData: FormData): Observable<any> {
+  return this.http.post(`${NAV_URL}/providers/save`, formData);
+}
+
+
+uploadImages(providerId: number, formData: FormData) {
+  return this.http.post(`${NAV_URL}/providers/${providerId}/upload-images`, formData);
+}
+
+getImages(providerId: number) {
+  return this.http.get<string[]>(`${NAV_URL}/providers/${providerId}/images`);
+}
 
 
 }

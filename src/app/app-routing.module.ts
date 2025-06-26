@@ -9,6 +9,7 @@ import { ServiceProviderComponent } from './components/service-provider/service-
 import { ServiceproviderdashboardComponent } from './components/serviceproviderdashboard/serviceproviderdashboard.component';
 import { ServicerequestComponent } from './components/servicerequest/servicerequest.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
     { path: '', component: HomepageComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
     {path: 'registerserviceprovider', component: RegisterserviceProviderComponent},
     {path: 'servicerequest', component: ServicerequestComponent},
     {path: 'dashboardserviceprovider', component: ServiceproviderdashboardComponent},
-    {path:'searchservices',component:SearchbarComponent}
+    {path:'searchservices',component:SearchbarComponent},
+    {path: 'resetpassword',component: ResetPasswordComponent},
 
 ];
 

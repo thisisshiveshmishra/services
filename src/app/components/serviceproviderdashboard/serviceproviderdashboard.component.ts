@@ -10,42 +10,17 @@ import { ServiceProviderService } from 'src/app/services/service-provider.servic
   styleUrls: ['./serviceproviderdashboard.component.css']
 })
 export class ServiceproviderdashboardComponent {
-//     matches: any[] = [];
-
-//   constructor(private serviceProvider: ServiceProviderService) {}
-
-//   ngOnInit(): void {
-//     this.serviceProvider.getMatchesForAllRequests().subscribe((data: any[]) => {
-//       console.log("Match data from backend:", data);
-//       this.matches = data;
-//     });
-//   }
-// }
-
 
   editForm!: FormGroup;
   selectedFile: File | null = null;
   providerEmail!: string;
   providerId!: number;
   profileImageUrl: string = 'https://bootdey.com/img/Content/avatar/avatar7.png';
-  categories: string[] = [
-     'MOTOR_GARAGE_REPAIRING',
-    'HOSPITAL',
-    'SPORTS_REGARDS',
-    'LAPTOP_REPAIRING',
-    'HOTELS',
-    'MOB_REPAIRING',
-    'EMOTIONAL_GUIDER',
-    'HEALTH_ADVISER',
-    'BEAUTY_PARLORS',
-    'RENT_ROOM_ADVISER',
-    'SOFTWARE_QA',
-    'DATA_SCIENCE',
-    'SOFTWARE_DEVELOPER',
-    'CYBER_SECURITY',
-    'WATER_SUPPLIER_RO',
-    'TOURIST_GUIDER'
-  ];
+
+  // 🆕 Added for multiple image uploads
+  selectedImages: File[] = [];
+  selectedImagePreviews: string[] = [];
+  uploadedImages: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -61,67 +36,98 @@ export class ServiceproviderdashboardComponent {
       mobileNumber: [''],
       location: [''],
       gender: [''],
-      category: ['']
+      category: [''],
     });
 
     this.providerEmail = localStorage.getItem('providerEmail')!;
     this.loadProviderByEmail(this.providerEmail);
   }
 
- loadProviderByEmail(email: string) {
-  this.serviceproviderService.getProviderByEmail(email).subscribe(data => {
-     this.providerId = data.id;  // ✅ Save the ID here
-    this.editForm.patchValue(data);
-    console.log('Data from DB:', data);
+  loadProviderByEmail(email: string) {
+    this.serviceproviderService.getProviderByEmail(email).subscribe(
+      (data) => {
+        this.providerId = data.id;
+        this.editForm.patchValue(data);
 
-    // Use the correct field name:
-    if (data.profilePicture) {
-      console.log('Found profilePicture in data');
-      this.profileImageUrl = 'data:image/jpeg;base64,' + data.profilePicture;
-    } else {
-      console.log('No profilePicture found');
-    }
-  }, error => {
-    console.error('Error loading provider data', error);
-  });
-}
+        if (data.profilePicture) {
+          this.profileImageUrl = 'data:image/jpeg;base64,' + data.profilePicture;
+        }
+
+        // Fetch uploaded service images too
+        this.fetchUploadedImages();
+      },
+      (error) => {
+        console.error('Error loading provider data', error);
+      }
+    );
+  }
 
   onFileChange(event: any) {
     this.selectedFile = event.target.files?.[0] ?? null;
   }
 
-onSubmit() {
-  const formValues = this.editForm.value;
-  console.log('OnSubmit formvalues:',formValues);
+  onMultipleFilesSelected(event: any) {
+    this.selectedImages = Array.from(event.target.files || []);
+    this.selectedImagePreviews = [];
 
-  if (!this.providerId) {
-    console.error('Provider ID is missing.');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('data', new Blob([JSON.stringify(formValues)], { type: 'application/json' }));
-  
-  if (this.selectedFile) {
-    formData.append('image', this.selectedFile);
-  }
-
-  this.serviceproviderService.updateProvider(this.providerId, formData).subscribe({
-    next: (response) => {
-      alert('Profile updated successfully!');
-      console.log('Update successful', response);
-    },
-    error: (err) => {
-      console.error('Update failed', err);
+    for (let file of this.selectedImages) {
+      const reader = new FileReader();
+      reader.onload = () => this.selectedImagePreviews.push(reader.result as string);
+      reader.readAsDataURL(file);
     }
-  });
-}
+  }
 
+  uploadImages() {
+    if (!this.selectedImages.length) return;
 
+    const formData = new FormData();
+    this.selectedImages.forEach((img) => formData.append('images', img));
+
+   this.serviceproviderService.uploadImages(this.providerId, formData).subscribe(
+  () => {
+    this.selectedImages = [];
+    this.selectedImagePreviews = [];
+    this.fetchUploadedImages();
+
+  },
+  (error) => {
+    console.error('Error uploading images', error);
+     alert('Images uploaded successfully! ✅');  // ✅ Message displayed here
+         this.fetchUploadedImages();
+  }
+);
+  }
+
+  fetchUploadedImages() {
+    this.serviceproviderService.getImages(this.providerId).subscribe(
+      (images) => (this.uploadedImages = images),
+      (error) => console.error('Error fetching images', error)
+    );
+  }
+
+  onSubmit() {
+    const formValues = this.editForm.value;
+    const formData = new FormData();
+
+    formData.append(
+      'provider',
+      new Blob([JSON.stringify(formValues)], { type: 'application/json' })
+    );
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.serviceproviderService.updateProvider(this.providerId, formData).subscribe(
+      () => alert('Profile updated successfully!'),
+      (err) => console.error('Update failed', err)
+    );
+
+    alert('Please wait till Admin.');
+  }
 
   logout() {
-  localStorage.removeItem('providerEmail');
-  this.router.navigate(['/loginserviceprovider']);
-}
-
+    localStorage.removeItem('providerEmail');
+    this.router.navigate(['/loginserviceprovider']);
+  }
 }

@@ -26,25 +26,7 @@ export class LoginserviceProviderComponent {
   };
   selectedFile: File | null = null;
 
-  categories: string[] = [
-    'MOTOR_GARAGE_REPAIRING',
-    'HOSPITAL',
-    'SPORTS_REGARDS',
-    'LAPTOP_REPAIRING',
-    'HOTELS',
-    'MOB_REPAIRING',
-    'EMOTIONAL_GUIDER',
-    'HEALTH_ADVISER',
-    'BEAUTY_PARLORS',
-    'RENT_ROOM_ADVISER',
-    'SOFTWARE_QA',
-    'DATA_SCIENCE',
-    'SOFTWARE_DEVELOPER',
-    'CYBER_SECURITY',
-    'WATER_SUPPLIER_RO',
-    'TOURIST_GUIDER',
-  ];
-
+  
   constructor(
     private serviceProviderService: ServiceProviderService,
     private router: Router,
@@ -57,33 +39,32 @@ export class LoginserviceProviderComponent {
     this.selectedFile = event.target.files[0];
   }
 
-  onSubmit(): void {
-    const formData = new FormData();
-    formData.append('firstName', this.form.firstName);
-    formData.append('lastName', this.form.lastName);
-    formData.append('mobileNumber', this.form.mobileNumber);
-    formData.append('email', this.form.email);
-    formData.append('location', this.form.location);
-    formData.append('gender', this.form.gender);
-    formData.append('category', this.form.category);
-    formData.append('password', this.form.password);
+ onSubmit(): void {
+  const formData = new FormData();
 
-    if (this.selectedFile) {
-      formData.append('profilePicture', this.selectedFile);
-    }
+  // ✅ Convert the form to JSON
+  const providerJson = JSON.stringify(this.form);
+  const providerBlob = new Blob([providerJson], { type: 'application/json' });
 
-    this.serviceProviderService.registerProvider(formData).subscribe({
-      next: (res) => {
-        console.log('Registration successful:', res);
-        alert('Service provider registered successfully!');
-        this.router.navigate(['/loginserviceprovider']);
-      },
-      error: (err) => {
-        console.error('Registration failed:', err);
-        alert('Registration failed. Please try again.');
-      },
-    });
+  // ✅ Append as one part named 'provider'
+  formData.append('provider', providerBlob);
+
+  // ✅ Append image file as 'image' (the same name as @RequestPart image)
+  if (this.selectedFile) {
+    formData.append('image', this.selectedFile);
   }
+
+  this.serviceProviderService.saveProvider(formData).subscribe({
+    next: (res) => {
+      alert('Service provider registered successfully!');
+      this.router.navigate(['/loginserviceprovider']);
+    },
+    error: (err) => {
+      console.error('Registration failed:', err);
+      alert('Registration failed. Please try again.');
+    }
+  });
+}
 
   // ✅ Login logic
   onLogin(): void {

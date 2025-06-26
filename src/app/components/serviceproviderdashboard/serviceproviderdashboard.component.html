@@ -1,59 +1,3 @@
-<!-- <div *ngFor="let match of matches" class="match-card">
-  <div class="request" *ngIf="match.request">
-    <h3>Request</h3>
-    <p><strong>Category:</strong> {{ match.request.category || 'N/A' }}</p>
-    <p><strong>Location:</strong> {{ match.request.location || 'N/A' }}</p>
-  </div>
-
-  <div class="providers">
-    <h4>Matched Providers:</h4>
-    <ul *ngIf="match.providers?.length > 0; else noMatch">
-      <li *ngFor="let provider of match.providers">
-        <strong>{{ provider.firstName }}- {{ provider.lastName }}</strong> ({{ provider.email }}) - {{ provider.mobileNumber }}
-      </li>
-    </ul>
-    <ng-template #noMatch>
-      <p>No providers found.</p>
-    </ng-template>
-  </div>
-</div> -->
-
-
-
-<!-- 
-<form [formGroup]="editForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-  <label>First Name:</label>
-  <input formControlName="firstName" type="text" /><br/>
-
-  <label>Last Name:</label>
-  <input formControlName="lastName" type="text" /><br/>
-
-  <label>Email:</label>
-  <input formControlName="email" type="email" /><br/>
-
-  <label>Mobile Number:</label>
-  <input formControlName="mobileNumber" type="text" /><br/>
-
-  <label>Location:</label>
-  <input formControlName="location" type="text" /><br/>
-
-  <label>Gender:</label>
-  <select formControlName="gender">
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-  </select><br/>
-
-  <label>Category:</label>
-  <select formControlName="category">
-    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-  </select><br/>
-
-  <label>Upload Profile Picture:</label>
-  <input type="file" (change)="onFileChange($event)" /><br/><br/>
-
-  <button type="submit">Update Profile</button>
-</form> -->
-
 
 
 <!-- Logout Button -->
@@ -148,14 +92,14 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Category</label>
-                  <select class="form-control" formControlName="category">
-                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-                  </select>
-                </div>
-              </div>
+
+<div class="col-md-6">
+  <div class="form-group">
+    <label>Category</label>
+    <input type="text" class="form-control" formControlName="category" placeholder="Enter Category" />
+  </div>
+</div>
+
 
               <div class="col-md-6">
                 <div class="form-group">
@@ -182,3 +126,65 @@
     </div>
   </div>
 </form>
+
+
+
+<!-- Service Provider Images Section -->
+<div class="row gutters mt-4">
+  <div class="col-xl-12">
+    <h6 class="mb-3 text-primary">Upload Service Images</h6>
+  </div>
+
+  <!-- Image input -->
+  <div class="col-md-12 mb-3">
+    <input
+      type="file"
+      class="form-control"
+      (change)="onMultipleFilesSelected($event)"
+      multiple
+    />
+  </div>
+
+  <!-- Preview of selected images -->
+  <div class="col-md-12 mb-3 d-flex flex-wrap gap-3">
+    <div
+      class="image-preview"
+      *ngFor="let preview of selectedImagePreviews"
+      style="width:120px; height:120px; border:1px solid #ccc; border-radius:8px; overflow:hidden;"
+    >
+      <img
+        [src]="preview"
+        style="width:100%; height:100%; object-fit:cover;"
+      />
+    </div>
+  </div>
+
+  <!-- Uploaded Images Section -->
+  <div class="col-md-12 mt-4">
+    <h6 class="mb-3 text-primary">Uploaded Images</h6>
+    <div class="d-flex flex-wrap gap-3">
+      <div
+        class="image-container"
+        *ngFor="let img of uploadedImages"
+        style="width:120px; height:120px; border:1px solid #ccc; border-radius:8px; overflow:hidden;"
+      >
+        <img
+          [src]="'data:image/jpeg;base64,' + img"
+          style="width:100%; height:100%; object-fit:cover;"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Button -->
+  <div class="col-xl-12 mt-3 text-right">
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)="uploadImages()"
+      [disabled]="!selectedImages.length"
+    >
+      Upload Images
+    </button>
+  </div>
+</div>
