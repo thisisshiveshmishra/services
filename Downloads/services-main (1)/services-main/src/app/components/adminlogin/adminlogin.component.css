@@ -1,0 +1,174 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Jost', sans-serif;
+  background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.main {
+  width: 380px;
+  height: 520px;
+  background: url("https://images.unsplash.com/photo-1517245386807-bb43f82c33c4") no-repeat center/cover;
+  border-radius: 10px;
+  box-shadow: 5px 20px 50px #000;
+  overflow: hidden;
+  position: relative;
+  margin: auto;
+}
+
+#chk {
+  display: none;
+}
+
+/* Forms */
+.login,
+.signup {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: 0.8s ease-in-out;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
+
+/* Show login by default */
+.login {
+  z-index: 2;
+  transform: translateY(0%);
+  border-radius: 0;
+  background: #fff;
+  color: #573b8a;
+}
+
+/* Hide signup initially */
+.signup {
+  z-index: 1;
+  transform: scale(0.7);
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+/* Toggle to signup */
+#chk:checked ~ .login {
+  transform: translateY(100%);
+  z-index: 1;
+  border-radius: 60% / 10%;
+}
+
+#chk:checked ~ .signup {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Labels */
+label {
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+/* Inputs */
+input {
+  width: 70%;
+  margin: 10px auto;
+  display: block;
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+.login input {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  color: #573b8a;
+}
+
+.login input::placeholder {
+  color: #aaa;
+}
+
+/* Buttons */
+button {
+  width: 70%;
+  margin: 20px auto;
+  display: block;
+  padding: 10px;
+  font-size: 1em;
+  color: #fff;
+  background: #573b8a;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #6d44b8;
+}
+
+/* Password icon */
+.password-wrapper {
+  position: relative;
+  width: 70%;
+  margin: 10px auto;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 35px;
+}
+
+.password-wrapper .fa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #573b8a;
+}
+
+/* Toggle links */
+.toggle-link {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+.signup .toggle-link a {
+  color: #ddd23e;
+  text-decoration: underline;
+}
+
+.login .toggle-link a {
+  color: #de650f;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 420px) {
+  .main {
+    width: 90%;
+    height: auto;
+    padding-bottom: 20px;
+  }
+
+  input,
+  button {
+    width: 85%;
+  }
+
+  .password-wrapper {
+    width: 85%;
+  }
+}

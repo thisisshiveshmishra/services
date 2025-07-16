@@ -1,0 +1,59 @@
+/* Make section take full height and center content */
+#services {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Transparent glass style card */
+.service-block {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.service-block:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Abril font styling */
+.font-abril, .service-block h5 {
+  font-family: 'Abril Fatface', cursive !important;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  width: auto;
+  height: auto;
+  display: inline-block;
+}
+
+.carousel-nav-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff5e14; /* Your theme accent */
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-nav-circle:hover {
+  background-color: #e74c0c; /* Slightly darker on hover */
+  transform: scale(1.1);
+}
+
+

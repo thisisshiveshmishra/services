@@ -1,0 +1,45 @@
+<div class="main">
+  <input type="checkbox" id="chk" aria-hidden="true" />
+
+  <!-- Login Form -->
+  <div class="login">
+    <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+      <label for="chk" aria-hidden="false"> Admin Login</label>
+      <input type="text" formControlName="username" placeholder="Username" />
+      <div class="password-wrapper">
+        <input [type]="passwordFieldType" formControlName="password" placeholder="Password" />
+        <i
+          class="fa"
+          [class.fa-eye]="passwordFieldType === 'text'"
+          [class.fa-eye-slash]="passwordFieldType === 'password'"
+          (click)="togglePasswordVisibility()"
+        ></i>
+      </div>
+      <button type="submit">Login</button>
+      <p class="toggle-link">
+        Don’t have an account? <a href="#" (click)="triggerRegister($event)">Register</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- Register Form -->
+  <div class="signup">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+      <label for="chk" aria-hidden="false"> Admin Register</label>
+      <input type="text" formControlName="username" placeholder="User name" />
+      <div class="password-wrapper">
+        <input [type]="passwordFieldType" formControlName="password" placeholder="Password" />
+        <i
+          class="fa"
+          [class.fa-eye]="passwordFieldType === 'text'"
+          [class.fa-eye-slash]="passwordFieldType === 'password'"
+          (click)="togglePasswordVisibility()"
+        ></i>
+      </div>
+      <button type="submit">Register</button>
+      <p class="toggle-link">
+        Already have an account? <a href="#" (click)="triggerLogin($event)">Login</a>
+      </p>
+    </form>
+  </div>
+</div>
