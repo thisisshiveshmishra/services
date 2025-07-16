@@ -214,3 +214,44 @@ button {
 
 
 
+.logout-container {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+ 
+.logout-container button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+ 
+.logout-container button:hover {
+  background-color: #c9302c;
+}
+ 
+ 
+.logout-container {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+ 
+.logout-container button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1.0; /* 👈 ensures vertical alignment */
+  display: inline-block;
+  vertical-align: middle;
+}
+ 
+.logout-container button:hover {
+  background-color: #c9302c;
+}

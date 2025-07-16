@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ServiceProviderService } from 'src/app/services/service-provider.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -29,6 +30,7 @@ export class AdminDashboardComponent {
   requestCategoryFilter = '';
 
   constructor(
+    private router: Router,
     private service: ServiceProviderService,
     private feedbackService: FeedbackService,
     private adminService: AdminService
@@ -105,4 +107,12 @@ export class AdminDashboardComponent {
       (!this.requestCategoryFilter || r.category?.toLowerCase().includes(this.requestCategoryFilter.toLowerCase()))
     );
   }
+  logout() {
+  // Clear local storage, session, or token
+  localStorage.clear();
+  sessionStorage.clear();
+ 
+  // Optionally redirect to login
+  this.router.navigate(['/adminlogin']);
+}
 }

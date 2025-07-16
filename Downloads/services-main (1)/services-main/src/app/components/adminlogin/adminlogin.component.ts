@@ -3,22 +3,24 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
 
-
-
 @Component({
   selector: 'app-adminlogin',
   templateUrl: './adminlogin.component.html',
   styleUrls: ['./adminlogin.component.css']
 })
 export class AdminLoginComponent implements OnInit {
-    loginForm!: FormGroup;
+  loginForm!: FormGroup;
   registerForm!: FormGroup;
   submittedLogin = false;
   submittedRegister = false;
   passwordFieldType = 'password';
-  isSignupMode = false;
+  isLogin = true;
 
-  constructor(private fb: FormBuilder, private adminService: AdminService ,private router:Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -41,16 +43,17 @@ export class AdminLoginComponent implements OnInit {
   }
 
   togglePasswordVisibility() {
-    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordFieldType =
+      this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
   onLoginSubmit(): void {
     this.submittedLogin = true;
     if (this.loginForm.invalid) return;
 
-    // Call login API
     console.log('Login Data:', this.loginForm.value);
-    window.alert('Login Successful');
+    localStorage.setItem('adminToken', 'admin');
+    alert('Login Successful');
     this.router.navigate(['/admindashboard']);
   }
 
@@ -58,23 +61,22 @@ export class AdminLoginComponent implements OnInit {
     this.submittedRegister = true;
     if (this.registerForm.invalid) return;
 
-    // Call register API
     this.adminService.register(this.registerForm.value).subscribe({
       next: () => alert('Registration successful!'),
       error: () => alert('Registration failed.')
     });
   }
 
- triggerRegister(event: Event) {
-  event.preventDefault();
-  const chk = document.getElementById('chk') as HTMLInputElement;
-  chk.checked = true;
+ login() {
+  this.isLogin = true;
+  const formBox = document.querySelector('.form-box') as HTMLElement;
+  formBox.classList.remove('register-active');
 }
 
-triggerLogin(event: Event) {
-  event.preventDefault();
-  const chk = document.getElementById('chk') as HTMLInputElement;
-  chk.checked = false;
+register() {
+  this.isLogin = false;
+  const formBox = document.querySelector('.form-box') as HTMLElement;
+  formBox.classList.add('register-active');
 }
 
 }

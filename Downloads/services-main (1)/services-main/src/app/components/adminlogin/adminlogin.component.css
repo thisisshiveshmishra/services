@@ -1,174 +1,206 @@
-body {
+* {
   margin: 0;
   padding: 0;
-  font-family: 'Jost', sans-serif;
-  background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.main {
-  width: 380px;
-  height: 520px;
-  background: url("https://images.unsplash.com/photo-1517245386807-bb43f82c33c4") no-repeat center/cover;
-  border-radius: 10px;
-  box-shadow: 5px 20px 50px #000;
-  overflow: hidden;
-  position: relative;
-  margin: auto;
-}
-
-#chk {
-  display: none;
-}
-
-/* Forms */
-.login,
-.signup {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transition: 0.8s ease-in-out;
-  padding-top: 30px;
   box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Show login by default */
-.login {
-  z-index: 2;
-  transform: translateY(0%);
-  border-radius: 0;
-  background: #fff;
-  color: #573b8a;
-}
-
-/* Hide signup initially */
-.signup {
-  z-index: 1;
-  transform: scale(0.7);
-  opacity: 0;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-}
-
-/* Toggle to signup */
-#chk:checked ~ .login {
-  transform: translateY(100%);
-  z-index: 1;
-  border-radius: 60% / 10%;
-}
-
-#chk:checked ~ .signup {
-  transform: scale(1);
-  opacity: 1;
-  z-index: 2;
-}
-
-/* Labels */
-label {
-  font-size: 2em;
+.hero {
+  min-height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  background: #f4f4f4;
+  padding: 20px;
+}
+
+.form-box {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 25px 20px 40px;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.button-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  background: #eee;
+  border-radius: 30px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  height: 45px;
+}
+
+.toggle-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.5s;
+  z-index: 1;
 }
 
-/* Inputs */
-input {
-  width: 70%;
-  margin: 10px auto;
-  display: block;
+#btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, #ff105f, #ffad06);
+  border-radius: 30px;
+  transition: 0.3s;
+  z-index: 0;
+}
+
+/* FORM WRAPPER */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.login-form,
+.register-form {
+  position: absolute;
+  width: 100%;
+  top: 100px;
+  left: 0;
+  padding: 0 10px;
+}
+
+.login-form {
+  transform: translateX(0%);
+}
+
+.register-form {
+  transform: translateX(100%);
+}
+
+.form-box.register-active .login-form {
+  transform: translateX(-100%);
+}
+
+.form-box.register-active .register-form {
+  transform: translateX(0%);
+}
+
+.input-field {
   padding: 12px;
-  border-radius: 5px;
-  border: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fafafa;
   outline: none;
 }
 
-.login input {
-  background: #f0f0f0;
-  border: 1px solid #ccc;
-  color: #573b8a;
-}
-
-.login input::placeholder {
-  color: #aaa;
-}
-
-/* Buttons */
-button {
-  width: 70%;
-  margin: 20px auto;
-  display: block;
-  padding: 10px;
-  font-size: 1em;
-  color: #fff;
-  background: #573b8a;
+.submit-btn {
+  height: 45px;
+  background: linear-gradient(to right, #ff105f, #ffad06);
+  color: white;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background 0.3s ease;
 }
 
-button:hover {
-  background: #6d44b8;
+.submit-btn:hover {
+  background: linear-gradient(to right, #ff6a00, #ee0979);
 }
 
-/* Password icon */
-.password-wrapper {
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .form-box {
+    padding: 20px 15px 30px;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+  }
+
+  .input-field {
+    font-size: 14px;
+  }
+}
+.form-box {
   position: relative;
-  width: 70%;
-  margin: 10px auto;
-}
-
-.password-wrapper input {
+  max-width: 400px;
   width: 100%;
-  padding-right: 35px;
+  padding: 30px 20px 40px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-height: 360px;
+  transition: height 0.3s ease;
 }
 
-.password-wrapper .fa {
+/* Common form styles */
+.input-group {
   position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 100%;
+  top: 100px;
+  left: 0;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Default positions */
+.login-form {
+  transform: translateX(0%);
+}
+
+.register-form {
+  transform: translateX(100%);
+}
+
+/* Toggle view using .register-active class on form-box */
+.form-box.register-active .login-form {
+  transform: translateX(-100%);
+}
+
+.form-box.register-active .register-form {
+  transform: translateX(0%);
+}
+
+/* Input styling */
+.input-field {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fafafa;
+  font-size: 15px;
+}
+
+.submit-btn {
+  height: 45px;
+  background: linear-gradient(to right, #ff105f, #ffad06);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
   cursor: pointer;
-  color: #573b8a;
+  transition: 0.3s;
 }
 
-/* Toggle links */
-.toggle-link {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 0.9em;
+.submit-btn:hover {
+  background: linear-gradient(to right, #ff6a00, #ee0979);
 }
 
-.signup .toggle-link a {
-  color: #ddd23e;
-  text-decoration: underline;
-}
-
-.login .toggle-link a {
-  color: #de650f;
-  text-decoration: underline;
-}
-
-/* Responsive */
-@media (max-width: 420px) {
-  .main {
-    width: 90%;
-    height: auto;
-    padding-bottom: 20px;
-  }
-
-  input,
-  button {
-    width: 85%;
-  }
-
-  .password-wrapper {
-    width: 85%;
+@media (max-width: 480px) {
+  .form-box {
+    padding: 20px 15px;
+    min-height: 380px;
   }
 }
