@@ -84,14 +84,23 @@ export class SearchbarComponent {
     });
   }
 
-  onLocationInput(): void {
-    const input = this.searchForm.get('location')?.value?.toLowerCase() || '';
+ onLocationInput(): void {
+  const input = this.searchForm.get('location')?.value?.toLowerCase() || '';
+
+  // Only show suggestions if input contains at least one alphabet
+  const hasAlphabet = /[a-zA-Z]/.test(input);
+
+  if (hasAlphabet) {
     this.filteredLocations = this.availableLocations.filter((loc) =>
       loc.toLowerCase().includes(input)
     );
-
-    this.showLocationSuggestions = true;
+    this.showLocationSuggestions = this.filteredLocations.length > 0;
+  } else {
+    this.filteredLocations = [];
+    this.showLocationSuggestions = false;
   }
+}
+
 
   selectLocation(loc: string): void {
     this.searchForm.get('location')?.setValue(loc);
