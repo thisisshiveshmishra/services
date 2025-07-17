@@ -123,16 +123,15 @@ export class ServiceproviderdashboardComponent {
     }
 
      this.serviceproviderService.updateProvider(this.providerId, formData).subscribe(
-    () => {
-      // First alert
-      alert('Profile updated successfully!');
-      // ✅ Show second alert
-      alert('Please wait till the admin approves the request.');
-      // ✅ Redirect to login page
-      this.router.navigate(['/loginserviceprovider']);
-    },
-    (err) => console.error('Update failed', err)
-  );
+  () => {
+    alert('Profile updated successfully!');
+    alert('Please wait till the admin approves the request.');
+    this.editForm.markAsPristine(); // ✅ Reset dirty status
+    this.router.navigate(['/loginserviceprovider']);
+  },
+  (err) => console.error('Update failed', err)
+);
+
 
    
 

@@ -1,5 +1,3 @@
-
-
 <!-- Logout Button -->
 <div class="text-end my-3 me-4">
   <button (click)="logout()" class="btn btn-danger logout-button">Logout</button>
@@ -8,7 +6,7 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
   <div class="container">
     <div class="row gutters">
-      
+
       <!-- Profile Card Left -->
       <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
         <div class="card h-100">
@@ -16,12 +14,12 @@
             <div class="account-settings">
               <div class="user-profile">
                 <div class="user-avatar">
-                 <img [src]="profileImageUrl" (error)="profileImageUrl='https://bootdey.com/img/Content/avatar/avatar7.png'" 
-     alt="Profile Picture" class="img-fluid rounded-circle"
-     style="width: 300px; height: 300px; object-fit: cover;">
+                  <img [src]="profileImageUrl"
+                    (error)="profileImageUrl='https://bootdey.com/img/Content/avatar/avatar7.png'" alt="Profile Picture"
+                    class="img-fluid rounded-circle" style="width: 300px; height: 300px; object-fit: cover;">
 
 
-     <!-- <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" /> -->
+                  <!-- <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" /> -->
 
                 </div>
                 <h5 class="user-name">{{ editForm.value.firstName }} {{ editForm.value.lastName }}</h5>
@@ -93,12 +91,12 @@
               </div>
 
 
-<div class="col-md-6">
-  <div class="form-group">
-    <label>Category</label>
-    <input type="text" class="form-control" formControlName="category" placeholder="Enter Category" />
-  </div>
-</div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Category</label>
+                  <input type="text" class="form-control" formControlName="category" placeholder="Enter Category" />
+                </div>
+              </div>
 
 
               <div class="col-md-6">
@@ -109,13 +107,15 @@
               </div>
             </div>
 
-          
+
 
             <!-- Buttons -->
             <div class="row gutters mt-3">
               <div class="col-xl-12 text-right">
                 <button type="button" class="btn btn-secondary">Cancel</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!editForm.dirty && !selectedFile">
+                  Update
+                </button>
               </div>
             </div>
 
@@ -132,12 +132,7 @@
 <div class="service-images-section">
 
   <h6>Upload Service Images</h6>
-  <input
-    type="file"
-    class="form-control"
-    (change)="onMultipleFilesSelected($event)"
-    multiple
-  />
+  <input type="file" class="form-control" (change)="onMultipleFilesSelected($event)" multiple />
 
   <!-- Preview of selected images -->
   <div class="image-preview-container mt-3">
@@ -155,11 +150,7 @@
   </div>
 
   <!-- Upload Button -->
-  <button
-    class="upload-btn mt-3"
-    (click)="uploadImages()"
-    [disabled]="!selectedImages.length"
-  >
+  <button class="upload-btn mt-3" (click)="uploadImages()" [disabled]="!selectedImages.length">
     Upload Images
   </button>
 </div>
