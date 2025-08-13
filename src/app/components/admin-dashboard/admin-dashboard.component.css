@@ -1,0 +1,289 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 220px;
+  background-color: #04274c; /* Blue background */
+  color: white;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sidebar button {
+  background-color: #04274c;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+  text-align: left;
+}
+
+.sidebar button:hover {
+  background-color: #3399ff;
+}
+
+/* Content Area Styling */
+.content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f4f6f8;
+  overflow-y: auto;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #04274c;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.message {
+  color: green;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+button {
+  float: right;
+  margin: 10px;
+}
+
+.filters {
+  margin-bottom: 50px;
+}
+
+.filters input {
+  margin-right: 10px;
+  padding: 8px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .sidebar button {
+    flex: 1 1 45%;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  input[type="text"] {
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .message {
+    font-size: 14px;
+  }
+}
+
+
+
+/* Wrap the filter inputs in a flex container for better layout */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Style the inputs */
+.filters input[type="text"] {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05); /* light background for contrast */
+  color: #333;
+  font-size: 14px;
+  width: 220px;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Placeholder style */
+.filters input[type="text"]::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* Hover/focus styles */
+.filters input[type="text"]:hover,
+.filters input[type="text"]:focus {
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+
+
+/* Filters container — wrap the two filters */
+.requests-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Style the filter inputs */
+.requests-filters input[type="text"] {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+  font-size: 14px;
+  min-width: 200px;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.requests-filters input[type="text"]::placeholder {
+  color: #777;
+  font-style: italic;
+}
+
+.requests-filters input[type="text"]:hover,
+.requests-filters input[type="text"]:focus {
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+
+
+
+.logout-container {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+ 
+.logout-container button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+ 
+.logout-container button:hover {
+  background-color: #c9302c;
+}
+ 
+ 
+.logout-container {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+ 
+.logout-container button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1.0; /* 👈 ensures vertical alignment */
+  display: inline-block;
+  vertical-align: middle;
+}
+ 
+.logout-container button:hover {
+  background-color: #c9302c;
+}
+
+.btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  margin: 2px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-approve {
+  background-color: #28a745; /* Green */
+}
+
+.btn-approve:hover {
+  background-color: #218838;
+}
+
+.btn-approved {
+  background-color: #6c757d; /* Grey */
+  cursor: not-allowed;
+}
+
+.btn-reject {
+  background-color: #dc3545; /* Red */
+}
+
+.btn-reject:hover {
+  background-color: #c82333;
+}

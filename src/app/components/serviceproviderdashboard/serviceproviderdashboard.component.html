@@ -1,0 +1,240 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+<!-- Logout Button -->
+<div class="text-end my-3 me-4">
+  <button (click)="logout()" class="btn btn-danger logout-button">Logout</button>
+</div>
+
+
+<!-- Chat Button (Replaces Modal) -->
+<div class="text-end me-4 mt-3">
+  <button class="btn btn-outline-primary position-relative" [routerLink]="['/chat']">
+    <i class="fas fa-envelope fa-lg"></i>
+    <span *ngIf="providerMessages.length" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{ providerMessages.length }}
+    </span>
+  </button>
+</div>
+
+
+<!-- 🔔 Chat Notification Button (Top Right) -->
+<!-- <div class="text-end me-4 mt-3">
+  <button class="btn btn-outline-primary position-relative" (click)="toggleMessageModal()">
+    <i class="fas fa-envelope fa-lg"></i>
+    <span *ngIf="providerMessages.length" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{ providerMessages.length }}
+    </span>
+  </button>
+</div> -->
+
+<!-- Chat Modal -->
+<!-- <div class="modal fade show" *ngIf="showMessageModal" style="display: block;" tabindex="-1">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chats With Users</h5>
+        <button type="button" class="btn-close" (click)="toggleMessageModal()"></button>
+      </div>
+      <div class="modal-body">
+
+        
+        <div *ngFor="let userId of objectKeys(groupedMessages)" class="mb-4 border rounded p-3 bg-white shadow-sm">
+          <h6 class="text-primary border-bottom pb-2 mb-3">
+            Chat with {{ groupedMessages[userId][0]?.userName }}
+            {{ groupedMessages[userId][0]?.userSurname || '' }}
+            (User ID: {{ userId }})
+          </h6>
+
+          <div *ngFor="let msg of groupedMessages[userId]" class="mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong>{{ msg.userName }} {{ msg.userSurname || '' }}</strong>
+              <small class="text-muted">{{ msg.sentTime | date: 'short' }}</small>
+            </div>
+            <p class="mb-1">{{ msg.content }}</p>
+
+            <div *ngIf="msg.replyContent" class="bg-light p-2 rounded">
+              <strong class="text-success">You replied:</strong> {{ msg.replyContent }}
+            </div>
+          </div>
+
+          <div class="input-group mt-3">
+            <input
+              [(ngModel)]="replies[userId]"
+              type="text"
+              class="form-control"
+              placeholder="Reply to this user..."
+            />
+            <button class="btn btn-primary" (click)="sendReplyToUser(userId)">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="objectKeys(groupedMessages).length === 0" class="text-center text-muted">
+          No messages found.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+  <div class="container">
+    <div class="row gutters">
+
+      <!-- Profile Card Left -->
+      <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="account-settings">
+              <div class="user-profile">
+                <div class="user-avatar">
+                  <img [src]="profileImageUrl"
+                    (error)="profileImageUrl='https://bootdey.com/img/Content/avatar/avatar7.png'" alt="Profile Picture"
+                    class="img-fluid rounded-circle" style="width: 300px; height: 300px; object-fit: cover;">
+
+
+                  <!-- <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" /> -->
+
+                </div>
+                <h5 class="user-name">{{ editForm.value.firstName }} {{ editForm.value.lastName }}</h5>
+                <h6 class="user-email">{{ editForm.value.email }}</h6>
+              </div>
+              <!-- <div class="about">
+                <h5>About</h5>
+                <p>This is your editable profile. Update your info below.</p>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Right -->
+      <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+          <div class="card-body">
+            <!-- Personal Details -->
+            <div class="row gutters">
+              <div class="col-xl-12">
+                <h6 class="mb-2 text-primary">Personal Details</h6>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" formControlName="firstName" class="form-control" placeholder="Enter First Name">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" formControlName="lastName" class="form-control" placeholder="Enter Last Name">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" formControlName="email" class="form-control" placeholder="Enter Email">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Mobile Number</label>
+                  <input type="text" formControlName="mobileNumber" class="form-control" placeholder="Enter Mobile">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Location</label>
+                  <input type="text" formControlName="location" class="form-control" placeholder="Enter Location">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Gender</label>
+                  <select class="form-control" formControlName="gender">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Category</label>
+                  <input type="text" class="form-control" formControlName="category" placeholder="Enter Category" />
+                </div>
+              </div>
+
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Upload Profile Picture</label>
+                  <input type="file" (change)="onFileChange($event)" class="form-control">
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Buttons -->
+            <div class="row gutters mt-3">
+              <div class="col-xl-12 text-right">
+                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!editForm.dirty && !selectedFile">
+                  Update
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>
+
+
+<!-- Service Provider Images Section -->
+<div class="service-images-section">
+
+  <h6>Upload Service Images</h6>
+  <input type="file" class="form-control" (change)="onMultipleFilesSelected($event)" multiple />
+
+  <!-- Preview of selected images -->
+  <div class="image-preview-container mt-3">
+    <div class="image-preview" *ngFor="let preview of selectedImagePreviews">
+      <img [src]="preview" />
+    </div>
+  </div>
+
+  <!-- Uploaded Images Section -->
+  <h6 class="mt-4">Uploaded Images</h6>
+  <div class="uploaded-images-container">
+    <div class="image-container" *ngFor="let img of uploadedImages">
+      <img [src]="'data:image/jpeg;base64,' + img" />
+    </div>
+  </div>
+
+  <!-- Upload Button -->
+  <button class="upload-btn mt-3" (click)="uploadImages()" [disabled]="!selectedImages.length">
+    Upload Images
+  </button>
+</div>

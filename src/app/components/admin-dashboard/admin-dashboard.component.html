@@ -1,0 +1,195 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <button (click)="setActiveSection('providers')">Service Providers</button>
+    <button (click)="setActiveSection('feedbacks')">Feedbacks</button>
+    <button (click)="setActiveSection('requests')">Service Requests</button>
+  </div>
+<!-- logout -->
+  <div class="logout-container">
+  <button (click)="logout()">Logout</button>
+</div>
+ 
+  <!-- Main Content -->
+  <div class="content">
+    <p *ngIf="message" class="message">{{ message }}</p>
+ 
+    <!-- Service Providers Section -->
+    <div *ngIf="activeSection === 'providers'">
+      <h2>Service Providers</h2>
+ 
+    <!-- Filters -->
+<div class="filters">
+  <input
+    type="text"
+    [(ngModel)]="providerNameFilter"
+    placeholder="Filter by Name"
+    (input)="filterProviders()"
+  />
+  <input
+    type="text"
+    [(ngModel)]="providerLocationFilter"
+    placeholder="Filter by Location"
+    (input)="filterProviders()"
+  />
+  <input
+    type="text"
+    [(ngModel)]="providerCategoryFilter"
+    placeholder="Filter by Category"
+    (input)="filterProviders()"
+  />
+</div>
+ 
+
+ 
+      <table border="1" cellspacing="0" cellpadding="8">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Category</th>
+            <th>Gender</th>
+            <th>Location</th>
+            <th>Profile Picture</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredProviders.length === 0">
+            <td colspan="10">No data found.</td>
+          </tr>
+          <tr *ngFor="let provider of filteredProviders">
+            <td>{{ provider.id }}</td>
+            <td>{{ provider.firstName }} {{ provider.lastName }}</td>
+            <td>{{ provider.mobileNumber }}</td>
+            <td>{{ provider.email }}</td>
+            <td>{{ provider.category }}</td>
+            <td>{{ provider.gender }}</td>
+            <td>{{ provider.location }}</td>
+          
+            
+            <td>
+              <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" />
+            </td>
+
+            <!-- Status Column -->
+  <td>
+    {{ provider.approved ? 'Approved' : 'Pending' }}
+  </td>
+
+           <td>
+  <button 
+    *ngIf="!provider.approved" 
+    class="btn btn-approve" 
+    (click)="approve(provider.id)">
+    Approve
+  </button>
+
+  <button 
+    *ngIf="provider.approved" 
+    class="btn btn-approved" 
+    disabled>
+    Approved
+  </button>
+
+  <button 
+    class="btn btn-reject" 
+    (click)="reject(provider.id)">
+    Reject
+  </button>
+</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+ 
+    <!-- Feedbacks Section -->
+    <div *ngIf="activeSection === 'feedbacks'">
+      <h2>Feedback List</h2>
+      <table border="1" cellspacing="0" cellpadding="8">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Category</th>
+                        <th>Rating</th>
+            <th>Message</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fb of feedbacks">
+            <td>{{ fb.id }}</td>
+            <td>{{ fb.name }}</td>
+            <td>{{ fb.email }}</td>
+            <td>{{ fb.category }}</td>
+            <td>
+  <ng-container *ngFor="let star of getStars(fb.rating); let i = index">
+    <i class="fa" [ngClass]="star ? 'fa-star' : 'fa-star-o'" style="color: gold;"></i>
+  </ng-container>
+</td>
+            <td>{{ fb.message }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+ 
+    <!-- Service Requests Section -->
+    <div *ngIf="activeSection === 'requests'">
+      <h2>Raised Service Requests</h2>
+ 
+       <!-- Filters -->
+  <div class="requests-filters">
+    <input
+      type="text"
+      [(ngModel)]="requestLocationFilter"
+      placeholder="Filter by Location"
+      (input)="filterRequests()"
+    />
+    <input
+      type="text"
+      [(ngModel)]="requestCategoryFilter"
+      placeholder="Filter by Category"
+      (input)="filterRequests()"
+    />
+  </div>
+ 
+ 
+      <table border="1" cellspacing="0" cellpadding="8">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Mobile</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Query</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredRequests.length === 0">
+            <td colspan="7">No data found.</td>
+          </tr>
+          <tr *ngFor="let request of filteredRequests">
+            <td>{{ request.id }}</td>
+            <td>{{ request.name }} {{request.surname}}</td>
+            <td>{{ request.email }}</td>
+            <td>{{ request.gender }}</td>
+            <td>{{ request.contactNumber }}</td>
+            <td>{{ request.category }}</td>
+            <td>{{ request.location }}</td>
+            <td>{{ request.query}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

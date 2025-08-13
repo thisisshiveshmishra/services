@@ -1,0 +1,46 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+
+<div class="login-page d-flex flex-column align-items-center justify-content-center min-vh-100 bg-gradient">
+  <div class="login-card bg-white shadow p-5 d-flex flex-column align-items-center" style="width: 100%; max-width: 400px;">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold mb-2 main-title">Welcome User</h2>
+      <!-- <img src="/assets/Wavy_Tech-28_Single-10.jpg" alt="Avatar" class="profile-avatar mb-3"> -->
+    </div>
+    <form (ngSubmit)="loginUser()" class="w-100">
+      <div class="mb-4 position-relative">
+        <label for="email" class="form-label text-muted small">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          class="form-control input-underline"
+          [(ngModel)]="email"
+          required
+        >
+        <i class="bi bi-envelope icon-input"></i>
+      </div>
+      <div class="mb-4 position-relative">
+        <label for="password" class="form-label text-muted small">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          class="form-control input-underline"
+          [(ngModel)]="password"
+          required
+        >
+        <i class="bi bi-lock icon-input"></i>
+      </div>
+      <button
+        type="submit"
+        class="btn custom-btn btn-lg w-100 mt-2 fw-bold text-uppercase shadow-sm"
+      >Login</button>
+      <p *ngIf="errorMessage" class="mt-3 text-danger text-center">{{ errorMessage }}</p>
+    </form>
+    <div class="mt-3 text-center">
+      <span>Not registered?</span>
+      <a [routerLink]="['/userregister']" class="register-link">Click here to register</a>
+    </div>
+  </div>
+</div>

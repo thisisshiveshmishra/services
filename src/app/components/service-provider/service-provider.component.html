@@ -1,0 +1,124 @@
+  <!-- Feedback Block -->
+  <section id="feedback" class="contact-section bg-dark">
+    <div id="map" class="bg-overlay"></div>
+    <div class="container py-5">
+      <div class="col-lg-8 col-md-6 col-sm-10 form-sec bg-white my-5 p-5 mx-auto">
+
+        <div *ngIf="showConfirmation" class="alert alert-success text-center" role="alert">
+          ✅ Thank you! Your feedback has been submitted successfully.
+        </div>
+
+        <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+          <h2 class="mb-4">Give Us Feedback!</h2>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" id="fullName" formControlName="name" placeholder="Full Name" type="text"
+                  onfocus="this.placeholder=''" onblur="this.placeholder='Full Name'">
+                <small *ngIf="feedbackForm.get('name')?.invalid && feedbackForm.get('name')?.touched"
+                  class="text-danger">
+                  Name is required
+                </small>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" id="phoneNumber" formControlName="phoneNumber" placeholder="Phone Number"
+                  type="text" onfocus="this.placeholder=''" onblur="this.placeholder='Phone Number'">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" id="email" formControlName="email" placeholder="Email Address" type="email"
+                  onfocus="this.placeholder=''" onblur="this.placeholder='Email Address'">
+                <small *ngIf="feedbackForm.get('email')?.invalid && feedbackForm.get('email')?.touched"
+                  class="text-danger">
+                  Valid email is required
+                </small>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" id="address" formControlName="address" placeholder="Enter Address"
+                  type="text" onfocus="this.placeholder=''" onblur="this.placeholder='Enter Address'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Field -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <select class="form-control" formControlName="category" (change)="onCategoryChange($event)">
+                  <option value="">Select Category</option>
+                  <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                  <option value="Other">Other</option>
+                </select>
+
+                <!-- Show input if "Other" is selected -->
+                <input *ngIf="showCustomCategoryInput" type="text" formControlName="customCategory"
+                  class="form-control mt-2" placeholder="Enter custom category" />
+
+                <small *ngIf="feedbackForm.get('category')?.invalid && feedbackForm.get('category')?.touched"
+                  class="text-danger">
+                  Category is required
+                </small>
+              </div>
+            </div>
+
+
+
+            <!-- Rating Field -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <select class="form-control" formControlName="rating">
+                  <option value="">Select Rating</option>
+                  <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }} ★</option>
+                </select>
+                <small *ngIf="feedbackForm.get('rating')?.invalid && feedbackForm.get('rating')?.touched"
+                  class="text-danger">
+                  Rating is required
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <textarea class="form-control" formControlName="message" placeholder="Enter your message here!" rows="4"
+                  onfocus="this.placeholder=''" onblur="this.placeholder='Enter your message here!'">
+              </textarea>
+                <small *ngIf="feedbackForm.get('message')?.invalid && feedbackForm.get('message')?.touched"
+                  class="text-danger">
+                  Message is required
+                </small>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-capsul px-4">Submit</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+    <!-- footer Block -->
+  <div class="copy-footer py-2" style="color: #B47F41;">
+    <div class="container text-center">
+      &copy;
+      <a href="https://openfuturetechnologies.com/" target="_blank" style="color: #B47F41; text-decoration: none;">
+        Openfuture Technologies PVT LTD.
+      </a>
+      <span id="year"></span>. All rights reserved. Created with <i class="fa fa-heart"></i>
+    </div>
+  </div>
