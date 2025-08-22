@@ -1,0 +1,185 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  </head>
+  <body>
+    <div class="s01">
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+        <fieldset>
+          <legend>Discover the Amazing Services</legend>
+        </fieldset>
+        <div class="inner-form">
+          <div class="input-field first-wrap">
+           <select formControlName="category">
+  <option value="">Select Category</option>
+  <option value="ALL">View All</option>
+  <option *ngFor="let cat of availableCategories" [value]="cat">{{ cat }}</option>
+</select>
+ 
+ 
+          </div>
+ 
+   <div class="input-field second-wrap">
+  <input
+    type="text"
+    formControlName="location"
+    placeholder="Enter Location"
+    (input)="onLocationInput()"
+    (focus)="showLocationSuggestions = true"
+    (blur)="hideSuggestionsWithDelay()"
+    autocomplete="off"
+  />
+
+  <ul class="suggestions" *ngIf="filteredLocations.length && showLocationSuggestions">
+    <!-- Add View All option manually -->
+    <li (mousedown)="selectLocation('ALL')">
+      View All
+    </li>
+
+    <!-- Dynamic suggestions -->
+    <li *ngFor="let loc of filteredLocations" (mousedown)="selectLocation(loc)">
+      {{ loc }}
+    </li>
+  </ul>
+</div>
+
+ 
+          <div class="input-field third-wrap">
+            <button class="btn-search" type="submit">Search</button>
+          </div>
+
+
+              <!-- <div class="input-field third-wrap">
+  <button class="btn-search" type="submit">Search</button>
+  <button type="button" class="btn btn-secondary ms-2" (click)="viewAll()">View All</button>
+</div> -->
+
+
+        </div>
+
+    
+
+ 
+        <!-- Result section -->
+<div class="results-container" *ngIf="allResults.length">
+  <h3>Results:</h3>
+  <ul>
+    <li *ngFor="let provider of allResults" (click)="provider.id && viewProvider(provider.id)">
+      {{ provider.firstName }} {{ provider.lastName }} — {{provider.category}} ({{ provider.location }})
+
+      <button (click)="routeToChat(provider)" class="btn btn-outline-primary">
+        Chat &nbsp; <i class="bi bi-chat-dots me-1"></i>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<div class="no-results" *ngIf="!allResults.length && submitted" style="color: #7b5728;">
+  No providers found.
+</div>
+
+      </form>
+ 
+ 
+    </div>
+  </body>
+</html>
+ 
+ 
+ 
+<!-- Fullscreen Modal -->
+<div *ngIf="isModalOpen" class="modal-backdrop-custom">
+  <div class="modal-content-wrapper">
+ 
+    <!-- Modal header -->
+    <div class="modal-header">
+      <h5 class="modal-title">Provider Details</h5>
+      <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-close"></i></span>
+      </button>
+    </div>
+ 
+    <!-- Modal body -->
+    <div class="modal-body" *ngIf="selectedProvider">
+      <div class="row g-0">
+        <!-- Provider info -->
+        <div class="col-md-8 border-right">
+          <div class="status p-3">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Name</span>
+                      <span class="subheadings">{{ selectedProvider.firstName }} {{ selectedProvider.lastName }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Location</span>
+                      <span class="subheadings">{{ selectedProvider.location }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Mobile</span>
+                      <span class="subheadings">{{ selectedProvider.mobileNumber }}</span>
+                    </div>
+                  </td>
+                </tr>
+ 
+                <tr>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Category</span>
+                      <span class="subheadings">{{ selectedProvider.category }}</span>
+                    </div>
+                  </td>
+                  <td colspan="2"></td>
+                </tr>
+ 
+                <!-- Images -->
+                <tr>
+                  <td colspan="3">
+                    <div class="d-flex flex-column">
+                      <span class="heading">Images</span>
+                      <span class="d-flex flex-row gallery">
+                        <img *ngFor="let img of providerImages"
+                             [src]="'data:image/jpeg;base64,' + img"
+                             width="50"
+                             class="rounded mr-2" />
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+ 
+        <!-- Right column with profile -->
+        <div class="col-md-4">
+          <div class="p-2 text-center">
+            <div class="profile">
+              <img *ngIf="selectedProvider.profilePicture"
+                   [src]="'data:image/jpeg;base64,' + selectedProvider.profilePicture"
+                   width="100"
+                   class="rounded-circle img-thumbnail" />
+              <span class="d-block mt-3 font-weight-bold">{{ selectedProvider.firstName }} {{ selectedProvider.lastName }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+
+
+
+<!-- <app-footer></app-footer> -->

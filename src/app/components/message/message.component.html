@@ -1,0 +1,46 @@
+<div class="chat-container">
+ 
+  <!-- Top heading -->
+  <div class="chat-header sticky-top shadow-sm">
+    <h4 class="mb-0">Chat with {{ providerName }}</h4> <!-- ✅ Show provider full name -->
+  </div>
+ 
+  <!-- Chat box area -->
+  <div class="chat-box">
+    <div *ngFor="let message of messages" class="mb-4">
+ 
+      <!-- User message -->
+      <div class="d-flex justify-content-end align-items-start">
+        <div class="user-bubble">
+          <strong>{{ message.userName || 'You' }}</strong><br>
+          {{ message.content }}
+          <div class="timestamp">{{ message.sentTime  | date:'short' }}</div>
+        </div>
+        <div class="avatar user-avatar ms-2">U</div>
+      </div>
+ 
+      <!-- Provider replies -->
+      <div *ngIf="message.replies?.length > 0">
+        <div *ngFor="let reply of message.replies" class="d-flex justify-content-start align-items-start mt-2">
+          <div class="avatar provider-avatar me-2">P</div>
+          <div class="provider-bubble">
+            <strong>{{ providerName }}</strong><br> <!-- ✅ Use provider name here -->
+            {{ reply.replyContent }}
+            <div class="timestamp">{{ reply.createdAt | date:'short' }}</div>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- New message input -->
+  <div class="chat-input mt-3">
+    <div class="input-group">
+      <textarea class="form-control" [(ngModel)]="newMessage" placeholder="Type your message..."></textarea>
+      <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+ 
+</div>
+ 

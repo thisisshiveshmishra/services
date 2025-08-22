@@ -1,0 +1,117 @@
+/* Vibrant background with blend and subtle pattern */
+.bg-gradient {
+  background: linear-gradient(135deg, #f3e9e3 0%, #f9f0e6 100%);
+  position: relative;
+}
+.bg-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.13;
+  background: url('https://www.transparenttextures.com/patterns/symphony.png');
+  pointer-events: none;
+}
+
+/* Main card with shadow, sharp edges */
+.login-card {
+  min-width: 340px;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 32px rgba(180,127,65,0.20), 0 1.5px 6px rgba(64, 37, 7, 0.06);
+  background: #fff;
+  position: relative;
+  z-index: 2;
+}
+
+/* Title styling */
+.main-title {
+  color: rgb(180,127,65);
+  letter-spacing: 1.2px;
+  font-size: 2.1rem;
+}
+
+/* Custom underline input */
+.input-underline {
+  border: none;
+  border-bottom: 2.3px solid #e3c59f;
+  border-radius: 0;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.3s cubic-bezier(.7,0,.2,1);
+  font-size: 1.07rem;
+  padding: 0.7rem 2.3rem 0.7rem 0.75rem;
+}
+.input-underline:focus {
+  border-bottom: 2.3px solid rgb(180,127,65);
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Email icon inside input */
+.icon-input {
+  position: absolute;
+  right: 13px;
+  top: 34px;
+  color: #b47f41;
+  font-size: 1.1rem;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Password eye icon */
+.toggle-eye {
+  position: absolute;
+  right: 13px;
+  top: 38px;
+  cursor: pointer;
+  color: #b47f41;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+.toggle-eye:hover {
+  opacity: 1;
+}
+
+/* Custom button */
+.custom-btn {
+  background-color: rgb(180,127,65) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 16px rgba(180,127,65,0.12);
+  letter-spacing: 1.1px;
+  transition: background 0.2s;
+}
+.custom-btn:hover, .custom-btn:focus {
+  background-color: #ad7941 !important;
+  color: #fff !important;
+}
+
+/* Register link */
+.register-link {
+  color: rgb(180,127,65);
+  text-decoration: underline;
+  font-weight: 550;
+  margin-left: 4px;
+  cursor: pointer;
+  transition: color .2s;
+}
+.register-link:hover {
+  color: #ad7941;
+}
+
+/* Responsive tweaks */
+@media (max-width: 500px) {
+  .login-card { padding: 2rem 0.6rem; }
+  .main-title { font-size: 1.45rem; }
+}
+.forgot-link {
+  font-size: 0.9rem;
+  color: rgb(180,127,65);
+  text-decoration: underline;
+  transition: color .2s;
+}
+.forgot-link:hover {
+  color: #ad7941;
+}

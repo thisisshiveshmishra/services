@@ -1,0 +1,147 @@
+<div class="register-page d-flex flex-column align-items-center justify-content-center min-vh-100 bg-gradient">
+  <div class="register-card bg-white shadow p-5 d-flex flex-column align-items-center" style="width: 100%; max-width: 400px;">
+    <!-- Close Button -->
+    <button type="button" class="btn-close-custom" (click)="closeForm()">×</button>
+    <div class="text-center mb-4">
+      <h2 class="fw-bold mb-2 main-title">Register Here</h2>
+    </div>
+
+    <form (ngSubmit)="registerUser()" #registerForm="ngForm" class="w-100">
+     <div class="mb-3">
+    <label class="form-label">First Name</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control input-underline"
+      [(ngModel)]="user.name"
+      required
+      #name="ngModel"
+    >
+    <div *ngIf="name.invalid && name.touched" class="text-danger small">
+      First Name is required.
+    </div>
+  </div>
+ 
+  <div class="mb-3">
+    <label class="form-label">Last Name</label>
+    <input
+      type="text"
+      name="surname"
+      class="form-control input-underline"
+      [(ngModel)]="user.surname"
+      required
+      #surname="ngModel"
+    >
+    <div *ngIf="surname.invalid && surname.touched" class="text-danger small">
+      Last Name is required.
+    </div>
+  </div>
+ 
+  <div class="mb-3">
+    <label class="form-label">Contact Number</label>
+    <input
+      type="text"
+      name="contactNumber"
+      class="form-control input-underline"
+      [(ngModel)]="user.contactNumber"
+      required
+      minlength="10"
+      maxlength="10"
+      pattern="^[0-9]{10}$"
+      #contactNumber="ngModel"
+    >
+    <div *ngIf="contactNumber.invalid && contactNumber.touched" class="text-danger small">
+      Contact Number must be 10 digits.
+    </div>
+  </div>
+ 
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input
+      type="email"
+      name="email"
+      class="form-control input-underline"
+      [(ngModel)]="user.email"
+      required
+      email
+      #email="ngModel"
+    >
+    <div *ngIf="email.invalid && email.touched" class="text-danger small">
+      Please enter a valid Email.
+    </div>
+  </div>
+ 
+  <div class="mb-3">
+    <label class="form-label">Gender</label>
+    <select
+      name="gender"
+      class="form-select input-underline"
+      [(ngModel)]="user.gender"
+      required
+      #gender="ngModel"
+    >
+      <option value="" disabled selected>Select</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <div *ngIf="gender.invalid && gender.touched" class="text-danger small">
+      Please select Gender.
+    </div>
+  </div>
+ 
+  <div class="mb-3">
+    <label class="form-label">Location</label>
+    <input
+      type="text"
+      name="location"
+      class="form-control input-underline"
+      [(ngModel)]="user.location"
+      required
+      #location="ngModel"
+    >
+    <div *ngIf="location.invalid && location.touched" class="text-danger small">
+      Location is required.
+    </div>
+  </div>
+ 
+  <div class="mb-4">
+     <div class="mb-4 position-relative">
+  <label class="form-label">Password</label>
+  <input [type]="showPassword ? 'text' : 'password'" 
+    name="password"
+    class="form-control input-underline pe-5"
+    [(ngModel)]="user.password"
+    required
+    minlength="6"
+    #password="ngModel">   <!-- 👈 Add this -->
+  
+  <i class="bi toggle-eye"
+    [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+    (click)="togglePassword()"></i>
+</div>
+
+<div *ngIf="password.invalid && password.touched" class="text-danger small">
+  Password must be at least 6 characters.
+</div>
+
+  </div>
+ 
+  <button
+    type="submit"
+    class="btn custom-btn btn-lg w-100 mt-2 fw-bold text-uppercase"
+    [disabled]="!registerForm.form.valid"
+  >
+    Register
+  </button>
+ 
+
+      <p *ngIf="successMessage" class="mt-3 text-success text-center">{{ successMessage }}</p>
+      <p *ngIf="errorMessage" class="mt-3 text-danger text-center">{{ errorMessage }}</p>
+    </form>
+
+    <div class="mt-3 text-center">
+      <span>Already have an account?</span>
+      <a [routerLink]="['/userlogin']" class="register-link">Login here</a>
+    </div>
+  </div>
+</div>

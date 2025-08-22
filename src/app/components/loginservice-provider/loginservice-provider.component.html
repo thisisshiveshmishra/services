@@ -1,0 +1,128 @@
+<!-- Main container with id="container" -->
+<div class="container" id="container">
+ 
+  <!-- 🆕 Sign up container with your registration form -->
+  <div class="form-container sign-up-container">
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm" enctype="multipart/form-data">
+      <h1>Register Here</h1>
+ 
+      <!-- First name / last name -->
+      <input type="text" name="firstName" [(ngModel)]="form.firstName" placeholder="First Name" required />
+      <input type="text" name="lastName" [(ngModel)]="form.lastName" placeholder="Last Name" required />
+ 
+      <!-- Mobile & Gender -->
+      <div class="beside">
+        <input type="text" name="mobileNumber" [(ngModel)]="form.mobileNumber" placeholder="Mobile Number" required />
+        <select name="gender" [(ngModel)]="form.gender" required>
+          <option value="" disabled selected>GENDER</option>
+          <option value="Male">MALE</option>
+          <option value="Female">FEMALE</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+ 
+      <!-- Email -->
+      <input type="email" name="email" [(ngModel)]="form.email" placeholder="Email Address" required />
+ 
+      <!-- Location -->
+      <input type="text" name="location" [(ngModel)]="form.location" placeholder="Location" required />
+      <div *ngIf="locationError" class="text-danger">
+        Location is required.
+      </div>
+ 
+      <!-- Category -->
+      <input type="text" name="category" [(ngModel)]="form.category" placeholder="Category" required />
+      <div *ngIf="categoryError" class="text-danger">
+        Category is required.
+      </div>
+ 
+      <!-- Password with eye toggle -->
+      <div class="password-container">
+        <input
+          [type]="showRegisterPassword ? 'text' : 'password'"
+          name="password"
+          [(ngModel)]="form.password"
+          placeholder="Password"
+          required
+        />
+        <span class="toggle-password" (click)="toggleRegisterPassword()">
+          <i class="fa" [ngClass]="showRegisterPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </span>
+      </div>
+ 
+      <!-- Business Profile Upload (accept only PNG and JPEG) -->
+<div class="business-profile-upload">
+  <label for="businessProfile">Business Profile Image</label>
+  <input 
+    type="file" 
+    id="businessProfile" 
+    name="businessProfile" 
+    (change)="onFileSelected($event)" 
+    accept=".png, .jpeg, .jpg" 
+    required 
+  />
+
+  <!-- Error Message -->
+  <div *ngIf="fileError" class="text-danger">
+    Only .png or .jpeg files are allowed.
+  </div>
+</div>
+
+ 
+      <!-- Register Button -->
+      <button type="submit">Register</button>
+    </form>
+  </div>
+ 
+  <!-- Sign in container -->
+  <div class="form-container sign-in-container">
+    <form (ngSubmit)="onLogin()">
+      <h1>Log in</h1>
+      <span>or use your account</span>
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+ 
+      <!-- Password with eye toggle -->
+      <div class="password-container">
+        <input
+          [type]="showLoginPassword ? 'text' : 'password'"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+        <span class="toggle-password" (click)="toggleLoginPassword()">
+          <i class="fa" [ngClass]="showLoginPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </span>
+      </div>
+ 
+      <a href="/resetpassword">Forgot your password?</a>
+      <button type="submit">Log In</button>
+      <p class="error-message" *ngIf="message">{{ message }}</p>
+    </form>
+  </div>
+ 
+  <!-- Overlay -->
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back!</h1>
+        <p>To keep connected with us please login with your personal info</p>
+        <button class="ghost" (click)="toggleSignIn()">Log In</button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>Hello, Provider!</h1>
+        <p>Enter your personal details and start journey with us</p>
+        <button class="ghost" (click)="toggleSignUp()">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Footer -->
+<footer>
+  <p>
+    Created with <i class="fa fa-heart"></i> by
+    <a target="_blank" href="https://Aideort PVT LTD.technologies.com//">Aideort Technologies PVT LTD.</a>
+  </p>
+</footer>
+ 

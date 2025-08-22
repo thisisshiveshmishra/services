@@ -1,0 +1,73 @@
+<div class="chat-wrapper">
+  <!-- Show Sidebar only if no user selected on small screen OR always on desktop -->
+  <div
+    class="chat-sidebar"
+    *ngIf="!isMobile || (isMobile && !selectedUserId)">
+    <h5 class="sidebar-title">Users</h5>
+    <ul class="user-list">
+      <li
+        *ngFor="let userId of objectKeys(groupedMessages)"
+        [class.active]="userId === selectedUserId"
+        (click)="selectUser(userId)">
+        <div class="user-name">
+          {{ groupedMessages[userId][0]?.userName }}
+          {{ groupedMessages[userId][0]?.userSurname }}
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Show Chat only when a user is selected -->
+  <div
+    class="chat-main"
+    *ngIf="!isMobile || (isMobile && selectedUserId)">
+    <ng-container *ngIf="selectedUserId">
+      <div class="chat-header">
+        <button *ngIf="isMobile" class="back-button" (click)="selectedUserId = null">
+          ← Back
+        </button>
+        <h5>
+          {{ groupedMessages[selectedUserId][0]?.userName }}
+        </h5>
+      </div>
+
+      <div class="chat-body" id="chatBody">
+        <div
+          *ngFor="let msg of groupedMessages[selectedUserId]"
+          class="chat-message-group">
+          <div class="message left">
+            <div class="bubble">
+              <strong>{{ msg.userName }}</strong><br />
+              {{ msg.content }}
+              <div class="timestamp">
+                {{ msg.sentTime | date: 'short' }}
+              </div>
+            </div>
+          </div>
+          <div *ngIf="msg.replyContent" class="message right">
+            <div class="bubble reply">
+              <strong>You:</strong> {{ msg.replyContent }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-footer">
+        <input
+          type="text"
+          placeholder="Type a reply..."
+          [(ngModel)]="replies[selectedUserId]"
+          (keyup.enter)="sendReply(selectedUserId)" />
+        <button (click)="sendReply(selectedUserId)">
+          <i class="fas">Send</i>
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!selectedUserId">
+      <div class="empty-chat">
+        <p>Select a user to start chatting.</p>
+      </div>
+    </ng-container>
+  </div>
+</div>

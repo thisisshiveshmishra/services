@@ -1,0 +1,130 @@
+/* Background & Card */
+.bg-gradient {
+  background: linear-gradient(135deg, #f3e9e3 0%, #f9f0e6 100%);
+  position: relative;
+}
+.bg-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background: url('https://www.transparenttextures.com/patterns/symphony.png');
+  pointer-events: none;
+}
+.register-card {
+  min-width: 340px;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 32px rgba(180,127,65,0.17), 0 1.5px 6px rgba(64, 37, 7, 0.06);
+  background: #fff;
+  position: relative;
+  z-index: 2;
+}
+
+/* Titles, Labels, and Inputs */
+.main-title {
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: rgb(180,127,65);
+  letter-spacing: 1.5px;
+}
+.form-label {
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #b47f41;
+  letter-spacing: 0.3px;
+}
+.input-underline {
+  border: none;
+  border-bottom: 2.3px solid #e3c59f;
+  border-radius: 0;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.3s cubic-bezier(.7,0,.2,1);
+  font-size: 1.07rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  color: #4a371e;
+}
+.input-underline:focus {
+  border-bottom: 2.3px solid rgb(180,127,65);
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+.form-select.input-underline {
+  padding-left: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+/* Button Style */
+.custom-btn {
+  background-color: rgb(180,127,65) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 16px rgba(180,127,65,0.13);
+  letter-spacing: 1.1px;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 1.07rem;
+  font-weight: 700;
+  text-shadow: 0 2px 7px #e3c59f;
+  transition: background 0.15s;
+}
+.custom-btn:hover, .custom-btn:focus {
+  background-color: #ad7941 !important;
+  color: #fff !important;
+}
+
+/* Register Link */
+.register-link {
+  color: rgb(180,127,65);
+  text-decoration: underline;
+  font-weight: 600;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 1.02rem;
+  margin-left: 4px;
+  cursor: pointer;
+  transition: color .17s;
+}
+.register-link:hover {
+  color: #ad7941;
+}
+
+/* ✅ Eye Icon Styling */
+.toggle-eye {
+  cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  font-size: 1.2rem;
+  color: #b47f41;
+  opacity: 0.75;
+}
+.toggle-eye:hover {
+  opacity: 1;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 500px) {
+  .register-card { padding: 2rem 0.6rem; }
+  .main-title { font-size: 1.24rem; }
+}
+.btn-close-custom {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #b47f41;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+.btn-close-custom:hover {
+  color: #8a5e2f;
+}
+ 
