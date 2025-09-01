@@ -153,4 +153,14 @@ export class HomepageComponent implements OnInit {
     this.selectedProvider = null;
     this.providerImages = [];
   }
+
+
+  routeToChat(provider: any) {
+    if (!this.userService.isLoggedIn()) {
+      alert('Please log in first to chat with the service provider.');
+      this.router.navigate(['/userlogin']);
+      return;
+    }
+    this.router.navigate(['/message', provider.id]);
+  }
 }

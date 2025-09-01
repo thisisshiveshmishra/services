@@ -56,8 +56,6 @@
   transform: scale(1.1);
 }
 
-
-
 /* =============== MODAL UI IMPROVEMENTS =============== */
 .modal-backdrop-custom {
   position: fixed;
@@ -141,13 +139,12 @@
   margin-top: 5px;
 }
 .gallery img {
-  width: 80px; /* ← Increase from 50px to 70px (or more if you want) */
-  height: 100px; /* Optional: force square shape */
-  object-fit: cover; /* Ensures image stays proportional */
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 1.5px 8px #f0e3cc;
 }
-
 
 /* Profile box in modal */
 .profile {
@@ -196,13 +193,12 @@
   .modal-content-wrapper { padding: 7px 1vw; }
 }
 
-
 /* Style nav links as solid buttons ONLY on mobile view */
 @media (max-width: 767px) {
     #navbarSupportedContent .nav-link {
-        background-color: #B47F41; /* your brand gold color, solid */
-        color: #fff !important; /* white text so it stands out */
-        border-radius: 25px; /* pill shape */
+        background-color: #B47F41;
+        color: #fff !important;
+        border-radius: 25px;
         padding: 8px 14px;
         margin: 5px 10px;
         text-align: center;
@@ -211,32 +207,30 @@
     }
  
     #navbarSupportedContent .nav-link:hover {
-        background-color: #916634; /* darker gold on hover */
+        background-color: #916634;
         color: #fff !important;
         text-decoration: none;
     }
 }
  
 .navbar-toggler {
-    border: none !important;      /* remove border */
-    box-shadow: none !important;  /* remove Bootstrap focus shadow */
-    outline: none !important;     /* remove outline */
-    padding: 0.25rem 0.5rem;       /* optional: adjust spacing so icon looks neat */
-    background: transparent !important; /* keep background clear */
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0.25rem 0.5rem;
+    background: transparent !important;
 }
  
 .navbar-toggler:focus {
-    box-shadow: none !important; /* remove glow when focused */
+    box-shadow: none !important;
     outline: none !important;
 }
- 
- 
 
 /* Contact Section Styling */
 .contact-section {
   display: flex;
   align-items: center;
-  min-height: 100vh; /* Matches intro section height */
+  min-height: 100vh;
   position: relative;
   z-index: 1;
 }
@@ -244,7 +238,7 @@
 .contact-section h1 {
   font-weight: 700;
   font-family: 'Abril Fatface', cursive;
-  font-size: 3.8rem; /* Same as intro h1 */
+  font-size: 3.8rem;
 }
 
 .contact-section p {
@@ -265,6 +259,7 @@
   background-color: rgb(180, 127, 65);
   color: white;
 }
+
 /* Highlighted words */
 .highlight-word {
   background-color: rgb(180, 127, 65);
@@ -272,19 +267,93 @@
   font-weight: bold;
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: 1.2rem; /* Increase font size for highlighted words */
+  font-size: 1.2rem;
 }
 
 /* Paragraph styling */
 .intro-caption p {
-  font-size: 1.1rem; /* Increase font size for entire paragraph */
-  line-height: 1.8;  /* Increase space between lines */
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+/* Responsive adjustment for intro heading */
+.intro-caption h1 {
+  font-size: 3rem;
+  line-height: 1.3;
+}
+ 
+@media (max-width: 768px) {
+  .intro-caption h1 {
+    font-size: 2rem;
+  }
+}
+ 
+@media (max-width: 480px) {
+  .intro-caption h1 {
+    font-size: 1.6rem;
+    line-height: 1.4;
+  }
+}
+
+/* Common button base */
+.btn-custom-outline {
+  background-color: transparent;
+  border: 2px solid rgb(180, 127, 65);
+  color: rgb(180, 127, 65);
+  padding: 6px 16px;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.btn-custom-outline:hover {
+  background-color: rgb(180, 127, 65);
+  color: white;
+}
+
+/* Primary chat button */
+.btn-chat {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Icon spacing */
+.btn-chat i {
+  font-size: 1rem;
 }
 
 
 
-/* Footer Base */
-.footer {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* White modern footer */
+.custom-footer {
   background: #fff;
   color: #111;
   font-family: 'Poppins', sans-serif;
@@ -292,163 +361,54 @@
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;                /* ✅ full width */
+  position: relative;          /* ✅ prevent overlay */
+  bottom: 0;
+  left: 0;
 }
 
-.footer-container {
-  display: flex;
-  justify-content: flex-start; /* distribute evenly */
-  flex-wrap: wrap;
-  gap: 10rem; /* ✅ smaller, responsive gap */
-}
-
-/* Newsletter */
-.footer-newsletter h3 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.footer-newsletter p {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.newsletter-form {
-  display: flex;
-  max-width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  overflow: hidden;
-}
-
-.newsletter-form input {
-  border: none;
-  outline: none;
-  padding: 0.6rem 1rem;
-  flex: 1;
-  font-size: 0.9rem;
-}
-
-.newsletter-form button {
-  background: #1a0938;
-  color: #fff;
-  border: none;
-  padding: 0 1rem;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* Footer Links */
-.footer-links {
-  display: flex;
-  gap: 15rem; /* ✅ reduced */
-  flex-wrap: wrap;
-}
-
-.footer-links h4 {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.footer-links ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-links ul li {
-  margin-bottom: 0.5rem;
-}
-
-.footer-links ul li a {
-  text-decoration: none;
-  color: #222;
-  transition: color 0.3s;
-}
-
-.footer-links ul li a:hover {
-  color: #6a4dfc;
-}
-
-/* Footer Bottom */
-.footer-bottom {
-  margin-top: 2rem;
-  border-top: 1px solid #e0e0e0;
-  padding-top: 1rem;
+.custom-footer-container {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  font-size: 0.9rem;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.footer-bottom a {
+.custom-footer h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
   color: #333;
+}
+
+.custom-footer p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.custom-footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.custom-footer-links li {
+  margin-bottom: 0.6rem;
+}
+
+.custom-footer-links a {
   text-decoration: none;
+  color: #555;
+  transition: color 0.3s;
 }
 
-.footer-bottom a:hover {
-  color: #6a4dfc;
+.custom-footer-links a:hover {
+  color: #007bff;
 }
 
-/* ✅ Responsive Design */
-@media (max-width: 992px) {
-  .footer-container {
-    gap: 2rem; /* tighter on tablets */
-  }
-
-  .footer-links {
-    gap: 3rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .footer-container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-  }
-
-  .footer-newsletter h3 {
-    font-size: 1.6rem;
-  }
-
-  .footer-newsletter p {
-    font-size: 1rem;
-  }
-
-  .footer-links {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .newsletter-form {
-    width: 100%;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
-  }
-}
-
-
-/* Responsive adjustment for intro heading */
-.intro-caption h1 {
-  font-size: 3rem; /* default for desktop */
-  line-height: 1.3;
-}
- 
-@media (max-width: 768px) {
-  .intro-caption h1 {
-    font-size: 2rem;  /* smaller tablets */
-  }
-}
- 
-@media (max-width: 480px) {
-  .intro-caption h1 {
-    font-size: 1.6rem;  /* small mobiles */
-    line-height: 1.4;
-  }
+.custom-footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #777;
 }
