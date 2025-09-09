@@ -20,6 +20,32 @@
     </span>
   </button>
 </div>
+
+
+<!-- Store Location Section -->
+<div class="text-end me-4 mt-3 d-flex justify-content-end gap-2">
+  <!-- Save Location -->
+  <button type="button" class="btn btn-outline-success" (click)="toggleLocationInput()">
+    <i class="fas fa-map-marker-alt"></i> Save Location
+  </button>
+
+  <!-- View Location -->
+  <button *ngIf="savedLocationUrl" type="button" class="btn btn-outline-info" (click)="viewLocation()">
+    <i class="fas fa-map"></i> View Location
+  </button>
+</div>
+
+<!-- Location Input Box -->
+<div *ngIf="showLocationInput" class="mt-3">
+  <input type="text"
+         [(ngModel)]="locationUrl"
+         placeholder="Paste Google Maps URL"
+         class="form-control mb-2" />
+
+  <button class="btn btn-primary" (click)="saveLocation()">Save</button>
+</div>
+
+
  
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
   <div class="container">

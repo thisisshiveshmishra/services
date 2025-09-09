@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { passwordValidator } from './password-validator';
 
 @Component({
   selector: 'app-forgotpassword',
   templateUrl: './forgotpassword.component.html',
   styleUrls: ['./forgotpassword.component.css']
 })
-export class ForgotpasswordComponent {
+export class ForgotpasswordComponent{
   email: string = '';
   newPassword: string = '';
   message: string = '';

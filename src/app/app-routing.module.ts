@@ -17,6 +17,7 @@ import { UserregisterComponent } from './components/userregister/userregister.co
 import { ChatComponent } from './components/chat/chat.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { serviceproviderguardGuard } from './services/serviceproviderguard.guard';
 
 
 
@@ -28,7 +29,7 @@ const routes: Routes = [
     {path: 'loginserviceprovider', component: LoginserviceProviderComponent},
     {path: 'registerserviceprovider', component: RegisterserviceProviderComponent},
     {path: 'servicerequest', component: ServicerequestComponent},
-    {path: 'dashboardserviceprovider', component: ServiceproviderdashboardComponent},
+    {path: 'dashboardserviceprovider', component: ServiceproviderdashboardComponent,canActivate: [serviceproviderguardGuard]},
     {path:'searchservices',component:SearchbarComponent},
     {path: 'resetpassword',component: ResetPasswordComponent},
     {path: 'message/:id',component: MessageComponent},

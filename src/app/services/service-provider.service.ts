@@ -116,6 +116,22 @@ export class ServiceProviderService {
     const requests = ids.map(id => this.getProviderById(id));
     return forkJoin(requests);
   }
+
+   saveStoreLocation(payload: any): Observable<any> {
+    return this.http.post<any>(`${NAV_URL}/addresses/createAddress`, payload);
+  }
+
+  getAddressById(addressId: number) {
+  return this.http.get<any>(`${NAV_URL}/addresses/getAddress/${addressId}`);
+}
+
+getAddressByServiceProviderId(providerId: number) {
+  return this.http.get<any[]>(`${NAV_URL}/addresses/getAddressByServiceProvider/${providerId}`);
+}
+
+
+
+
 }
  
  

@@ -33,6 +33,15 @@ export class ServiceproviderdashboardComponent implements OnInit {
   replies: { [userId: string]: string } = {};
   objectKeys = Object.keys;
 
+   showLocationInput = false;
+  storeLocationUrl: string = '';
+  savedLocationUrl: string = '';
+  addressId: number | null = null;
+  locationUrl: string = '';
+
+
+
+
   
  
   constructor(
@@ -45,6 +54,10 @@ export class ServiceproviderdashboardComponent implements OnInit {
   ) {}
  
   ngOnInit(): void {
+
+    // 👇 directly load saved address for this provider
+  
+
     this.editForm = this.fb.group({
       firstName: [''],
       lastName: [''],
@@ -56,7 +69,14 @@ export class ServiceproviderdashboardComponent implements OnInit {
     });
  
     this.providerEmail = localStorage.getItem('providerEmail') || '';
+    console.log('Service Provider Email on Ngoninit:',this.providerEmail);
     this.loadProviderByEmail(this.providerEmail);
+
+      // Example: Fetch providerId from localStorage (adjust to your login flow)
+    const storedId = localStorage.getItem('providerId');
+    if (storedId) {
+      this.providerId = Number(storedId);
+    }
   }
  
   // Load provider and fetch images/messages
@@ -64,6 +84,7 @@ export class ServiceproviderdashboardComponent implements OnInit {
     this.serviceproviderService.getProviderByEmail(email).subscribe({
       next: (data) => {
         this.providerId = data.id;
+        console.log('Service Provider id from LoadProviderByEmail:',this.providerId);
         this.editForm.patchValue(data);
  
         if (data.profilePicture) {
@@ -72,6 +93,7 @@ export class ServiceproviderdashboardComponent implements OnInit {
  
         this.fetchUploadedImages();
         this.fetchProviderMessages();
+        this.loadSavedLocation(this.providerId);
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error loading provider data', err);
@@ -247,6 +269,59 @@ export class ServiceproviderdashboardComponent implements OnInit {
     localStorage.removeItem('providerEmail');
     this.router.navigate(['/loginserviceprovider']);
   }
+
+
+   toggleLocationInput() {
+    this.showLocationInput = !this.showLocationInput;
+  }
+
+  saveLocation() {
+  if (!this.locationUrl) {
+    alert('Please enter a valid location URL');
+    return;
+  }
+
+  const payload = {
+    location_url: this.locationUrl,
+    serviceProvider: { id: this.providerId }
+  };
+
+  this.serviceproviderService.saveStoreLocation(payload).subscribe({
+    next: (res) => {
+      this.savedLocationUrl = res.location_url;
+      this.addressId = res.id;
+      alert('Location saved successfully!');
+      this.showLocationInput = false;
+    },
+    error: (err) => console.error('Error saving location', err)
+  });
+}
+
+viewLocation() {
+  if (!this.savedLocationUrl) {
+    alert('No location saved yet!');
+    return;
+  }
+  window.open(this.savedLocationUrl, '_blank');
+}
+
+
+loadSavedLocation(providerId: number) {
+  this.serviceproviderService.getAddressByServiceProviderId(providerId).subscribe({
+    next: (res) => {
+      if (res && res.length > 0) {
+        // pick first address (or loop if multiple)
+        this.savedLocationUrl = res[0].location_url;
+      }
+    },
+    error: (err) => {
+      console.warn('No saved location found for provider', err);
+    }
+  });
+}
+
+
+
 }
  
  

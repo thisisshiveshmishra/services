@@ -23,6 +23,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { ServiceproviderdashboardComponent } from './components/serviceproviderdashboard/serviceproviderdashboard.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SafeUrlPipe } from './pipe/safe-url.pipe';
 
 
 
@@ -45,7 +46,8 @@ import { FooterComponent } from './components/footer/footer.component';
    UserregisterComponent,
    ChatComponent,
    ForgotpasswordComponent,
-   FooterComponent
+   FooterComponent,
+   SafeUrlPipe
   
   ],
   imports: [
