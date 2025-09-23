@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserregisterComponent {
 
+  // User model
   user = {
     name: '',
     surname: '',
@@ -19,31 +20,41 @@ export class UserregisterComponent {
     password: '',
   };
 
+  // Messages
   successMessage = '';
   errorMessage = '';
-  showPassword: boolean = false;  // 👁️ password toggle flag
+
+  // Password toggle flag
+  showPassword: boolean = false;
 
   constructor(private authService: UserService, private router: Router) {}
-closeForm() {
-    // navigate user back to login or homepage
+
+  // Close form and navigate to login
+  closeForm() {
     this.router.navigate(['/userlogin']);
   }
 
+  // Register user
   registerUser() {
     this.authService.register(this.user).subscribe({
       next: () => {
-        alert("User Registration Successful!");
         this.successMessage = 'Registration successful!';
         this.errorMessage = '';
         this.router.navigate(['/userlogin']);
       },
-      error: () => {
-        this.errorMessage = 'Registration failed. Try again.';
+      error: (error) => {
+        // Check if email already exists
+        if (error?.error === 'Email already exists') {
+          this.errorMessage = 'Email already exists. Please use another email.';
+        } else {
+          this.errorMessage = 'Registration failed. Try again.';
+        }
         this.successMessage = '';
       }
     });
   }
 
+  // Toggle password visibility
   togglePassword() {
     this.showPassword = !this.showPassword;
   }

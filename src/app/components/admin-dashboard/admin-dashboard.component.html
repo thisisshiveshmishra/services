@@ -1,3 +1,8 @@
+<!-- ✅ Fixed Logout Button -->
+<div class="logout-container">
+  <button (click)="logout()">Logout</button>
+</div>
+
 <div class="dashboard-container">
   <!-- Sidebar -->
   <div class="sidebar">
@@ -5,43 +10,21 @@
     <button (click)="setActiveSection('feedbacks')">Feedbacks</button>
     <button (click)="setActiveSection('requests')">Service Requests</button>
   </div>
-<!-- logout -->
-  <div class="logout-container">
-  <button (click)="logout()">Logout</button>
-</div>
- 
+
   <!-- Main Content -->
   <div class="content">
     <p *ngIf="message" class="message">{{ message }}</p>
- 
+
     <!-- Service Providers Section -->
     <div *ngIf="activeSection === 'providers'">
       <h2>Service Providers</h2>
- 
-    <!-- Filters -->
-<div class="filters">
-  <input
-    type="text"
-    [(ngModel)]="providerNameFilter"
-    placeholder="Filter by Name"
-    (input)="filterProviders()"
-  />
-  <input
-    type="text"
-    [(ngModel)]="providerLocationFilter"
-    placeholder="Filter by Location"
-    (input)="filterProviders()"
-  />
-  <input
-    type="text"
-    [(ngModel)]="providerCategoryFilter"
-    placeholder="Filter by Category"
-    (input)="filterProviders()"
-  />
-</div>
- 
 
- 
+      <div class="filters">
+        <input type="text" [(ngModel)]="providerNameFilter" placeholder="Filter by Name" (input)="filterProviders()" />
+        <input type="text" [(ngModel)]="providerLocationFilter" placeholder="Filter by Location" (input)="filterProviders()" />
+        <input type="text" [(ngModel)]="providerCategoryFilter" placeholder="Filter by Category" (input)="filterProviders()" />
+      </div>
+
       <table border="1" cellspacing="0" cellpadding="8">
         <thead>
           <tr>
@@ -52,6 +35,7 @@
             <th>Category</th>
             <th>Gender</th>
             <th>Location</th>
+            <th>Description</th>
             <th>Profile Picture</th>
             <th>Status</th>
             <th>Action</th>
@@ -59,7 +43,7 @@
         </thead>
         <tbody>
           <tr *ngIf="filteredProviders.length === 0">
-            <td colspan="10">No data found.</td>
+            <td colspan="11">No data found.</td>
           </tr>
           <tr *ngFor="let provider of filteredProviders">
             <td>{{ provider.id }}</td>
@@ -69,44 +53,46 @@
             <td>{{ provider.category }}</td>
             <td>{{ provider.gender }}</td>
             <td>{{ provider.location }}</td>
-          
-            
-            <td>
-              <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="60" height="60" />
+            <!-- ✅ Fixed description -->
+            <td class="description-column" [title]="provider.description">
+              {{ provider.description }}
             </td>
+            <td>
+              <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="120" height="120" />
+            </td>
+            <td>{{ provider.approved ? 'Approved' : provider.rejected ? 'Rejected' : 'Pending' }}</td>
+            <td>
+              <!-- Approve Button with loader -->
+              <button class="btn"
+                      [ngClass]="provider.approved ? 'btn-approved' : 'btn-approve'"
+                      [disabled]="provider.approved || loadingProviderIds[provider.id]"
+                      (click)="approve(provider.id)">
+                <ng-container *ngIf="loadingProviderIds[provider.id]; else approveText">
+                  <i class="fa fa-spinner fa-spin"></i> Processing...
+                </ng-container>
+                <ng-template #approveText>
+                  {{ provider.approved ? 'Approved' : 'Approve' }}
+                </ng-template>
+              </button>
 
-            <!-- Status Column -->
-  <td>
-    {{ provider.approved ? 'Approved' : 'Pending' }}
-  </td>
-
-           <td>
-  <!-- Approve Button -->
-  <button 
-    class="btn" 
-    [ngClass]="provider.approved ? 'btn-approved' : 'btn-approve'" 
-    [disabled]="provider.approved"
-    (click)="approve(provider.id)">
-    {{ provider.approved ? 'Approved' : 'Approve' }}
-  </button>
-
-  <!-- Reject Button -->
-  <button 
-    class="btn" 
-    [ngClass]="provider.rejected ? 'btn-rejected' : 'btn-reject'" 
-    [disabled]="provider.rejected"
-    (click)="reject(provider.id)">
-    {{ provider.rejected ? 'Rejected' : 'Reject' }}
-  </button>
-</td>
-
-
-
+              <!-- Reject Button with loader -->
+              <button class="btn"
+                      [ngClass]="provider.rejected ? 'btn-rejected' : 'btn-reject'"
+                      [disabled]="provider.rejected || loadingProviderIds[provider.id]"
+                      (click)="reject(provider.id)">
+                <ng-container *ngIf="loadingProviderIds[provider.id]; else rejectText">
+                  <i class="fa fa-spinner fa-spin"></i> Processing...
+                </ng-container>
+                <ng-template #rejectText>
+                  {{ provider.rejected ? 'Rejected' : 'Reject' }}
+                </ng-template>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
- 
+
     <!-- Feedbacks Section -->
     <div *ngIf="activeSection === 'feedbacks'">
       <h2>Feedback List</h2>
@@ -117,9 +103,8 @@
             <th>Name</th>
             <th>Email</th>
             <th>Category</th>
-                        <th>Rating</th>
+            <th>Rating</th>
             <th>Message</th>
-
           </tr>
         </thead>
         <tbody>
@@ -129,38 +114,25 @@
             <td>{{ fb.email }}</td>
             <td>{{ fb.category }}</td>
             <td>
-  <ng-container *ngFor="let star of getStars(fb.rating); let i = index">
-    <i class="fa" [ngClass]="star ? 'fa-star' : 'fa-star-o'" style="color: gold;"></i>
-  </ng-container>
-</td>
+              <ng-container *ngFor="let star of getStars(fb.rating)">
+                <i class="fa" [ngClass]="star ? 'fa-star' : 'fa-star-o'" style="color: gold;"></i>
+              </ng-container>
+            </td>
             <td>{{ fb.message }}</td>
-
           </tr>
         </tbody>
       </table>
     </div>
- 
+
     <!-- Service Requests Section -->
     <div *ngIf="activeSection === 'requests'">
       <h2>Raised Service Requests</h2>
- 
-       <!-- Filters -->
-  <div class="requests-filters">
-    <input
-      type="text"
-      [(ngModel)]="requestLocationFilter"
-      placeholder="Filter by Location"
-      (input)="filterRequests()"
-    />
-    <input
-      type="text"
-      [(ngModel)]="requestCategoryFilter"
-      placeholder="Filter by Category"
-      (input)="filterRequests()"
-    />
-  </div>
- 
- 
+
+      <div class="requests-filters">
+        <input type="text" [(ngModel)]="requestLocationFilter" placeholder="Filter by Location" (input)="filterRequests()" />
+        <input type="text" [(ngModel)]="requestCategoryFilter" placeholder="Filter by Category" (input)="filterRequests()" />
+      </div>
+
       <table border="1" cellspacing="0" cellpadding="8">
         <thead>
           <tr>
@@ -176,17 +148,17 @@
         </thead>
         <tbody>
           <tr *ngIf="filteredRequests.length === 0">
-            <td colspan="7">No data found.</td>
+            <td colspan="8">No data found.</td>
           </tr>
           <tr *ngFor="let request of filteredRequests">
             <td>{{ request.id }}</td>
-            <td>{{ request.name }} {{request.surname}}</td>
+            <td>{{ request.name }} {{ request.surname }}</td>
             <td>{{ request.email }}</td>
             <td>{{ request.gender }}</td>
             <td>{{ request.contactNumber }}</td>
             <td>{{ request.category }}</td>
             <td>{{ request.location }}</td>
-            <td>{{ request.query}}</td>
+            <td>{{ request.query }}</td>
           </tr>
         </tbody>
       </table>

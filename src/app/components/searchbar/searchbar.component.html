@@ -6,6 +6,11 @@
     <meta name="author" content="colorlib.com" />
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
   </head>
   <body>
     <div class="s01">
@@ -140,6 +145,22 @@
                       <span class="subheadings">{{ selectedProvider.category }}</span>
                     </div>
                   </td>
+
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Location</span>
+                      <span class="subheadings">
+                        <a *ngIf="savedLocationUrl"
+                          href="{{ savedLocationUrl }}"
+                          target="_blank"
+                          class="text-decoration-none text-info">
+                          View Map <i class="fas  fa-map-marker-alt"></i>
+                        </a>
+                        <span *ngIf="!savedLocationUrl" class="text-muted">Not available</span>
+                      </span>
+                    </div>
+                  </td>
+
                   <td colspan="2"></td>
                 </tr>
  
@@ -151,7 +172,7 @@
                       <span class="d-flex flex-row gallery">
                         <img *ngFor="let img of providerImages"
                              [src]="'data:image/jpeg;base64,' + img"
-                             width="50"
+                             width="120"
                              class="rounded mr-2" />
                       </span>
                     </div>

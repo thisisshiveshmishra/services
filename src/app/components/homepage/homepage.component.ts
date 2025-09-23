@@ -6,14 +6,14 @@ import { FeedbackService } from 'src/app/services/feedback.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { SharedService } from 'src/app/services/shared.service';
- 
+
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-    feedbackForm: FormGroup;
+  feedbackForm: FormGroup;
   showConfirmation = false;
   showCustomCategoryInput = false;
   categories: string[] = [];
@@ -21,7 +21,8 @@ export class HomepageComponent implements OnInit {
   selectedProvider: Serviceprovider | null = null;
   providerImages: string[] = [];
   isModalOpen = false;
- 
+  savedLocationUrl: string = '';
+
   constructor(
     private fb: FormBuilder,
     private feedbackService: FeedbackService,
@@ -42,39 +43,43 @@ export class HomepageComponent implements OnInit {
       rating: ['', Validators.required]
     });
   }
- 
- ngOnInit(): void {
+
+  ngOnInit(): void {
     this.loadCategoriesFromDatabase();
-  this.serviceProviderService.getAllProviders().subscribe((data: Serviceprovider[]) => {
-  // ✅ Only approved providers
-  this.providers = data.filter(p => p.approved === true).slice(0, 4);
- 
+
+    this.serviceProviderService.getAllProviders().subscribe((data: Serviceprovider[]) => {
+  const approved = data.filter(p => p.approved === true);
+
+  // ✅ Sort by id descending (latest entry first)
+  approved.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+
+  this.providers = approved.slice(0, 4);
+
   this.providers.forEach(provider => {
     if (provider.profilePicture) {
       provider.profilePictureBase64 = 'data:image/jpeg;base64,' + provider.profilePicture;
     }
   });
 });
- 
+
+
   }
- 
+
   ngAfterViewInit(): void {
     this.renderer.listen('window', 'scroll', () => {
-      // Adjust selector depending on your navbar collapse element's ID (default: 'navbarSupportedContent')
       const collapseMenu = document.getElementById('navbarSupportedContent');
       const navbarToggler = document.querySelector('.navbar-toggler') as HTMLElement;
-      // Only execute if menu is open and in mobile/tablet mode
       if (
         collapseMenu &&
         collapseMenu.classList.contains('show') &&
         navbarToggler &&
-        window.innerWidth <= 991 // Bootstrap md and down (mobile/tablet)
+        window.innerWidth <= 991
       ) {
         navbarToggler.click();
       }
     });
   }
- 
+
   loadCategoriesFromDatabase(): void {
     this.serviceProviderService.getAllProviders().subscribe({
       next: (providers) => {
@@ -83,7 +88,7 @@ export class HomepageComponent implements OnInit {
       error: (err) => console.error('Error fetching categories:', err)
     });
   }
- 
+
   onCategoryChange(event: Event): void {
     const selected = (event.target as HTMLSelectElement).value;
     const customControl = this.feedbackForm.get('customCategory');
@@ -96,7 +101,7 @@ export class HomepageComponent implements OnInit {
     }
     customControl?.updateValueAndValidity();
   }
- 
+
   onSubmit(): void {
     if (this.feedbackForm.invalid) {
       this.feedbackForm.markAllAsTouched();
@@ -107,7 +112,7 @@ export class HomepageComponent implements OnInit {
       feedback.category = feedback.customCategory;
     }
     delete feedback.customCategory;
- 
+
     this.feedbackService.submitFeedback(feedback).subscribe({
       next: () => {
         this.feedbackForm.reset();
@@ -120,22 +125,22 @@ export class HomepageComponent implements OnInit {
       }
     });
   }
- 
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('user');
   }
- 
+
   isServiceProviderLoggedIn(): boolean {
     return localStorage.getItem('providerToken') !== null;
   }
- 
+
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('userToken');
     localStorage.removeItem('providerToken');
     this.router.navigate(['/']);
   }
- 
+
   viewProvider(id?: number): void {
     if (!id) return;
     this.sharedService.setProviderId(id);
@@ -143,17 +148,17 @@ export class HomepageComponent implements OnInit {
       this.selectedProvider = provider;
       this.serviceProviderService.getProviderImages(id).subscribe((images: ImageResponseDTO[]) => {
         this.providerImages = images.map(img => img.base64Image);
+        this.loadSavedLocation(id);
         this.isModalOpen = true;
       });
     });
   }
- 
+
   closeModal(): void {
     this.isModalOpen = false;
     this.selectedProvider = null;
     this.providerImages = [];
   }
-
 
   routeToChat(provider: any) {
     if (!this.userService.isLoggedIn()) {
@@ -162,5 +167,29 @@ export class HomepageComponent implements OnInit {
       return;
     }
     this.router.navigate(['/message', provider.id]);
+  }
+
+  loadSavedLocation(providerId: number) {
+    this.serviceProviderService.getAddressByServiceProviderId(providerId).subscribe({
+      next: (res) => {
+        if (res && res.length > 0) {
+          this.savedLocationUrl = res[0].location_url;
+        } else {
+          this.savedLocationUrl = '';
+        }
+      },
+      error: (err) => {
+        console.warn('No saved location found for provider', err);
+        this.savedLocationUrl = '';
+      }
+    });
+  }
+
+  viewLocation() {
+    if (!this.savedLocationUrl) {
+      alert('No location saved yet!');
+      return;
+    }
+    window.open(this.savedLocationUrl, '_blank');
   }
 }

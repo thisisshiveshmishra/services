@@ -196,8 +196,8 @@ body {
 /* Image Card */
 .image-card {
   position: relative;
-  width: 160px;
-  height: 120px;
+  width: 200px;
+  height: 180px;
   border-radius: 10px;
   overflow: hidden;
   background: #fff;
@@ -247,3 +247,90 @@ body {
 .image-card .delete-btn:hover {
   background: #bd2130;
 }
+
+
+
+/* ===== Store Location Section ===== */
+.store-location {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.store-location:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Button group styling */
+.store-location .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.store-location .btn i {
+  margin-right: 6px;
+}
+
+/* Success button (Save Location) */
+.store-location .btn-outline-success {
+  border: 1.5px solid #28a745;
+  color: #28a745;
+}
+
+.store-location .btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Info button (View Location) */
+.store-location .btn-outline-info {
+  border: 1.5px solid #17a2b8;
+  color: #17a2b8;
+}
+
+.store-location .btn-outline-info:hover {
+  background-color: #17a2b8;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Location Input Box */
+.location-input {
+  margin-top: 15px;
+}
+
+.location-input input.form-control {
+  border-radius: 8px;
+  padding: 12px;
+  border: 1.5px solid #ddd;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.location-input input.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0,123,255,0.3);
+  outline: none;
+}
+
+/* Save button inside input box */
+.location-input .btn-primary {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 10px 20px;
+  margin-top: 5px;
+  transition: all 0.3s;
+}
+
+.location-input .btn-primary:hover {
+  background-color: #0056b3;
+  transform: scale(0.98);
+}
+
+
+

@@ -1,12 +1,12 @@
-<div class="chat-wrapper">
-  <!-- Show Sidebar only if no user selected on small screen OR always on desktop -->
+<div class="chat-wrapper" *ngIf="hasMessages; else noMessages">
+  <!-- Sidebar -->
   <div
     class="chat-sidebar"
     *ngIf="!isMobile || (isMobile && !selectedUserId)">
     <h5 class="sidebar-title">Users</h5>
     <ul class="user-list">
       <li
-        *ngFor="let userId of objectKeys(groupedMessages)"
+        *ngFor="let userId of sortedUserIds"
         [class.active]="userId === selectedUserId"
         (click)="selectUser(userId)">
         <div class="user-name">
@@ -17,18 +17,16 @@
     </ul>
   </div>
 
-  <!-- Show Chat only when a user is selected -->
+  <!-- Main Chat -->
   <div
     class="chat-main"
     *ngIf="!isMobile || (isMobile && selectedUserId)">
-    <ng-container *ngIf="selectedUserId">
+    <ng-container *ngIf="selectedUserId; else emptyChat">
       <div class="chat-header">
         <button *ngIf="isMobile" class="back-button" (click)="selectedUserId = null">
           ← Back
         </button>
-        <h5>
-          {{ groupedMessages[selectedUserId][0]?.userName }}
-        </h5>
+        <h5>{{ groupedMessages[selectedUserId][0]?.userName }}</h5>
       </div>
 
       <div class="chat-body" id="chatBody">
@@ -64,10 +62,17 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="!selectedUserId">
+    <ng-template #emptyChat>
       <div class="empty-chat">
         <p>Select a user to start chatting.</p>
       </div>
-    </ng-container>
+    </ng-template>
   </div>
 </div>
+
+<!-- This part will show when there are no messages -->
+<ng-template #noMessages>
+  <div class="no-messages">
+    <p>No messages found.</p>
+  </div>
+</ng-template>

@@ -8,16 +8,17 @@ import { ServiceProviderService } from 'src/app/services/service-provider.servic
   styleUrls: ['./loginservice-provider.component.css']
 })
 export class LoginserviceProviderComponent {
-     // 🔐 Login data
+
+  // Login fields
   email = '';
   password = '';
   message = '';
- 
-  // Eye toggle states
-  showLoginPassword: boolean = false;
-  showRegisterPassword: boolean = false;
- 
-  // 📝 Register data
+
+  // Password visibility toggles
+  showLoginPassword = false;
+  showRegisterPassword = false;
+
+  // Registration form
   form: any = {
     firstName: '',
     lastName: '',
@@ -27,36 +28,53 @@ export class LoginserviceProviderComponent {
     gender: '',
     category: '',
     password: '',
+    description: '',
   };
+
   selectedFile: File | null = null;
- 
+
+  // Error flags
   fileError = false;
   mobileError = false;
   locationError = false;
   categoryError = false;
- 
+  descriptionError = false;
+  genderError = false;
+  loginEmailError = false;
+
+  // Regex patterns
+  namePattern = /^[A-Za-z]{2,30}$/;
+  mobilePattern = /^[6-9]\d{9}$/;
+  emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  locationPattern = /^[A-Za-z\s,]{2,50}$/;
+  categoryPattern = /^[A-Za-z\s]{2,50}$/;
+  passwordPattern = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%?&]).{6,}$/;
+
   constructor(
     private serviceProviderService: ServiceProviderService,
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef
   ) {}
- 
-  // Eye toggle methods
+
+  // Toggle eye icon for login password
   toggleLoginPassword(): void {
     this.showLoginPassword = !this.showLoginPassword;
   }
- 
+
+  // Toggle eye icon for register password
   toggleRegisterPassword(): void {
     this.showRegisterPassword = !this.showRegisterPassword;
   }
- 
-  // ✅ File selection
+
+  // Validate and store selected file
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
     if (file) {
-      const validTypes = ['image/png', 'image/jpeg'];
-      if (!validTypes.includes(file.type)) {
+      const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      if (!validTypes.includes(file.type) || file.size > maxSize) {
         this.fileError = true;
         this.selectedFile = null;
       } else {
@@ -65,63 +83,88 @@ export class LoginserviceProviderComponent {
       }
     }
   }
- 
-  // ✅ Register logic
+
+  // Registration submit
   onSubmit(): void {
+    // Reset error flags
     this.mobileError = false;
     this.locationError = false;
     this.categoryError = false;
- 
-    if (this.fileError) {
-      alert('Please upload a valid PNG or JPEG image.');
-      return;
-    }
- 
-    const mobilePattern = /^[6-9]\d{9}$/;
-    if (!mobilePattern.test(this.form.mobileNumber)) {
+    this.descriptionError = false;
+    this.genderError = false;
+
+    // Validations
+    if (!this.namePattern.test(this.form.firstName)) return;
+    if (!this.namePattern.test(this.form.lastName)) return;
+
+    if (!this.mobilePattern.test(this.form.mobileNumber)) {
       this.mobileError = true;
-      alert('Invalid mobile number. It must be 10 digits and start with 6-9.');
       return;
     }
- 
-    if (!this.form.location || this.form.location.trim() === '') {
+
+    if (!this.form.gender) {
+      this.genderError = true;
+      return;
+    }
+
+    if (!this.emailPattern.test(this.form.email)) return;
+
+    if (!this.locationPattern.test(this.form.location)) {
       this.locationError = true;
-      alert('Location is required.');
       return;
     }
- 
-    if (!this.form.category || this.form.category.trim() === '') {
+
+    if (!this.categoryPattern.test(this.form.category)) {
       this.categoryError = true;
-      alert('Category is required.');
       return;
     }
- 
+
+    if (!this.form.description?.trim() || this.form.description.length < 10) {
+      this.descriptionError = true;
+      return;
+    }
+
+    if (!this.passwordPattern.test(this.form.password)) return;
+
+    if (this.fileError) return;
+
     // Prepare FormData
     const formData = new FormData();
     const providerJson = JSON.stringify(this.form);
     const providerBlob = new Blob([providerJson], { type: 'application/json' });
     formData.append('provider', providerBlob);
- 
+
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
- 
+
+    // Call backend API
     this.serviceProviderService.saveProvider(formData).subscribe({
       next: () => {
         alert('Service provider registered successfully!');
-        this.form = {};              // ✅ Clear the form
- this.selectedFile = null;    // ✅ Clear the selected file
+        this.form = {};
+        this.selectedFile = null;
         this.router.navigate(['/loginserviceprovider']);
       },
       error: (err) => {
         console.error('Registration failed:', err);
-        alert('Registration failed. Please try again.');
+        if (err?.error?.message) {
+          alert(err.error.message);
+        } else {
+          alert('Registration failed. Please try again.');
+        }
       }
     });
   }
- 
-  // ✅ Login logic
+
+  // Login submit
   onLogin(): void {
+    if (!this.emailPattern.test(this.email)) {
+      this.loginEmailError = true;
+      return;
+    }
+    this.loginEmailError = false;
+
     this.serviceProviderService.login(this.email, this.password).subscribe({
       next: (response) => {
         this.message = response;
@@ -129,19 +172,19 @@ export class LoginserviceProviderComponent {
         this.router.navigate(['/dashboardserviceprovider']);
       },
       error: (error) => {
-        this.message = error.error || 'Login failed';
-      },
+        this.message = error.error?.message || 'Login failed. Please check your credentials.';
+      }
     });
   }
- 
-  // 🎯 Panel toggle logic
+
+  // Switch UI panels
   toggleSignUp(): void {
     const container = this.el.nativeElement.querySelector('#container');
     if (container) {
       this.renderer.addClass(container, 'right-panel-active');
     }
   }
- 
+
   toggleSignIn(): void {
     const container = this.el.nativeElement.querySelector('#container');
     if (container) {
@@ -149,4 +192,3 @@ export class LoginserviceProviderComponent {
     }
   }
 }
- 

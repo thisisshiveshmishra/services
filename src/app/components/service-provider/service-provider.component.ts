@@ -162,6 +162,10 @@ export class ServiceProviderComponent implements OnInit {
     this.selectedProvider = null;
     this.providerImages = [];
   }
+
+  closeForm() {
+  this.router.navigate(['/']);  // ✅ redirect to homepage
+}
 }
  
  

@@ -75,10 +75,15 @@ tr:nth-child(even) {
 }
 
 button {
-  float: right;
+  /* float: right; */
   margin: 10px;
 }
 
+
+/* If you want table action buttons aligned right */
+.table-actions button {
+  float: right;
+}
 .filters {
   margin-bottom: 50px;
 }
@@ -210,51 +215,45 @@ button {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   outline: none;
 }
-
-
-
-
+/* ✅ Logout Button Fixed on Top Right */
 .logout-container {
-  position: absolute;
+  position: fixed;
   top: 10px;
   right: 20px;
+  z-index: 9999;
 }
- 
+
 .logout-container button {
-  background-color: #d9534f;
+  background: #ff4d4d;
   color: white;
   border: none;
   padding: 8px 14px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
 }
- 
+
 .logout-container button:hover {
-  background-color: #c9302c;
+  background: #e60000;
 }
- 
- 
-.logout-container {
-  position: absolute;
-  top: 10px;
-  right: 20px;
+
+/* ✅ Add padding to content so it starts below the fixed logout button */
+.dashboard-container {
+  padding-top: 60px; /* Adjust height to match logout button + gap */
 }
- 
-.logout-container button {
-  background-color: #d9534f;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  line-height: 1.0; /* 👈 ensures vertical alignment */
-  display: inline-block;
-  vertical-align: middle;
+
+
+
+/* Optional: scrollable table */
+.table-container {
+  overflow-x: auto;
 }
- 
-.logout-container button:hover {
-  background-color: #c9302c;
+
+
+/* Optional: make table horizontally scrollable */
+.table-container {
+  overflow-x: auto;
 }
+
 
 .btn {
   padding: 6px 12px;
@@ -291,4 +290,27 @@ button {
 .btn-rejected {
   background-color: #6c757d; /* Grey */
   cursor: not-allowed;
+}
+/* Make the table horizontally scrollable */
+.content table {
+  display: block;
+  width: max-content;  /* table takes width of content */
+  min-width: 100%;     /* but at least full container width */
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+/* Description column fix */
+.description-column {
+  max-width: 250px;         /* column ka maximum width */
+  white-space: normal;      /* line wrapping allow karega */
+  word-wrap: break-word;    /* long words bhi tod dega */
+  overflow-wrap: break-word;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .content table {
+    overflow-x: auto;
+  }
 }

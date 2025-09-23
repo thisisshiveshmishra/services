@@ -1,26 +1,21 @@
 <div class="full-page">
-  <div class="card-container">
+  <!-- 🔥 Loader -->
+  <div *ngIf="loading" class="loader-container">
+    <div class="spinner"></div>
+    <p>Loading, please wait...</p>
+  </div>
+
+  <!-- 🔥 Form Container -->
+  <div *ngIf="!loading" class="card-container">
     <div class="background-image"></div>
     <div class="form-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 class="title" style="color: black; margin: 0;">Raise Service Request</h2>
-        <button (click)="navigate()" style="
-      background: none;
-      border: none;
-      color: red;
-      font-size: 28px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0;
-      width: auto;
-      height: auto;
-    " aria-label="Close" title="Close">
-          &times;
-        </button>
-      </div>
- 
- 
- 
+      <!-- Close Button -->
+      <button (click)="navigate()" class="close-btn" aria-label="Close" title="Close">
+        &times;
+      </button>
+
+      <h2 class="title">Raise Service Request</h2>
+
       <form [formGroup]="serviceRequestForm" (ngSubmit)="onSubmit()">
         <!-- Name -->
         <input type="text" placeholder="Name" formControlName="name" />
@@ -29,34 +24,32 @@
           <small *ngIf="serviceRequestForm.get('name')?.errors?.['pattern']">Only alphabets and spaces allowed.</small>
           <small *ngIf="serviceRequestForm.get('name')?.errors?.['maxlength']">Max 30 characters.</small>
         </div>
- 
+
         <!-- Surname -->
         <input type="text" placeholder="Surname" formControlName="surname" />
         <div class="error"
           *ngIf="serviceRequestForm.get('surname')?.touched && serviceRequestForm.get('surname')?.invalid">
           <small *ngIf="serviceRequestForm.get('surname')?.errors?.['required']">Surname is required.</small>
-          <small *ngIf="serviceRequestForm.get('surname')?.errors?.['pattern']">Only alphabets and spaces
-            allowed.</small>
+          <small *ngIf="serviceRequestForm.get('surname')?.errors?.['pattern']">Only alphabets and spaces allowed.</small>
           <small *ngIf="serviceRequestForm.get('surname')?.errors?.['maxlength']">Max 30 characters.</small>
         </div>
- 
+
         <!-- Contact Number -->
         <input type="text" placeholder="Contact Number" formControlName="contactNumber" />
         <div class="error"
           *ngIf="serviceRequestForm.get('contactNumber')?.touched && serviceRequestForm.get('contactNumber')?.invalid">
-          <small *ngIf="serviceRequestForm.get('contactNumber')?.errors?.['required']">Contact number is
-            required.</small>
+          <small *ngIf="serviceRequestForm.get('contactNumber')?.errors?.['required']">Contact number is required.</small>
           <small *ngIf="serviceRequestForm.get('contactNumber')?.errors?.['pattern']">Must be a valid 10-digit number
             starting with 6-9.</small>
         </div>
- 
+
         <!-- Email -->
         <input type="email" placeholder="Email" formControlName="email" />
         <div class="error" *ngIf="serviceRequestForm.get('email')?.touched && serviceRequestForm.get('email')?.invalid">
           <small *ngIf="serviceRequestForm.get('email')?.errors?.['required']">Email is required.</small>
           <small *ngIf="serviceRequestForm.get('email')?.errors?.['email']">Invalid email format.</small>
         </div>
- 
+
         <!-- Gender -->
         <select formControlName="gender">
           <option value="" disabled selected>-- Select Gender --</option>
@@ -68,16 +61,15 @@
           *ngIf="serviceRequestForm.get('gender')?.touched && serviceRequestForm.get('gender')?.invalid">
           <small *ngIf="serviceRequestForm.get('gender')?.errors?.['required']">Gender is required.</small>
         </div>
- 
+
         <!-- Location -->
         <input type="text" placeholder="Location" formControlName="location" />
         <div class="error"
           *ngIf="serviceRequestForm.get('location')?.touched && serviceRequestForm.get('location')?.invalid">
           <small *ngIf="serviceRequestForm.get('location')?.errors?.['required']">Location is required.</small>
-          <small *ngIf="serviceRequestForm.get('location')?.errors?.['pattern']">Only letters, numbers, and commas
-            allowed.</small>
+          <small *ngIf="serviceRequestForm.get('location')?.errors?.['pattern']">Only letters, numbers, and commas allowed.</small>
         </div>
- 
+
         <!-- Category -->
         <select formControlName="category" (change)="onCategoryChange($event)">
           <option value="">-- Select Category --</option>
@@ -88,7 +80,7 @@
           *ngIf="serviceRequestForm.get('category')?.touched && serviceRequestForm.get('category')?.invalid">
           <small *ngIf="serviceRequestForm.get('category')?.errors?.['required']">Category is required.</small>
         </div>
- 
+
         <!-- Custom Category -->
         <div *ngIf="serviceRequestForm.get('category')?.value === 'Other'">
           <input type="text" placeholder="Please enter your service category" formControlName="customCategory" />
@@ -100,7 +92,7 @@
               chars.</small>
           </div>
         </div>
- 
+
         <!-- Query -->
         <textarea rows="3" placeholder="Your Query" formControlName="query"></textarea>
         <div class="error" *ngIf="serviceRequestForm.get('query')?.touched && serviceRequestForm.get('query')?.invalid">
@@ -108,11 +100,9 @@
           <small *ngIf="serviceRequestForm.get('query')?.errors?.['minlength']">Minimum 10 characters.</small>
           <small *ngIf="serviceRequestForm.get('query')?.errors?.['maxlength']">Maximum 500 characters allowed.</small>
         </div>
- 
+
         <button type="submit" [disabled]="serviceRequestForm.invalid">Submit Request</button>
       </form>
     </div>
   </div>
- 
 </div>
- 

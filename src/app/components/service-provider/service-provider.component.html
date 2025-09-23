@@ -3,6 +3,9 @@
     <div id="map" class="bg-overlay"></div>
     <div class="container py-5">
       <div class="col-lg-8 col-md-6 col-sm-10 form-sec bg-white my-5 p-5 mx-auto">
+
+        <!-- ❌ Cross button -->
+  <button type="button" class="close-btn" (click)="closeForm()">×</button>
  
         <div *ngIf="showConfirmation" class="alert alert-success text-center" role="alert">
           ✅ Thank you! Your feedback has been submitted successfully.

@@ -14,13 +14,28 @@
 }
 
 .card-container {
-  background: rgba(255, 255, 255, 0.1); /* semi-transparent glass style */
+  position: relative; /* Needed for absolute positioning of button */
+  background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 12px;
   width: 100%;
   max-width: 500px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;      /* distance from top */
+  right: 10px;    /* distance from right */
+  background: none;
+  border: none;
+  color: red;
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  z-index: 10;    /* ensure it's above form content */
 }
 
 .form-content h2.title {
@@ -56,7 +71,7 @@
 }
 
 .form-content button {
-  width: 100%;
+  
   background-color: #ff6600; /* accent color similar to earlier designs */
   color: rgb(0, 0, 0);
   border: none;
@@ -84,4 +99,35 @@
   color: red;
   font-size: 0.85rem;
   margin-top: 2px;
+
+
+}
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  text-align: center;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-container p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
 }

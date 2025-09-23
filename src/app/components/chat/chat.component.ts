@@ -14,7 +14,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   groupedMessages: { [userId: string]: any[] } = {};
   selectedUserId: string | null = null;
   replies: { [userId: string]: string } = {};
-  objectKeys = Object.keys;
   isMobile: boolean = false;
 
   private refreshSubscription!: Subscription;
@@ -63,7 +62,24 @@ export class ChatComponent implements OnInit, OnDestroy {
         grouped[uid].push(msg);
       }
     }
+
+    // sort messages inside each user group (optional, for consistency)
+    for (const uid in grouped) {
+      grouped[uid].sort(
+        (a, b) => new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
+      );
+    }
+
     return grouped;
+  }
+
+  // ✅ return userIds sorted by latest message time (descending)
+  get sortedUserIds(): string[] {
+    return Object.keys(this.groupedMessages).sort((a, b) => {
+      const lastA = this.groupedMessages[a].slice(-1)[0];
+      const lastB = this.groupedMessages[b].slice(-1)[0];
+      return new Date(lastB.sentTime).getTime() - new Date(lastA.sentTime).getTime();
+    });
   }
 
   selectUser(userId: string) {
@@ -88,9 +104,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   @HostListener('window:resize')
   checkScreenSize() {
     this.isMobile = window.innerWidth <= 768;
-    // Optional: deselect user if switching to mobile
     if (this.isMobile && this.selectedUserId) {
       this.selectedUserId = null;
     }
+  }
+
+  get hasMessages(): boolean {
+    return this.providerMessages && this.providerMessages.length > 0;
   }
 }

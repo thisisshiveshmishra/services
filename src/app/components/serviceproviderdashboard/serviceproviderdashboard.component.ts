@@ -123,21 +123,42 @@ export class ServiceproviderdashboardComponent implements OnInit {
     });
   }
  
-  // Select multiple images
-  onMultipleFilesSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const files = input.files ? Array.from(input.files) : [];
-    this.selectedImages = files;
-    this.selectedImagePreviews = [];
- 
-    for (const file of files) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImagePreviews.push(e.target.result);
-      };
-      reader.readAsDataURL(file);
+  // Select multiple images with 500 KB validation
+onMultipleFilesSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const files = input.files ? Array.from(input.files) : [];
+  this.selectedImages = [];
+  this.selectedImagePreviews = [];
+
+  let oversizedFiles: string[] = [];
+
+  for (const file of files) {
+    // Check file size (500 * 1024 = 512000 bytes)
+    if (file.size > 2000 * 1024) {
+      oversizedFiles.push(file.name);
+      continue; // Skip this file
     }
+
+    this.selectedImages.push(file);
+
+    // Generate preview
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.selectedImagePreviews.push(e.target.result);
+    };
+    reader.readAsDataURL(file);
   }
+
+  // 🚨 Show alert if oversized files found
+  if (oversizedFiles.length > 0) {
+    alert(
+      `These files exceed 2000 KB and were not added:\n\n${oversizedFiles.join(
+        "\n"
+      )}`
+    );
+  }
+}
+
  
   // Upload images
   uploadImages() {
