@@ -333,6 +333,9 @@ loadSavedLocation(providerId: number) {
       if (res && res.length > 0) {
         // pick first address (or loop if multiple)
         this.savedLocationUrl = res[0].location_url;
+        this.addressId = res[0].id;   // ✅ store address ID
+        console.log('Saved Location:', this.savedLocationUrl);
+        console.log('Address ID:', this.addressId);
       }
     },
     error: (err) => {
@@ -340,6 +343,32 @@ loadSavedLocation(providerId: number) {
     }
   });
 }
+
+
+deleteLocation() {
+  if (!this.addressId) {
+    alert('No address found to delete.');
+    return;
+  }
+
+  if (!confirm('Are you sure you want to delete your saved location?')) {
+    return;
+  }
+
+  this.serviceproviderService.deleteAddress(this.addressId).subscribe({
+    next: () => {
+      alert('Location deleted successfully!');
+      this.savedLocationUrl = '';
+      this.addressId = null;
+    },
+    error: (err) => {
+      console.error('Error deleting location', err);
+      alert('Failed to delete location.');
+    }
+  });
+}
+
+
 
 
 

@@ -32,6 +32,11 @@
   <button *ngIf="savedLocationUrl" type="button" class="btn btn-outline-info" (click)="viewLocation()">
     <i class="fas fa-map"></i> View Location
   </button>
+
+    <!-- Delete Location -->
+  <button *ngIf="savedLocationUrl" type="button" class="btn btn-outline-danger" (click)="deleteLocation()">
+    <i class="fas fa-trash"></i> Delete Location
+  </button>
 </div>
 
 <!-- Location Input Box -->

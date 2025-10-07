@@ -48,74 +48,83 @@ export class SearchbarComponent {
   }
 
 
-  loadFilterOptions(): void {
+loadFilterOptions(): void {
   this.serviceProviderService.getAllProviders().subscribe({
     next: (data) => {
       const approved = data.filter(p => p.approved === true);
-      this.availableLocations = Array.from(new Set(approved.map(p => p.location).filter(Boolean)));
-      this.availableCategories = Array.from(new Set(approved.map(p => p.category).filter(Boolean)));
+      this.availableLocations = Array.from(new Set(approved.map(p => p.location).filter(Boolean))).sort();
+      this.availableCategories = Array.from(new Set(approved.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
     }
   });
 }
 
 
+
   // ✅ handle search logic
-  onSearch(): void {
-    this.submitted = true;
-    this.message = '';
+ onSearch(): void {
+  this.submitted = true;
+  this.message = '';
 
-    let category = this.searchForm.value.category?.trim() || '';
-    let location = this.searchForm.value.location?.trim() || '';
+  let category = this.searchForm.value.category?.trim() || '';
+  let location = this.searchForm.value.location?.trim() || '';
 
-    // BOTH are "ALL" → get all
-    if (category === 'ALL' && location === 'ALL') {
-      this.getAllProviders();
-      return;
-    }
-
-    // If either is "ALL" treat as empty (search only by the other)
-    if (category === 'ALL') category = '';
-    if (location === 'ALL') location = '';
-
-    // If both empty → get all
-    if (!category && !location) {
-      this.getAllProviders();
-      return;
-    }
-
-    // Otherwise, search
-    const searchPayload: SearchRequest = { category, location };
-
-    this.serviceProviderService.searchProviders(searchPayload).subscribe({
-      next: (data) => {
-        this.allResults = data.filter(p => p.approved === true);
-        if (this.allResults.length === 0) this.message = 'No providers found.';
-      },
-      error: (err) => {
-        console.error('Search failed:', err);
-        this.allResults = [];
-        this.message = 'Error during search';
-      },
-    });
+  if (category === 'ALL' && location === 'ALL') {
+    this.getAllProviders();
+    return;
   }
+
+  if (category === 'ALL') category = '';
+  if (location === 'ALL') location = '';
+
+  if (!category && !location) {
+    this.getAllProviders();
+    return;
+  }
+
+  const searchPayload: SearchRequest = { category, location };
+
+  this.serviceProviderService.searchProviders(searchPayload).subscribe({
+    next: (data) => {
+      this.allResults = data.filter(p => p.approved === true);
+
+      // ✅ Sort results alphabetically by full name
+      this.allResults.sort((a, b) =>
+        (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName)
+      );
+
+      if (this.allResults.length === 0) this.message = 'No providers found.';
+    },
+    error: (err) => {
+      console.error('Search failed:', err);
+      this.allResults = [];
+      this.message = 'Error during search';
+    },
+  });
+}
+
 
   // ✅ load all providers (approved only)
-  getAllProviders(): void {
-    this.serviceProviderService.getAllProviders().subscribe({
-      next: (data) => {
-        this.allResults = data.filter(p => p.approved === true);
-        this.providers = this.allResults;
-        this.availableLocations = Array.from(new Set(this.allResults.map(p => p.location).filter(Boolean)));
-        this.availableCategories = Array.from(new Set(this.allResults.map(p => p.category).filter(Boolean)));
-        if (this.allResults.length === 0) this.message = 'No providers found.';
-      },
-      error: (err) => {
-        console.error('Failed to load providers:', err);
-        this.allResults = [];
-        this.message = 'Error loading providers';
-      }
-    });
-  }
+ getAllProviders(): void {
+  this.serviceProviderService.getAllProviders().subscribe({
+    next: (data) => {
+      this.allResults = data.filter(p => p.approved === true);
+      this.providers = this.allResults;
+      this.availableLocations = Array.from(new Set(this.allResults.map(p => p.location).filter(Boolean))).sort();
+      this.availableCategories = Array.from(new Set(this.allResults.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
+
+      // ✅ Sort results alphabetically by provider name
+      this.allResults.sort((a, b) => (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName));
+
+      if (this.allResults.length === 0) this.message = 'No providers found.';
+    },
+    error: (err) => {
+      console.error('Failed to load providers:', err);
+      this.allResults = [];
+      this.message = 'Error loading providers';
+    }
+  });
+}
+
 
   // ✅ autocomplete location
   onLocationInput(): void {

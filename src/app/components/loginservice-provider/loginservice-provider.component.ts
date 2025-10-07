@@ -157,25 +157,25 @@ export class LoginserviceProviderComponent {
     });
   }
 
-  // Login submit
   onLogin(): void {
-    if (!this.emailPattern.test(this.email)) {
-      this.loginEmailError = true;
-      return;
-    }
-    this.loginEmailError = false;
-
-    this.serviceProviderService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        this.message = response;
-        localStorage.setItem('providerEmail', this.email);
-        this.router.navigate(['/dashboardserviceprovider']);
-      },
-      error: (error) => {
-        this.message = error.error?.message || 'Login failed. Please check your credentials.';
-      }
-    });
+  if (!this.emailPattern.test(this.email)) {
+    this.loginEmailError = true;
+    return;
   }
+  this.loginEmailError = false;
+
+  this.serviceProviderService.login(this.email, this.password).subscribe({
+    next: (response: string) => {
+      this.message = response;   // plain string
+      localStorage.setItem('providerEmail', this.email);
+      this.router.navigate(['/dashboardserviceprovider']);
+    },
+    error: (error) => {
+      this.message = error.error || 'Login failed. Please check your credentials.';
+    }
+  });
+}
+
 
   // Switch UI panels
   toggleSignUp(): void {

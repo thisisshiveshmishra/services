@@ -313,4 +313,65 @@ button {
   .content table {
     overflow-x: auto;
   }
+
+
+  
 }
+
+
+.description-column {
+  max-width: 280px;       /* restrict column width */
+  white-space: nowrap;    /* prevent wrapping */
+  overflow: hidden;       /* hide extra text */
+  text-overflow: ellipsis; /* add "..." at end */
+  cursor: pointer;
+}
+
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+
+.description-text {
+  font-size: 20px;  /* 🔥 Increase text size */
+  line-height: 1.6;
+  color: #333;
+}
+
+.modal-content {
+  position: relative;  /* make it the parent for absolute positioning */
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: red;
+}
+
+
+

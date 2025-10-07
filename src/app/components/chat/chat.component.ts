@@ -16,6 +16,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   replies: { [userId: string]: string } = {};
   isMobile: boolean = false;
 
+  readUsers: Set<string> = new Set(); // Track users with messages marked as read
+
   private refreshSubscription!: Subscription;
 
   constructor(
@@ -63,7 +65,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     }
 
-    // sort messages inside each user group (optional, for consistency)
+    // Sort messages inside each user group
     for (const uid in grouped) {
       grouped[uid].sort(
         (a, b) => new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
@@ -73,7 +75,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     return grouped;
   }
 
-  // ✅ return userIds sorted by latest message time (descending)
   get sortedUserIds(): string[] {
     return Object.keys(this.groupedMessages).sort((a, b) => {
       const lastA = this.groupedMessages[a].slice(-1)[0];
@@ -84,6 +85,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   selectUser(userId: string) {
     this.selectedUserId = userId;
+
+    // Mark this user as read
+    this.readUsers.add(userId);
   }
 
   sendReply(userId: string) {
@@ -100,7 +104,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Check screen size
+  hasUnread(userId: string): boolean {
+    if (this.readUsers.has(userId)) return false;
+
+    const lastMsg = this.groupedMessages[userId]?.slice(-1)[0];
+    if (!lastMsg) return false;
+
+    // Unread if last message is from user and not replied
+    return !lastMsg.replyContent;
+  }
+
   @HostListener('window:resize')
   checkScreenSize() {
     this.isMobile = window.innerWidth <= 768;

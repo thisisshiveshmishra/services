@@ -40,17 +40,23 @@ export class UserregisterComponent {
       next: () => {
         this.successMessage = 'Registration successful!';
         this.errorMessage = '';
+        alert('User Registration successful!');
         this.router.navigate(['/userlogin']);
       },
       error: (error) => {
-        // Check if email already exists
-        if (error?.error === 'Email already exists') {
-          this.errorMessage = 'Email already exists. Please use another email.';
-        } else {
-          this.errorMessage = 'Registration failed. Try again.';
-        }
-        this.successMessage = '';
-      }
+  console.error('Backend error:', error);
+
+  if (typeof error.error === 'string' && error.error.includes('Email is already in use')) {
+    this.errorMessage = 'Email is already in use. Please use another email.';
+  } else if (error.error?.message && error.error.message.includes('Email is already in use')) {
+    this.errorMessage = 'Email is already in use. Please use another email.';
+  } else {
+    this.errorMessage = 'Registration failed. Try again.';
+  }
+
+  this.successMessage = '';
+}
+
     });
   }
 

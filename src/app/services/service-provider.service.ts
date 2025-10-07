@@ -41,14 +41,14 @@ export class ServiceProviderService {
     return this.http.get<any[]>(`${NAV_URL}/providers`);
   }
  
-  approveProvider(id: number): Observable<any> {
-    return this.http.put(`${NAV_URL}/providers/approve/${id}`, {});
-  }
- 
-  rejectProvider(id: number) {
-    return this.http.put(`${NAV_URL}/providers/${id}/reject`, null, { responseType: 'text' });
-  }
- 
+approveProvider(id: number) {
+  return this.http.put(`${NAV_URL}/providers/approve/${id}`, {}, { responseType: 'text' });
+}
+
+rejectProvider(id: number) {
+  return this.http.put(`${NAV_URL}/providers/${id}/reject`, {}, { responseType: 'text' });
+}
+
   getMatchesForAllRequests(): Observable<any[]> {
     return this.http.get<any[]>(`${NAV_URL}/providers/match-all`);
   }
@@ -129,6 +129,10 @@ getAddressByServiceProviderId(providerId: number) {
   return this.http.get<any[]>(`${NAV_URL}/addresses/getAddressByServiceProvider/${providerId}`);
 }
 
+  // Delete address
+  deleteAddress(id: number): Observable<any> {
+    return this.http.delete(`${NAV_URL}/addresses/deleteAddress/${id}`, { responseType: 'text' });
+  }
 
 
 

@@ -53,16 +53,20 @@
             <td>{{ provider.category }}</td>
             <td>{{ provider.gender }}</td>
             <td>{{ provider.location }}</td>
-            <!-- ✅ Fixed description -->
-            <td class="description-column" [title]="provider.description">
+
+            <td class="description-column" (click)="openDescription(provider.description)">
               {{ provider.description }}
             </td>
+
             <td>
-              <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="120" height="120" />
+              <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="100" height="100" />
             </td>
-            <td>{{ provider.approved ? 'Approved' : provider.rejected ? 'Rejected' : 'Pending' }}</td>
+
             <td>
-              <!-- Approve Button with loader -->
+              {{ provider.approved ? 'Approved' : provider.rejected ? 'Rejected' : 'Pending' }}
+            </td>
+
+            <td>
               <button class="btn"
                       [ngClass]="provider.approved ? 'btn-approved' : 'btn-approve'"
                       [disabled]="provider.approved || loadingProviderIds[provider.id]"
@@ -75,7 +79,6 @@
                 </ng-template>
               </button>
 
-              <!-- Reject Button with loader -->
               <button class="btn"
                       [ngClass]="provider.rejected ? 'btn-rejected' : 'btn-reject'"
                       [disabled]="provider.rejected || loadingProviderIds[provider.id]"
@@ -93,7 +96,7 @@
       </table>
     </div>
 
-    <!-- Feedbacks Section -->
+    <!-- Feedback Section -->
     <div *ngIf="activeSection === 'feedbacks'">
       <h2>Feedback List</h2>
       <table border="1" cellspacing="0" cellpadding="8">
@@ -105,6 +108,7 @@
             <th>Category</th>
             <th>Rating</th>
             <th>Message</th>
+            <th>Date of submission</th>
           </tr>
         </thead>
         <tbody>
@@ -118,13 +122,16 @@
                 <i class="fa" [ngClass]="star ? 'fa-star' : 'fa-star-o'" style="color: gold;"></i>
               </ng-container>
             </td>
-            <td>{{ fb.message }}</td>
+            <td class="feedback-message" (click)="openFeedbackMessage(fb.message)">
+              {{ fb.message | slice:0:57 }}<span *ngIf="fb.message.length > 30">...</span>
+            </td>
+            <td>{{ fb.submittedAt | date:'dd/MM/yyyy HH:mm' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Service Requests Section -->
+    <!-- Requests Section -->
     <div *ngIf="activeSection === 'requests'">
       <h2>Raised Service Requests</h2>
 
@@ -158,10 +165,34 @@
             <td>{{ request.contactNumber }}</td>
             <td>{{ request.category }}</td>
             <td>{{ request.location }}</td>
-            <td>{{ request.query }}</td>
+            <td class="request-query" (click)="openRequestQuery(request.query)">
+              {{ request.query | slice:0:53 }}<span *ngIf="request.query.length > 50">...</span>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class="modal" *ngIf="selectedDescription">
+  <div class="modal-content">
+    <span class="close" (click)="closeDescription()">&times;</span>
+    <p class="description-text">{{ selectedDescription }}</p>
+  </div>
+</div>
+
+<div class="modal" *ngIf="selectedFeedbackMessage">
+  <div class="modal-content">
+    <span class="close" (click)="closeFeedbackMessage()">&times;</span>
+    <p class="description-text">{{ selectedFeedbackMessage }}</p>
+  </div>
+</div>
+
+<div class="modal" *ngIf="selectedRequestQuery">
+  <div class="modal-content">
+    <span class="close" (click)="closeRequestQuery()">&times;</span>
+    <p class="description-text">{{ selectedRequestQuery }}</p>
   </div>
 </div>

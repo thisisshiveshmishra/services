@@ -18,6 +18,12 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { serviceproviderguardGuard } from './services/serviceproviderguard.guard';
+import { CareerComponent } from './components/career/career.component';
+import { ContactComponent } from './components/contact/contact.component';
+
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { TermsconditionComponent } from './components/termscondition/termscondition.component';
+import { FaqComponent } from './components/faq/faq.component';
 
 
 
@@ -38,8 +44,16 @@ const routes: Routes = [
     { path: 'chat', component: ChatComponent  },
     {path: 'forgotpassword',component:ForgotpasswordComponent},
     { path: 'footer', component: FooterComponent  },
+    {path: 'career',component : CareerComponent},
+    {path: 'contact',component : ContactComponent},
+    {path: 'privacypolicy',component : PrivacyPolicyComponent},
+    {path:'termscondition', component: TermsconditionComponent},
+    {path:'faq', component: FaqComponent},
+
+    
 
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

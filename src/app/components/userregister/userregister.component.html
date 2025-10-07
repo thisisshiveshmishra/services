@@ -11,36 +11,39 @@
     <form (ngSubmit)="registerUser()" #registerForm="ngForm" class="w-100">
 
       <!-- First Name -->
-      <div class="mb-3">
-        <label class="form-label">First Name</label>
-        <input
-          type="text"
-          name="name"
-          class="form-control input-underline"
-          [(ngModel)]="user.name"
-          required
-          #name="ngModel"
-        >
-        <div *ngIf="name.invalid && name.touched" class="text-danger small">
-          First Name is required.
-        </div>
-      </div>
+<div class="mb-3">
+  <label class="form-label">First Name</label>
+  <input
+    type="text"
+    name="name"
+    class="form-control input-underline"
+    [(ngModel)]="user.name"
+    required
+    pattern="^[A-Za-z ]+$"
+    #name="ngModel"
+  >
+  <div *ngIf="name.invalid && name.touched" class="text-danger small">
+    First Name should contain only letters.
+  </div>
+</div>
 
-      <!-- Last Name -->
-      <div class="mb-3">
-        <label class="form-label">Last Name</label>
-        <input
-          type="text"
-          name="surname"
-          class="form-control input-underline"
-          [(ngModel)]="user.surname"
-          required
-          #surname="ngModel"
-        >
-        <div *ngIf="surname.invalid && surname.touched" class="text-danger small">
-          Last Name is required.
-        </div>
-      </div>
+<!-- Last Name -->
+<div class="mb-3">
+  <label class="form-label">Last Name</label>
+  <input
+    type="text"
+    name="surname"
+    class="form-control input-underline"
+    [(ngModel)]="user.surname"
+    required
+    pattern="^[A-Za-z ]+$"
+    #surname="ngModel"
+  >
+  <div *ngIf="surname.invalid && surname.touched" class="text-danger small">
+    Last Name should contain only letters.
+  </div>
+</div>
+
 
       <!-- Contact Number -->
       <div class="mb-3">

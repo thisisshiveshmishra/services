@@ -5,16 +5,21 @@
     *ngIf="!isMobile || (isMobile && !selectedUserId)">
     <h5 class="sidebar-title">Users</h5>
     <ul class="user-list">
-      <li
-        *ngFor="let userId of sortedUserIds"
-        [class.active]="userId === selectedUserId"
-        (click)="selectUser(userId)">
-        <div class="user-name">
-          {{ groupedMessages[userId][0]?.userName }}
-          {{ groupedMessages[userId][0]?.userSurname }}
-        </div>
-      </li>
-    </ul>
+  <li
+    *ngFor="let userId of sortedUserIds"
+    [class.active]="userId === selectedUserId"
+    (click)="selectUser(userId)">
+    <div class="user-item">
+      <div class="user-name">
+        {{ groupedMessages[userId][0]?.userName }}
+        {{ groupedMessages[userId][0]?.userSurname }}
+      </div>
+      <!-- 🔵 Blue dot at the far right -->
+      <span *ngIf="hasUnread(userId)" class="unread-dot"></span>
+    </div>
+  </li>
+</ul>
+
   </div>
 
   <!-- Main Chat -->

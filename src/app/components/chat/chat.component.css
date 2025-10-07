@@ -227,3 +227,20 @@
     padding: 1rem;
   }
 }
+
+
+.user-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* name left, dot right */
+  width: 100%;
+}
+
+.unread-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #007bff; /* Blue */
+}
+

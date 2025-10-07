@@ -24,6 +24,12 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ServiceproviderdashboardComponent } from './components/serviceproviderdashboard/serviceproviderdashboard.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SafeUrlPipe } from './pipe/safe-url.pipe';
+import { CareerComponent } from './components/career/career.component';
+import { ContactComponent } from './components/contact/contact.component';
+
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { TermsconditionComponent } from './components/termscondition/termscondition.component';
+import { FaqComponent } from './components/faq/faq.component';
 
 
 
@@ -47,7 +53,12 @@ import { SafeUrlPipe } from './pipe/safe-url.pipe';
    ChatComponent,
    ForgotpasswordComponent,
    FooterComponent,
-   SafeUrlPipe
+   SafeUrlPipe,
+   CareerComponent,
+   ContactComponent,
+   PrivacyPolicyComponent,
+   TermsconditionComponent,
+   FaqComponent
   
   ],
   imports: [

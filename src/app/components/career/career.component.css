@@ -1,0 +1,87 @@
+.career-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fff;
+  padding: 30px;
+}
+
+.career-content {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.career-content:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.career-content h1 {
+  font-size: 2rem;
+  color: #04274c;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.career-content p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.career-highlight,
+.support-section {
+  background-color: #f1f5ff;
+  border-left: 5px solid  #0d6efd;
+  margin: 25px 0;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.support-section {
+  background-color: #f8f9fa;
+  border-left-color: #0d6efd;
+}
+
+.email-link {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+.note {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 15px;
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 768px) {
+  .career-content {
+    padding: 25px;
+  }
+
+  .career-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .career-content p {
+    font-size: 0.95rem;
+  }
+
+  .email-link {
+    font-size: 1rem;
+  }
+}
