@@ -141,7 +141,7 @@ export class LoginserviceProviderComponent {
     // Call backend API
     this.serviceProviderService.saveProvider(formData).subscribe({
       next: () => {
-        alert('Service provider registered successfully!');
+        alert('Service provider registered successfully, Please wait for admin approval!');
         this.form = {};
         this.selectedFile = null;
         this.router.navigate(['/loginserviceprovider']);

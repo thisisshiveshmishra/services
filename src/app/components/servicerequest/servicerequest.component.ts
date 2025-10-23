@@ -48,14 +48,21 @@ export class ServicerequestComponent {
   }
 
   loadCategoriesFromServiceProviders(): void {
-    this.serviceprovider.getAllProviders().subscribe({
-      next: (providers) => {
-        const uniqueCategories = Array.from(new Set(providers.map(p => p.category).filter(Boolean)));
-        this.categories = uniqueCategories;
-      },
-      error: (err) => console.error('Error loading service providers', err)
-    });
-  }
+  this.serviceprovider.getAllProviders().subscribe({
+    next: (providers) => {
+      const uniqueCategories = Array.from(
+        new Set(providers.map(p => p.category).filter(Boolean))
+      );
+
+      // ✅ Sort categories alphabetically (case-insensitive)
+      this.categories = uniqueCategories.sort((a, b) =>
+        a.toLowerCase().localeCompare(b.toLowerCase())
+      );
+    },
+    error: (err) => console.error('Error loading service providers', err)
+  });
+}
+
 
   onCategoryChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;

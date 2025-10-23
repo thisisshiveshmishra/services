@@ -327,31 +327,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* White modern footer */
 .custom-footer {
   background: #fff;
@@ -437,8 +412,48 @@
   height: 100%;
   object-fit: cover;
   transform: translate(-50%, -50%);
-
-   font-size: 0;          /* hide alt text if image fails */
+  font-size: 0;          /* hide alt text if image fails */
   color: transparent;    /* hide text */
 }
 
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap; /* Keep image and text in one line */
+  gap: 10px; /* space between logo and text */
+}
+
+.footer-logo-img {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+.footer-logo-text {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #000;
+  white-space: nowrap; /* Prevent text from breaking into two lines */
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .footer-logo-img {
+    width: 80px;
+  }
+  .footer-logo-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .footer-brand {
+    flex-wrap: wrap; /* allow wrapping if extremely narrow */
+  }
+  .footer-logo-text {
+    white-space: normal; /* text can break only on very small screens */
+    text-align: center;
+  }
+}

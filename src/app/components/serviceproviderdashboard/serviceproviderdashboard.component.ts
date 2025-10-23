@@ -66,6 +66,7 @@ export class ServiceproviderdashboardComponent implements OnInit {
       location: [''],
       gender: [''],
       category: [''],
+      description: [''],
     });
  
     this.providerEmail = localStorage.getItem('providerEmail') || '';

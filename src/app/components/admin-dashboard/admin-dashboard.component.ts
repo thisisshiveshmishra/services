@@ -25,6 +25,8 @@ export class AdminDashboardComponent {
   providerCategoryFilter = '';
   requestLocationFilter = '';
   requestCategoryFilter = '';
+
+  // Selected text for modals
   selectedDescription: string | null = null;
   selectedFeedbackMessage: string | null = null;
   selectedRequestQuery: string | null = null;
@@ -81,27 +83,52 @@ export class AdminDashboardComponent {
   }
 
   approve(id: number) {
-  this.loadingProviderIds[id] = true;
-  this.service.approveProvider(id).subscribe({
-    next: (res) => {
-      this.loadingProviderIds[id] = false;
-      alert('✅ ' + res); // Shows backend message
-      window.location.reload(); // Refresh page for new status
-    },
-    error: (err) => {
-      this.loadingProviderIds[id] = false;
-      alert('❌ Failed to approve provider.\n' + err.message);
-    }
-  });
-}
+    this.loadingProviderIds[id] = true;
+    this.service.approveProvider(id).subscribe({
+      next: (res) => {
+        this.loadingProviderIds[id] = false;
+        alert('✅ ' + res);
+        window.location.reload();
+      },
+      error: (err) => {
+        this.loadingProviderIds[id] = false;
+        alert('❌ Failed to approve provider.\n' + err.message);
+      }
+    });
+  }
 
-reject(id: number) {
+  // reject(id: number) {
+  //   this.loadingProviderIds[id] = true;
+  //   this.service.rejectProvider(id).subscribe({
+  //     next: (res) => {
+  //       this.loadingProviderIds[id] = false;
+  //       alert('🚫 ' + res);
+  //       window.location.reload();
+  //     },
+  //     error: (err) => {
+  //       this.loadingProviderIds[id] = false;
+  //       alert('❌ Failed to reject provider.\n' + err.message);
+  //     }
+  //   });
+  // }
+
+
+  reject(id: number) {
   this.loadingProviderIds[id] = true;
+
   this.service.rejectProvider(id).subscribe({
-    next: (res) => {
+    next: (res: string) => {
       this.loadingProviderIds[id] = false;
-      alert('🚫 ' + res); // Shows backend message
       window.location.reload();
+
+      // Update the provider status locally without full reload
+      const provider = this.providers.find(p => p.id === id);
+      if (provider) {
+        provider.rejected = true;
+      }
+
+      // Show alert with backend message (rejection email sent)
+      alert('🚫 ' + res);
     },
     error: (err) => {
       this.loadingProviderIds[id] = false;
@@ -167,6 +194,7 @@ reject(id: number) {
     return Array(5).fill(false).map((_, i) => i < rating);
   }
 
+  /* ----------------- Modal Handlers ----------------- */
   openDescription(desc: string) {
     this.selectedDescription = desc;
   }

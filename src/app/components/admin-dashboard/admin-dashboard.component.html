@@ -1,4 +1,4 @@
-<!-- ✅ Fixed Logout Button -->
+<!-- ✅ Logout Button -->
 <div class="logout-container">
   <button (click)="logout()">Logout</button>
 </div>
@@ -45,8 +45,8 @@
           <tr *ngIf="filteredProviders.length === 0">
             <td colspan="11">No data found.</td>
           </tr>
-          <tr *ngFor="let provider of filteredProviders">
-            <td>{{ provider.id }}</td>
+          <tr *ngFor="let provider of filteredProviders; let i = index">
+            <td>{{ i +1  }}</td>
             <td>{{ provider.firstName }} {{ provider.lastName }}</td>
             <td>{{ provider.mobileNumber }}</td>
             <td>{{ provider.email }}</td>
@@ -54,12 +54,16 @@
             <td>{{ provider.gender }}</td>
             <td>{{ provider.location }}</td>
 
-            <td class="description-column" (click)="openDescription(provider.description)">
+            <td class="description-column" 
+                [title]="provider.description"
+                (click)="openDescription(provider.description)">
               {{ provider.description }}
             </td>
 
             <td>
-              <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture" width="100" height="100" />
+              <img *ngIf="provider.profilePicture" 
+                   [src]="'data:image/jpeg;base64,' + provider.profilePicture" 
+                   width="100" height="100" />
             </td>
 
             <td>
@@ -105,6 +109,8 @@
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Mobile Number</th>
+            <th>Address</th>
             <th>Category</th>
             <th>Rating</th>
             <th>Message</th>
@@ -116,14 +122,18 @@
             <td>{{ fb.id }}</td>
             <td>{{ fb.name }}</td>
             <td>{{ fb.email }}</td>
+            <td>{{ fb.contactNumber }}</td>
+        <td>{{ fb.location }}</td>
             <td>{{ fb.category }}</td>
             <td>
               <ng-container *ngFor="let star of getStars(fb.rating)">
                 <i class="fa" [ngClass]="star ? 'fa-star' : 'fa-star-o'" style="color: gold;"></i>
               </ng-container>
             </td>
-            <td class="feedback-message" (click)="openFeedbackMessage(fb.message)">
-              {{ fb.message | slice:0:57 }}<span *ngIf="fb.message.length > 30">...</span>
+            <td class="feedback-message" 
+                [title]="fb.message" 
+                (click)="openFeedbackMessage(fb.message)">
+              {{ fb.message }}
             </td>
             <td>{{ fb.submittedAt | date:'dd/MM/yyyy HH:mm' }}</td>
           </tr>
@@ -133,45 +143,51 @@
 
     <!-- Requests Section -->
     <div *ngIf="activeSection === 'requests'">
-      <h2>Raised Service Requests</h2>
+  <h2>Raised Service Requests</h2>
 
-      <div class="requests-filters">
-        <input type="text" [(ngModel)]="requestLocationFilter" placeholder="Filter by Location" (input)="filterRequests()" />
-        <input type="text" [(ngModel)]="requestCategoryFilter" placeholder="Filter by Category" (input)="filterRequests()" />
-      </div>
+  <div class="requests-filters">
+    <input type="text" [(ngModel)]="requestLocationFilter" placeholder="Filter by Location" (input)="filterRequests()" />
+    <input type="text" [(ngModel)]="requestCategoryFilter" placeholder="Filter by Category" (input)="filterRequests()" />
+  </div>
 
-      <table border="1" cellspacing="0" cellpadding="8">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>Mobile</th>
-            <th>Category</th>
-            <th>Location</th>
-            <th>Query</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="filteredRequests.length === 0">
-            <td colspan="8">No data found.</td>
-          </tr>
-          <tr *ngFor="let request of filteredRequests">
-            <td>{{ request.id }}</td>
-            <td>{{ request.name }} {{ request.surname }}</td>
-            <td>{{ request.email }}</td>
-            <td>{{ request.gender }}</td>
-            <td>{{ request.contactNumber }}</td>
-            <td>{{ request.category }}</td>
-            <td>{{ request.location }}</td>
-            <td class="request-query" (click)="openRequestQuery(request.query)">
-              {{ request.query | slice:0:53 }}<span *ngIf="request.query.length > 50">...</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- Add table-container -->
+  <div class="table-container">
+    <table border="1" cellspacing="0" cellpadding="8">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Mobile</th>
+          <th>Category</th>
+          <th>Location</th>
+          <th>Query</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredRequests.length === 0">
+          <td colspan="8">No data found.</td>
+        </tr>
+        <tr *ngFor="let request of filteredRequests">
+          <td>{{ request.id }}</td>
+          <td>{{ request.name }} {{ request.surname }}</td>
+          <td>{{ request.email }}</td>
+          <td>{{ request.gender }}</td>
+          <td>{{ request.contactNumber }}</td>
+          <td>{{ request.category }}</td>
+          <td>{{ request.location }}</td>
+          <td class="request-query" 
+              [title]="request.query"
+              (click)="openRequestQuery(request.query)">
+            {{ request.query }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
   </div>
 </div>
 

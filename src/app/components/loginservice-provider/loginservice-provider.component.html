@@ -58,20 +58,29 @@
       </div>
 
       <div class="password-container">
-        <input
-          [type]="showRegisterPassword ? 'text' : 'password'"
-          name="password"
-          [(ngModel)]="form.password"
-          placeholder="Password"
-          required
-        />
-        <span class="toggle-password" (click)="toggleRegisterPassword()">
-          <i class="fa" [ngClass]="showRegisterPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-        </span>
-      </div>
-      <div *ngIf="form.password && !passwordPattern.test(form.password)" class="text-danger">
-        Password must be 6+ chars with 1 uppercase, 1 number, 1 special symbol.
-      </div>
+  <input
+    [type]="showRegisterPassword ? 'text' : 'password'"
+    name="password"
+    [(ngModel)]="form.password"
+    placeholder="Password"
+    #pwd="ngModel"
+    required
+  />
+  <span class="toggle-password" (click)="toggleRegisterPassword()">
+    <i class="fa" [ngClass]="showRegisterPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+  </span>
+</div>
+
+<!-- Show error if empty -->
+<div *ngIf="pwd.invalid && pwd.touched" class="text-danger">
+  Password is required.
+</div>
+
+<!-- Show error if invalid pattern -->
+<div *ngIf="form.password && !passwordPattern.test(form.password)" class="text-danger">
+  Password must be 6+ chars with 1 uppercase, 1 number, 1 special symbol.
+</div>
+
 
       <div class="business-profile-upload">
         <label for="businessProfile">Business Profile Image</label>

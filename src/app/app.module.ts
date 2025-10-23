@@ -30,6 +30,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { TermsconditionComponent } from './components/termscondition/termscondition.component';
 import { FaqComponent } from './components/faq/faq.component';
+import { SolutionsComponent } from './components/solutions/solutions.component';
 
 
 
@@ -58,7 +59,8 @@ import { FaqComponent } from './components/faq/faq.component';
    ContactComponent,
    PrivacyPolicyComponent,
    TermsconditionComponent,
-   FaqComponent
+   FaqComponent,
+   SolutionsComponent
   
   ],
   imports: [

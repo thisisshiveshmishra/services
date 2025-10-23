@@ -6,7 +6,7 @@ import { FeedbackService } from 'src/app/services/feedback.service';
 import { ServiceProviderService } from 'src/app/services/service-provider.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { UserService } from 'src/app/services/user.service';
- 
+
 @Component({
   selector: 'app-service-provider',
   templateUrl: './service-provider.component.html',
@@ -19,9 +19,9 @@ export class ServiceProviderComponent implements OnInit {
   categories: string[] = [];
   providers: Serviceprovider[] = [];
   selectedProvider: Serviceprovider | null = null;
-  providerImages: string[] = [];  // store only base64 strings
+  providerImages: string[] = [];
   isModalOpen = false;
- 
+
   constructor(
     private fb: FormBuilder,
     private feedbackService: FeedbackService,
@@ -32,22 +32,22 @@ export class ServiceProviderComponent implements OnInit {
   ) {
     this.feedbackForm = this.fb.group({
       name: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      contactNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      address: ['', Validators.required],
+      location: ['', Validators.required],
       message: ['', Validators.required],
       category: ['', Validators.required],
       customCategory: [''],
       rating: ['', Validators.required]
     });
   }
- 
+
   ngOnInit(): void {
     this.loadCategoriesFromDatabase();
- 
+
     this.serviceProviderService.getAllProviders().subscribe((data: Serviceprovider[]) => {
       this.providers = data.slice(0, 4);
- 
+
       // attach base64 image for preview
       this.providers.forEach(provider => {
         if (provider.profilePicture) {
@@ -56,7 +56,7 @@ export class ServiceProviderComponent implements OnInit {
       });
     });
   }
- 
+
   loadCategoriesFromDatabase(): void {
     this.serviceProviderService.getAllProviders().subscribe({
       next: (providers) => {
@@ -70,12 +70,12 @@ export class ServiceProviderComponent implements OnInit {
       }
     });
   }
- 
+
   onCategoryChange(event: Event): void {
     const selected = (event.target as HTMLSelectElement).value;
     const customControl = this.feedbackForm.get('customCategory');
     this.showCustomCategoryInput = selected === 'Other';
- 
+
     if (this.showCustomCategoryInput) {
       customControl?.setValidators([
         Validators.required,
@@ -87,50 +87,48 @@ export class ServiceProviderComponent implements OnInit {
     }
     customControl?.updateValueAndValidity();
   }
- 
+
   onSubmit(): void {
     if (this.feedbackForm.invalid) {
       this.feedbackForm.markAllAsTouched();
       return;
     }
- 
+
     let feedback = { ...this.feedbackForm.value };
- 
+
     if (feedback.category === 'Other' && feedback.customCategory) {
       feedback.category = feedback.customCategory;
     }
     delete feedback.customCategory;
- 
+
     this.feedbackService.submitFeedback(feedback).subscribe({
       next: () => {
         this.feedbackForm.reset();
         this.showConfirmation = true;
         setTimeout(() => {
           this.showConfirmation = false;
-          this.router.navigate(['/']);  // ✅ redirect to homepage
+          this.router.navigate(['/']);
         }, 3000);
-        
       },
       error: (err) => {
         console.error('Error submitting feedback:', err);
         alert('❌ Failed to submit feedback. Please try again.');
-        
       }
     });
   }
- 
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('user');
   }
- 
+
   isServiceProviderLoggedIn(): boolean {
     return localStorage.getItem('providerToken') !== null;
   }
- 
+
   logout() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const userId = user?.id;
- 
+
     if (userId) {
       this.userService.logout();
       this.router.navigate(['/']);
@@ -138,25 +136,23 @@ export class ServiceProviderComponent implements OnInit {
     localStorage.removeItem('user');
     this.router.navigate(['/']);
   }
- 
+
   viewProvider(id?: number): void {
     if (!id) return;
     this.sharedService.setProviderId(id);
- 
+
     this.serviceProviderService.getProviderById(id).subscribe(provider => {
       this.selectedProvider = provider;
- 
-      // ✅ If backend returns images inside provider, use them directly
       this.providerImages = [];
- 
+
       if (provider.profilePicture) {
         this.providerImages.push('data:image/jpeg;base64,' + provider.profilePicture);
       }
- 
+
       this.isModalOpen = true;
     });
   }
- 
+
   closeModal(): void {
     this.isModalOpen = false;
     this.selectedProvider = null;
@@ -164,8 +160,6 @@ export class ServiceProviderComponent implements OnInit {
   }
 
   closeForm() {
-  this.router.navigate(['/']);  // ✅ redirect to homepage
+    this.router.navigate(['/']);
+  }
 }
-}
- 
- 

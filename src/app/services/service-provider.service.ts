@@ -46,7 +46,7 @@ approveProvider(id: number) {
 }
 
 rejectProvider(id: number) {
-  return this.http.put(`${NAV_URL}/providers/${id}/reject`, {}, { responseType: 'text' });
+  return this.http.put(`${NAV_URL}/providers/reject/${id}`, {}, { responseType: 'text' });
 }
 
   getMatchesForAllRequests(): Observable<any[]> {

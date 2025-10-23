@@ -24,6 +24,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { TermsconditionComponent } from './components/termscondition/termscondition.component';
 import { FaqComponent } from './components/faq/faq.component';
+import { SolutionsComponent } from './components/solutions/solutions.component';
 
 
 
@@ -49,6 +50,7 @@ const routes: Routes = [
     {path: 'privacypolicy',component : PrivacyPolicyComponent},
     {path:'termscondition', component: TermsconditionComponent},
     {path:'faq', component: FaqComponent},
+    {path: 'solutions', component: SolutionsComponent },
 
     
 

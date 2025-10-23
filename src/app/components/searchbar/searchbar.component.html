@@ -60,45 +60,72 @@
       <div class="input-field third-wrap">
         <button class="btn-search" type="submit">Search</button>
       </div>
+
+     
+
+
+
     </div>
 
-    <!-- Result section -->
-    <div class="results-container" *ngIf="allResults.length">
-      <h3>Results:</h3>
-      <ul>
-        <li
-          *ngFor="let provider of allResults"
-          (click)="provider.id && viewProvider(provider.id)"
+
+<!-- 🔹 Loading message -->
+<div *ngIf="loading" class="loading-message">
+  <i class="fa fa-spinner fa-spin"></i> Please wait a moment, fetching results...
+</div>
+
+<!-- ✅ Results -->
+<div class="results-container" *ngIf="!loading && allResults.length">
+  <h3>Results:</h3>
+  <ul>
+    <li
+      *ngFor="let provider of allResults"
+      (click)="provider.id && viewProvider(provider.id)"
+    >
+      {{ provider.firstName }} {{ provider.lastName }} — {{ provider.category }}
+      <br />
+      ({{ provider.location }})
+      <div class="provider-actions">
+        <button
+          (click)="viewProvider(provider.id)"
+          class="btn btn-outline-primary me-2"
         >
-          {{ provider.firstName }} {{ provider.lastName }} — {{provider.category}}
-          <br />
-          ({{ provider.location }})
-          <div class="provider-actions">
-            <!-- ✅ Changed button class -->
-            <button
-              (click)="viewProvider(provider.id)"
-              class="btn btn-outline-primary me-2"
-            >
-              View Details &nbsp;<i class="bi bi-eye"></i>
-            </button>
-            <button
-              (click)="routeToChat(provider)"
-              class="btn btn-outline-primary"
-            >
-              Chat &nbsp;<i class="bi bi-chat-dots"></i>
-            </button>
-          </div>
-        </li>
-      </ul>
-    </div>
+          View Details &nbsp;<i class="bi bi-eye"></i>
+        </button>
+        <button
+          (click)="routeToChat(provider)"
+          class="btn btn-outline-primary"
+        >
+          Chat &nbsp;<i class="bi bi-chat-dots"></i>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>
 
-    <div
+<!-- 🚫 No Results -->
+<div
+  class="no-results"
+  *ngIf="!loading && !allResults.length && submitted"
+  style="color: #7b5728;"
+>
+  {{ message }}
+</div>
+
+
+    
+    <!-- <div
       class="no-results"
       *ngIf="!allResults.length && submitted"
       style="color: #7b5728;"
     >
       No providers found.
-    </div>
+    </div> -->
+
+
+        <!-- 🔹 Loading message
+      <div *ngIf="loading" class="loading-message">
+        <i class="fa fa-spinner fa-spin"></i> Please wait a moment, fetching results...
+      </div> -->
   </form>
 </div>
 
@@ -107,133 +134,123 @@
 </html>
 
 <!-- Fullscreen Modal -->
-
 <div *ngIf="isModalOpen" class="modal-backdrop-custom">
   <div class="modal-content-wrapper">
-    <!-- Modal header -->
+
+    <!-- Modal Header -->
     <div class="modal-header">
       <h5 class="modal-title">Provider Details</h5>
-      <button
-        type="button"
-        class="close"
-        (click)="closeModal()"
-        aria-label="Close"
-      >
-        <span aria-hidden="true"><i class="fa fa-close"></i></span>
+      <button type="button" class="close" (click)="closeModal()">
+        <i class="fa fa-close"></i>
       </button>
     </div>
 
-```
-<!-- Modal body -->
-<div class="modal-body" *ngIf="selectedProvider">
-  <div class="row g-0">
-    <!-- Provider info -->
-    <div class="col-md-8 border-right">
-      <div class="status p-3">
-        <table class="table table-borderless">
-          <tbody>
-            <tr>
-              <td>
-                <div class="d-flex flex-column">
-                  <span class="heading">Name</span>
-                  <span class="subheadings"
-                    >{{ selectedProvider.firstName }}
-                    {{ selectedProvider.lastName }}</span
-                  >
-                </div>
-              </td>
-              <td>
-                <div class="d-flex flex-column">
-                  <span class="heading">Location</span>
-                  <span class="subheadings"
-                    >{{ selectedProvider.location }}</span
-                  >
-                </div>
-              </td>
-              <td>
-                <div class="d-flex flex-column">
-                  <span class="heading">Mobile</span>
-                  <span class="subheadings"
-                    >{{ selectedProvider.mobileNumber }}</span
-                  >
-                </div>
-              </td>
-            </tr>
+    <!-- Modal Body -->
+    <div class="modal-body" *ngIf="selectedProvider">
+      <div class="row g-0">
 
-            <tr>
-              <td>
-                <div class="d-flex flex-column">
-                  <span class="heading">Category</span>
-                  <span class="subheadings"
-                    >{{ selectedProvider.category }}</span
-                  >
-                </div>
-              </td>
+        <!-- Left Column: Provider Info -->
+        <div class="col-md-9 border-end">
+          <div class="status p-3">
+            <table class="table table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Name</span>
+                      <span class="subheadings">{{ selectedProvider.firstName }} {{ selectedProvider.lastName }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Location</span>
+                      <span class="subheadings">{{ selectedProvider.location }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Mobile</span>
+                      <span class="subheadings">{{ selectedProvider.mobileNumber }}</span>
+                    </div>
+                  </td>
+                </tr>
 
-              <td>
-                <div class="d-flex flex-column">
-                  <span class="heading">Location</span>
-                  <span class="subheadings">
-                    <a
-                      *ngIf="savedLocationUrl"
-                      href="{{ savedLocationUrl }}"
-                      target="_blank"
-                      class="text-decoration-none text-info"
-                    >
-                      View Map <i class="fas fa-map-marker-alt"></i>
-                    </a>
-                    <span *ngIf="!savedLocationUrl" class="text-muted"
-                      >Not available</span
-                    >
-                  </span>
-                </div>
-              </td>
+                <tr>
+                  <td>
+                    <div class="d-flex flex-column">
+                      <span class="heading">Category</span>
+                      <span class="subheadings">{{ selectedProvider.category }}</span>
+                    </div>
+                  </td>
+                  <td colspan="2">
+                    <div class="d-flex flex-column">
+                      <span class="heading">Map</span>
+                      <span class="subheadings">
+                        <a *ngIf="savedLocationUrl" href="{{ savedLocationUrl }}" target="_blank" class="text-decoration-none text-info">
+                          View Map <i class="fas fa-map-marker-alt"></i>
+                        </a>
+                        <span *ngIf="!savedLocationUrl" class="text-muted">Not available</span>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
 
-              <td colspan="2"></td>
-            </tr>
+                <!-- Description -->
+                <tr>
+                  <td colspan="3">
+                    <div class="d-flex flex-column">
+                      <span class="heading">Description</span>
+                      <span class="subheadings">{{ selectedProvider.description || 'Not available' }}</span>
+                    </div>
+                  </td>
+                </tr>
 
-            <!-- Images -->
-            <tr>
-              <td colspan="3">
-                <div class="d-flex flex-column">
-                  <span class="heading">Images</span>
-                  <span class="d-flex flex-row gallery">
-                    <img
-                      *ngFor="let img of providerImages"
-                      [src]="'data:image/jpeg;base64,' + img"
-                      width="120"
-                      class="rounded mr-2"
-                    />
-                  </span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+                <!-- Images -->
+                <tr>
+                  <td colspan="3">
+                    <div class="d-flex flex-column">
+                      <span class="heading">Images</span>
+                      <div class="d-flex flex-wrap gallery mt-1">
+                        <img *ngFor="let img of providerImages" [src]="'data:image/jpeg;base64,' + img" width="120" class="rounded me-2 mb-2"/>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
 
-    <!-- Right column with profile -->
-    <div class="col-md-4">
-      <div class="p-2 text-center">
-        <div class="profile">
-          <img
-            *ngIf="selectedProvider.profilePicture"
-            [src]="'data:image/jpeg;base64,' + selectedProvider.profilePicture"
-            width="100"
-            class="rounded-circle img-thumbnail"
-          />
-          <span class="d-block mt-3 font-weight-bold"
-            >{{ selectedProvider.firstName }}
-            {{ selectedProvider.lastName }}</span
-          >
+              </tbody>
+            </table>
+          </div>
         </div>
+
+       <!-- Right Column: Profile Picture -->
+<div class="col-md-3 text-center p-3">
+  <div class="profile">
+    <img
+      [src]="selectedProvider.profilePicture ? 'data:image/jpeg;base64,' + selectedProvider.profilePicture : 'assets/defaultimage.png'"
+      class="rounded-circle img-thumbnail"
+      width="120"
+    />
+    <span class="d-block mt-3 font-weight-bold">
+      {{ selectedProvider.firstName }} {{ selectedProvider.lastName }}
+    </span>
+  </div>
+</div>
+
+
+
+
+
       </div>
     </div>
+
   </div>
 </div>
 
 
-  </div>
-</div>
+
+
+
+
+
+
 <!-- <app-footer></app-footer> -->

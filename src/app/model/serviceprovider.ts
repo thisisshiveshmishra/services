@@ -13,7 +13,10 @@ export interface Serviceprovider {
   profilePicture?: string;
   approved?: boolean;
   profilePictureBase64?: string;
+  description?: string; // ✅ Add this line, optional if sometimes empty
+
 }
+
  
 // 👇 Add this interface for image API response
 export interface ProviderImage {

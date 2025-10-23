@@ -320,12 +320,27 @@ button {
 
 
 .description-column {
-  max-width: 280px;       /* restrict column width */
-  white-space: nowrap;    /* prevent wrapping */
-  overflow: hidden;       /* hide extra text */
-  text-overflow: ellipsis; /* add "..." at end */
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
+  color: #333;
+  transition: all 0.3s ease;
 }
+
+/* When expanded */
+.description-column.expanded {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  background-color: #fff3f3; /* light red background for focus */
+  border-radius: 6px;
+  padding: 5px;
+  color: #000;
+}
+
+
 
 
 
@@ -375,3 +390,64 @@ button {
 
 
 
+
+
+/* ----------------- Truncated text ----------------- */
+.description-column,
+.feedback-message,
+.request-query {
+  max-width: 280px;         /* restrict width */
+  white-space: nowrap;      /* prevent wrapping */
+  overflow: hidden;         /* hide overflow */
+  text-overflow: ellipsis;  /* add "..." at end */
+  cursor: pointer;          /* indicate clickability */
+  color: #333;              /* normal text color */
+  transition: color 0.2s ease;
+}
+
+/* Hover effect to indicate clickable */
+.description-column:hover,
+.feedback-message:hover,
+.request-query:hover {
+  color: red;               /* text turns red */
+  text-decoration: underline; /* underline appears */
+}
+
+
+
+/* Scrollable container for requests table */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Make the table take full width but still scrollable if needed */
+.table-container table {
+  width: max-content;  /* width fits content */
+  min-width: 100%;     /* but at least full container width */
+  border-collapse: collapse;
+}
+
+/* Keep ellipsis for request-query */
+.request-query {
+  max-width: 414px;       /* adjust width as needed */
+  white-space: nowrap;    /* keep text in one line */
+  overflow: hidden;       /* hide overflow */
+  text-overflow: ellipsis; /* show "..." */
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+/* Hover effect for clickable text */
+.request-query:hover {
+  color: red;
+  text-decoration: underline;
+}
+
+/* Optional: allow horizontal scroll on small screens */
+@media (max-width: 768px) {
+  .table-container table {
+    min-width: 700px; /* table scrolls horizontally if small screen */
+  }
+}

@@ -19,9 +19,11 @@
 
   <nav class="navbar navbar-expand-md fixed-top top-nav">
     <div class="container-fluid">
-        <!-- Brand -->
-        <a class="navbar-brand" href="https://aideort.com"><strong>Aideort</strong></a>
- 
+         <!-- Brand with Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="https://aideort.com">
+      <img src="../../../assets/logo with name.png" alt="AideOrt Logo" style="height: 65px; margin-right: 1px;">
+      <strong style="color: #ff8c3f;">Aideort</strong>
+    </a>
         <!-- Toggler Button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -87,9 +89,9 @@
           <div class="intro-caption mt-5">
             <h1 class="text-white mb-2">"You need a help..! —  We are ready to help you with any kind of support, 360°."</h1>
             <p class="text-white mb-4">
-  <span class="highlight-word">Submit</span> for any help you need.<br>
-  <span class="highlight-word">Search</span>  for service / Product.<br>
-  <span class="highlight-word">Register</span> your business / Services.<br>
+  <span class="highlight-word">Submit</span> for any Help you need.<br>
+  <span class="highlight-word">Search</span>  for Service / Product.<br>
+  <span class="highlight-word">Register</span> your Business / Services.<br>
              
 
 </p>
@@ -284,23 +286,35 @@
                     </div>
                   </td>
                 </tr>
+
+                <tr>
+  <td colspan="3">
+    <div class="d-flex flex-column">
+      <span class="heading">Description</span>
+      <span class="subheadings">{{ selectedProvider.description || 'Not available' }}</span>
+    </div>
+  </td>
+</tr>
+
               </tbody>
             </table>
           </div>
         </div>
  
-        <!-- Right column with profile -->
-        <div class="col-md-4">
-          <div class="p-2 text-center">
-            <div class="profile">
-              <img *ngIf="selectedProvider.profilePicture"
-                   [src]="'data:image/jpeg;base64,' + selectedProvider.profilePicture"
-                   width="150"
-                   class="rounded-circle img-thumbnail" />
-              <span class="d-block mt-3 font-weight-bold">{{ selectedProvider.firstName }} {{ selectedProvider.lastName }}</span>
-            </div>
-          </div>
-        </div>
+        <!-- Right Column: Profile Picture -->
+<div class="col-md-3 text-center p-3">
+  <div class="profile">
+    <img
+      [src]="selectedProvider.profilePicture ? 'data:image/jpeg;base64,' + selectedProvider.profilePicture : 'assets/defaultimage.png'"
+      class="rounded-circle img-thumbnail"
+      width="120"
+    />
+    <span class="d-block mt-3 font-weight-bold">
+      {{ selectedProvider.firstName }} {{ selectedProvider.lastName }}
+    </span>
+  </div>
+</div>
+
       </div>
     </div>
  
@@ -435,9 +449,16 @@
   <!-- Footer Section -->
 <footer class="footer">
   <div class="footer-top">
-    <div class="footer-newsletter">
-      <h2 class="footer-logo">Aideort PVT LTD.</h2>
-      <p class="footer-quote">“Our mission is simple – to provide service you can count on, support you can trust, and results you can see.”</p>
+       <div class="footer-newsletter">
+      <!-- Logo + Name side by side -->
+      <div class="footer-brand">
+        <img src="../../../assets/logo with name.jpg" alt="AideOrt Logo" class="footer-logo-img">
+        <h2 class="footer-logo-text">Aideort PVT LTD.</h2>
+      </div>
+
+      <p class="footer-quote">
+        “Our mission is simple – to provide service you can count on, support you can trust, and results you can see.”
+      </p>
     </div>
  
     <div class="footer-links">
@@ -446,14 +467,14 @@
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
-          <li><a href="#">Solutions</a></li>
+          <li><a href="solutions">Solutions</a></li>
           <li><a href="career">Career</a></li>
         </ul>
       </div>
       <div>
         <h4>Documentation</h4>
         <ul>
-          <li><a href="#">Help Center</a></li>
+          <li><a  href="https://aideort.com">Help Center</a></li>
           <li><a href="contact">Contact</a></li>
           <li><a href="faq">FAQ</a></li>
           <li><a href="privacypolicy">Privacy Policy</a></li>

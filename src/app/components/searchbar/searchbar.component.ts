@@ -12,8 +12,9 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./searchbar.component.css']
 })
 export class SearchbarComponent {
-  searchForm!: FormGroup;
+ searchForm!: FormGroup;
   submitted = false;
+  loading: boolean = false;  // ✅ add this line
 
   // data arrays
   allResults: Serviceprovider[] = [];
@@ -29,6 +30,7 @@ export class SearchbarComponent {
   isModalOpen = false;
   message = '';
   savedLocationUrl: string = '';
+
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +53,7 @@ export class SearchbarComponent {
 loadFilterOptions(): void {
   this.serviceProviderService.getAllProviders().subscribe({
     next: (data) => {
+      console.log('Fetched Data From Backend LoadFilterOpetion',data);
       const approved = data.filter(p => p.approved === true);
       this.availableLocations = Array.from(new Set(approved.map(p => p.location).filter(Boolean))).sort();
       this.availableCategories = Array.from(new Set(approved.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
@@ -64,43 +67,51 @@ loadFilterOptions(): void {
  onSearch(): void {
   this.submitted = true;
   this.message = '';
+  this.loading = true; // 🔹 Show loading message immediately
+  this.allResults = []; // clear old results first
 
   let category = this.searchForm.value.category?.trim() || '';
   let location = this.searchForm.value.location?.trim() || '';
 
   if (category === 'ALL' && location === 'ALL') {
-    this.getAllProviders();
-    return;
+    category = '';
+    location = '';
   }
 
   if (category === 'ALL') category = '';
   if (location === 'ALL') location = '';
 
-  if (!category && !location) {
-    this.getAllProviders();
-    return;
-  }
-
   const searchPayload: SearchRequest = { category, location };
 
+  // Call API
   this.serviceProviderService.searchProviders(searchPayload).subscribe({
     next: (data) => {
-      this.allResults = data.filter(p => p.approved === true);
+      // Simulate 3-second wait before showing results
+      setTimeout(() => {
+        this.allResults = data.filter(p => p.approved === true);
+        this.allResults.sort((a, b) =>
+          (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName)
+        );
 
-      // ✅ Sort results alphabetically by full name
-      this.allResults.sort((a, b) =>
-        (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName)
-      );
+        if (this.allResults.length === 0) {
+          this.message = 'No providers found.';
+        }
 
-      if (this.allResults.length === 0) this.message = 'No providers found.';
+        this.loading = false; // ✅ Hide loading after 3 sec
+      }, 3000);
     },
     error: (err) => {
       console.error('Search failed:', err);
-      this.allResults = [];
-      this.message = 'Error during search';
+      setTimeout(() => {
+        this.loading = false;
+        this.message = 'Error during search';
+        this.allResults = [];
+      }, 3000);
     },
   });
 }
+
+
 
 
   // ✅ load all providers (approved only)
