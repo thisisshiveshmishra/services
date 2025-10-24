@@ -32,14 +32,14 @@ export class ForgotpasswordService {
   }
 
   // ------------------- 3️⃣ Reset Password -------------------
-  resetPassword(email: string, otp: string, newPassword: string): Observable<string> {
-    const params = new HttpParams()
-      .set('email', email)
-      .set('otp', otp)
-      .set('newPassword', newPassword);
-    return this.http.put(`${NAV_URL}/password/reset`, null, {
-      params,
-      responseType: 'text'
-    });
-  }
+  resetPassword(email: string, newPassword: string): Observable<string> {
+  const params = new HttpParams()
+    .set('email', email)
+    .set('newPassword', newPassword);
+
+  return this.http.post(`${NAV_URL}/password/reset`, null, {
+    params,
+    responseType: 'text'
+  });
+}
 }

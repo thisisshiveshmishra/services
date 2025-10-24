@@ -109,16 +109,19 @@ export class ForgotpasswordComponent {
     this.errorMessage = '';
     this.message = '';
 
-    this.forgotService.resetPassword(this.email, this.otp, this.newPassword).subscribe({
-      next: (res) => {
-        this.message = res;
-        this.errorMessage = '';
-        this.resetForm();
-      },
-      error: (err) => {
-        this.errorMessage = err.error || 'Failed to reset password.';
-      }
-    });
+    this.forgotService.resetPassword(this.email, this.newPassword).subscribe({
+  next: (res) => {
+    this.message = res;
+    this.errorMessage = '';
+    this.resetForm();
+  },
+  error: (err) => {
+    this.errorMessage = typeof err.error === 'string'
+      ? err.error
+      : 'Failed to reset password.';
+  }
+});
+
   }
 
   // Reset all fields and validations
