@@ -14,6 +14,9 @@
       <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
         <h2 class="mb-4">Give Us Feedback!</h2>
 
+        <!-- Hidden userId field -->
+        <input type="hidden" formControlName="userId">
+
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -27,7 +30,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <input class="form-control" formControlName="contactNumber" placeholder="Contact Number" type="text">
-              <small *ngIf="feedbackForm.get('contactNumber')?.invalid && feedbackForm.get('contactNumber')?.touched" class="text-danger">
+              <small *ngIf="feedbackForm.get('contactNumber')?.invalid && feedbackForm.get('contactNumber')?.touched"
+                class="text-danger">
                 Valid 10-digit contact number is required
               </small>
             </div>
@@ -47,14 +51,15 @@
           <div class="col-md-6">
             <div class="form-group">
               <input class="form-control" formControlName="location" placeholder="Enter Location" type="text">
-              <small *ngIf="feedbackForm.get('location')?.invalid && feedbackForm.get('location')?.touched" class="text-danger">
+              <small *ngIf="feedbackForm.get('location')?.invalid && feedbackForm.get('location')?.touched"
+                class="text-danger">
                 Location is required
               </small>
             </div>
           </div>
         </div>
 
-        <!-- Category Field -->
+        <!-- Category and Rating -->
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -74,7 +79,6 @@
             </div>
           </div>
 
-          <!-- Rating Field -->
           <div class="col-md-6">
             <div class="form-group">
               <select class="form-control" formControlName="rating">
@@ -89,6 +93,7 @@
           </div>
         </div>
 
+        <!-- Message -->
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
@@ -99,7 +104,7 @@
               </small>
             </div>
 
-            <div class="form-group">
+            <div class="form-group text-center">
               <button type="submit" class="btn btn-primary btn-capsul px-4">Submit</button>
             </div>
           </div>

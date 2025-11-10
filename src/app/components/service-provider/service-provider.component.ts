@@ -31,6 +31,7 @@ export class ServiceProviderComponent implements OnInit {
     private sharedService: SharedService
   ) {
     this.feedbackForm = this.fb.group({
+      userId: [null], // 👈 store logged-in user's id
       name: ['', Validators.required],
       contactNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       email: ['', [Validators.required, Validators.email]],
@@ -44,17 +45,48 @@ export class ServiceProviderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategoriesFromDatabase();
+    this.prefillUserData();
 
     this.serviceProviderService.getAllProviders().subscribe((data: Serviceprovider[]) => {
       this.providers = data.slice(0, 4);
-
-      // attach base64 image for preview
       this.providers.forEach(provider => {
         if (provider.profilePicture) {
           provider.profilePictureBase64 = 'data:image/jpeg;base64,' + provider.profilePicture;
         }
       });
     });
+  }
+
+  /** ✅ Prefill data if user or provider logged in */
+  prefillUserData(): void {
+    if (this.isLoggedIn()) {
+      const userData = JSON.parse(localStorage.getItem('user') || '{}');
+          // 👇 Merge name + surname safely
+        const fullName = `${userData?.name || ''} ${userData?.surname || ''}`.trim();
+        this.feedbackForm.patchValue({
+        userId: userData?.id || null,
+        name: fullName,   // 👈 Show merged full name in name field
+        contactNumber: userData?.contactNumber || '',
+        email: userData?.email || '',
+        location: userData?.location || ''
+      });
+      this.disablePrefilledFields();
+    } else if (this.isServiceProviderLoggedIn()) {
+      const providerData = JSON.parse(localStorage.getItem('provider') || '{}');
+      this.feedbackForm.patchValue({
+        name: providerData?.name || providerData?.fullName || '',
+        contactNumber: providerData?.contactNumber || providerData?.phoneNumber || '',
+        email: providerData?.email || ''
+      });
+      this.disablePrefilledFields();
+    }
+  }
+
+  disablePrefilledFields(): void {
+    this.feedbackForm.get('name')?.disable();
+    this.feedbackForm.get('contactNumber')?.disable();
+    this.feedbackForm.get('email')?.disable();
+    this.feedbackForm.get('location')?.disable();
   }
 
   loadCategoriesFromDatabase(): void {
@@ -65,9 +97,7 @@ export class ServiceProviderComponent implements OnInit {
         );
         this.categories = uniqueCategories;
       },
-      error: (err) => {
-        console.error('Error fetching categories:', err);
-      }
+      error: (err) => console.error('Error fetching categories:', err)
     });
   }
 
@@ -94,7 +124,8 @@ export class ServiceProviderComponent implements OnInit {
       return;
     }
 
-    let feedback = { ...this.feedbackForm.value };
+    // ✅ Include disabled fields too
+    let feedback = { ...this.feedbackForm.getRawValue() };
 
     if (feedback.category === 'Other' && feedback.customCategory) {
       feedback.category = feedback.customCategory;
@@ -122,18 +153,14 @@ export class ServiceProviderComponent implements OnInit {
   }
 
   isServiceProviderLoggedIn(): boolean {
-    return localStorage.getItem('providerToken') !== null;
+    return !!localStorage.getItem('provider');
   }
 
   logout() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const userId = user?.id;
-
-    if (userId) {
-      this.userService.logout();
-      this.router.navigate(['/']);
-    }
     localStorage.removeItem('user');
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('provider');
+    localStorage.removeItem('providerToken');
     this.router.navigate(['/']);
   }
 
@@ -159,7 +186,7 @@ export class ServiceProviderComponent implements OnInit {
     this.providerImages = [];
   }
 
-  closeForm() {
+  closeForm(): void {
     this.router.navigate(['/']);
   }
 }

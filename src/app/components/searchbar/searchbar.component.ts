@@ -215,4 +215,9 @@ loadFilterOptions(): void {
     }
     window.open(this.savedLocationUrl, '_blank');
   }
+
+  
+  goHome(): void {
+  this.router.navigate(['/']);
+}
 }

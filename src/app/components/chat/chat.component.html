@@ -36,7 +36,7 @@
             <div class="bubble user-message">
               <strong>{{ msg.userName }}</strong><br />
               {{ msg.content }}
-              <div class="timestamp">{{ msg.sentTime | date:'MMM d, h:mm a' }}</div>
+              <div class="timestamp">{{ msg.sentTime | date: 'MMM d, y, h:mm a'  }}</div>
             </div>
           </div>
 
@@ -44,7 +44,7 @@
             <div class="bubble provider-reply">
               <strong>{{ msg.userName }}</strong><br />
               {{ msg.content }}
-              <div class="timestamp">{{ msg.sentTime | date:'MMM d, h:mm a' }}</div>
+              <div class="timestamp">{{ msg.sentTime | date: 'MMM d, y, h:mm a'  }}</div>
             </div>
           </div>
         </div>

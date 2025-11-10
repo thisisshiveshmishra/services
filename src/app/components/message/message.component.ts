@@ -3,33 +3,19 @@ import {
   OnInit,
   OnDestroy,
   AfterViewChecked,
+  ElementRef,
   ViewChild,
-  ElementRef
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription, interval } from 'rxjs';
 import { MessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user.service';
-import { Subscription, interval } from 'rxjs';
 import { ServiceProviderService } from 'src/app/services/service-provider.service';
-
-interface Reply {
-  id: number;
-  replyContent: string;
-  createdAt: string;
-}
-
-interface Message {
-  id: number;
-  userName: string;
-  content: string;
-  sentTime: string;
-  replies: Reply[];
-}
-
+ 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  styleUrls: ['./message.component.css'],
 })
 export class MessageComponent implements OnInit, OnDestroy, AfterViewChecked {
   providerId!: number;
@@ -37,147 +23,129 @@ export class MessageComponent implements OnInit, OnDestroy, AfterViewChecked {
   messages: any[] = [];
   newMessage: string = '';
   autoRefreshSubscription!: Subscription;
-  shouldScroll: boolean = false;
   providerName: string = '';
-
-  @ViewChild('chatBox') private chatBox!: ElementRef;
-
+  private scrollAfterRender: boolean = false;
+ 
+  @ViewChild('chatBox') chatBox!: ElementRef;
+ 
   constructor(
     private route: ActivatedRoute,
     private messageService: MessageService,
     private userService: UserService,
     private serviceProviderService: ServiceProviderService
   ) {}
-
+ 
   ngOnInit() {
     this.providerId = Number(this.route.snapshot.paramMap.get('id'));
     const currentUser = this.userService.getCurrentUser();
-
+ 
     if (currentUser && currentUser.id) {
       this.userId = currentUser.id;
-
+ 
       // Fetch provider details
       this.serviceProviderService.getProviderById(this.providerId).subscribe(
-        provider => {
+        (provider) => {
           this.providerName = `${provider.firstName} ${provider.lastName}`;
         },
-        err => {
+        (err) => {
           console.error('Error fetching provider details', err);
           this.providerName = 'Service Provider';
         }
       );
-
-      this.loadMessages();
-
-      // Auto-refresh every 10 seconds
-      this.autoRefreshSubscription = interval(10000).subscribe(() => {
-        this.loadMessages();
+ 
+      // Load initial messages
+      this.loadMessages(true);
+ 
+      // Auto-refresh every 5 seconds
+      this.autoRefreshSubscription = interval(5000).subscribe(() => {
+        this.loadMessages(false); // refresh without forcing scroll
       });
     } else {
       console.error('User not logged in.');
     }
   }
-
+ 
   ngOnDestroy() {
     if (this.autoRefreshSubscription) {
       this.autoRefreshSubscription.unsubscribe();
     }
   }
-
+ 
   ngAfterViewChecked() {
-    if (this.shouldScroll) {
+    if (this.scrollAfterRender) {
       this.scrollToBottom();
-      this.shouldScroll = false;
+      this.scrollAfterRender = false;
     }
   }
-
-  // ✅ Helper: check if user is viewing bottom
-  private isUserNearBottom(): boolean {
-    const el = this.chatBox?.nativeElement;
-    if (!el) return false;
-    const threshold = 150; // pixels from bottom
-    const position = el.scrollTop + el.clientHeight;
-    const height = el.scrollHeight;
-    return height - position < threshold;
-  }
-
-  // ✅ Fetch messages safely
-  loadMessages() {
+ 
+  // Load messages with option to scroll after render
+  loadMessages(scroll: boolean = true) {
     if (!this.providerId || !this.userId) return;
-
-    // Check if user is near bottom before reload
-    const shouldAutoScroll = this.isUserNearBottom();
-
+ 
     this.messageService
       .getMessagesByProviderAndUser(this.providerId, this.userId)
       .subscribe(
-        data => {
-          this.messages = (data || []).map(msg => ({
-            ...msg,
-            replies: msg.replies || []
-          }));
-
-          // Sort messages
-          this.messages.sort(
+        (data) => {
+          this.messages = (data || []).sort(
             (a, b) => new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
           );
-
-          // Sort replies
-          this.messages.forEach((msg: Message) => {
-            msg.replies.sort(
-              (r1: Reply, r2: Reply) =>
-                new Date(r1.createdAt).getTime() - new Date(r2.createdAt).getTime()
-            );
-          });
-
-          // ✅ Only scroll if user was already near bottom
-          this.shouldScroll = shouldAutoScroll;
+          if (scroll) this.scrollAfterRender = true;
         },
-        err => console.error('Error loading messages', err)
+        (err) => console.error('Error loading messages', err)
       );
   }
-
-  // ✅ Send new message
+ 
+  // Send message instantly
   sendMessage() {
     if (!this.newMessage.trim()) return;
-
-    const message = { content: this.newMessage.trim() };
-
-    this.messageService.sendMessage(this.userId, this.providerId, message).subscribe(
-      () => {
-        this.newMessage = '';
-        this.loadMessages();
+ 
+    const messageText = this.newMessage.trim();
+    const messagePayload = { content: messageText };
+    this.newMessage = '';
+ 
+    this.messageService.sendMessage(this.userId, this.providerId, messagePayload).subscribe(
+      (savedMessage) => {
+        this.messages.push(
+          savedMessage || {
+            content: messageText,
+            userName: 'You',
+            sentTime: new Date(),
+            replies: [],
+          }
+        );
+        this.scrollAfterRender = true; // scroll exactly after message render
       },
-      err => {
+      (err) => {
         console.error('Error sending message:', err);
         alert('Failed to send message');
       }
     );
   }
-
-  // ✅ Send reply to specific message
+ 
+  // Scroll to bottom perfectly
+  scrollToBottom() {
+    try {
+      const chatBoxEl = this.chatBox.nativeElement;
+      chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
+    } catch (err) {
+      console.error('Scroll error:', err);
+    }
+  }
+ 
+  // Reply (optional)
   sendReply(messageId: number, replyText: string) {
     if (!replyText.trim()) return;
-
+ 
     const replyPayload = { replyContent: replyText.trim() };
-
+ 
     this.messageService.sendReply(messageId, replyPayload).subscribe(
       () => {
-        this.loadMessages();
+        this.loadMessages(false); // refresh without forcing scroll
       },
-      err => {
+      (err) => {
         console.error('Error sending reply:', err);
         alert('Failed to send reply');
       }
     );
-  }
-
-  // ✅ Scroll to bottom safely
-  private scrollToBottom(): void {
-    try {
-      this.chatBox.nativeElement.scrollTop = this.chatBox.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error('Scroll to bottom failed:', err);
-    }
   }
 }

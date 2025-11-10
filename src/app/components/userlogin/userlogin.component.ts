@@ -19,16 +19,26 @@ export class UserloginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  loginUser() {
-    this.authService.login(this.email, this.password).subscribe({
-      next: (user) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        console.log('Response from Database:', user);
-        this.router.navigate(['/']); // Redirect after login
-      },
-      error: () => {
-        this.errorMessage = 'Invalid email or password';
+ loginUser() {
+  this.authService.login(this.email, this.password).subscribe({
+    next: (response) => {
+      // Check if backend returns both token and user details
+      if (response.token && response.user) {
+        // ✅ Save user details and token separately
+        localStorage.setItem('userToken', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      } else {
+        // ✅ If backend returns only user info
+        localStorage.setItem('user', JSON.stringify(response));
       }
-    });
-  }
+
+      console.log('Response from Database:', response);
+      this.router.navigate(['/']); // Redirect after login
+    },
+    error: () => {
+      this.errorMessage = 'Invalid email or password';
+    }
+  });
+}
+
 }

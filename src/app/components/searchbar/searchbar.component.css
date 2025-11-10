@@ -585,3 +585,44 @@ background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(180,127,65)' heigh
   font-weight: 500;
   font-size: 15px;
 }
+
+
+.close-home-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  line-height: 1;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.close-home-btn:hover {
+  color: #b30000;
+  transform: scale(1.1);
+}
+
+/* ✅ Mobile Fix */
+@media (max-width: 650px) {
+  .close-home-btn {
+    top: 6px;
+    right: 10px;
+    font-size: 1.7rem;
+  }
+
+  /* Add top padding to form so the button doesn't overlap the legend */
+  .s01 form {
+    padding-top: 55px !important;
+  }
+
+  /* Optional: slightly reduce heading size */
+  .s01 legend {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+}

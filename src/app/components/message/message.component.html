@@ -1,50 +1,56 @@
 <div class="chat-container">
-
-  <!-- Header -->
+  <!-- 🔹 Chat Header -->
   <div class="chat-header sticky-top shadow-sm">
     <h4 class="mb-0">Chat with {{ providerName }}</h4>
   </div>
-
-  <!-- Chat messages area -->
-  <div #chatBox class="chat-box">
+ 
+  <!-- 🔹 Chat Messages Area -->
+  <div class="chat-box" #chatBox>
     <div *ngFor="let message of messages" class="mb-4">
-
-      <!-- User message -->
+ 
+      <!-- 🧍 User Message -->
       <div class="d-flex justify-content-end align-items-start">
         <div class="user-bubble">
-          <strong>{{ message.userName || 'You' }}</strong><br>
+          <strong>{{ message.userName || 'You' }}</strong><br />
           {{ message.content }}
-          <div class="timestamp">{{ message.sentTime | date:'short' }}</div>
+          <div class="timestamp">
+            {{ message.sentTime | date: 'MMM d, y, h:mm a' }}
+          </div>
         </div>
         <div class="avatar user-avatar ms-2">U</div>
       </div>
-
-      <!-- Provider replies -->
-      <div *ngIf="message.replies.length > 0">
-        <div *ngFor="let reply of message.replies" class="d-flex justify-content-start align-items-start mt-2">
+ 
+      <!-- 💬 Provider Replies -->
+      <div *ngIf="message.replies?.length > 0">
+        <div
+          *ngFor="let reply of message.replies"
+          class="d-flex justify-content-start align-items-start mt-2"
+        >
           <div class="avatar provider-avatar me-2">P</div>
           <div class="provider-bubble">
-            <strong>{{ providerName }}</strong><br>
+            <strong>{{ providerName }}</strong><br />
             {{ reply.replyContent }}
-            <div class="timestamp">{{ reply.createdAt | date:'short' }}</div>
+            <div class="timestamp">
+              {{ reply.createdAt | date: 'MMM d, y, h:mm a' }}
+            </div>
           </div>
         </div>
       </div>
-
+ 
     </div>
   </div>
-
-  <!-- Input area -->
+ 
+  <!-- 🔹 Chat Input -->
   <div class="chat-input mt-3">
     <div class="input-group">
       <textarea
         class="form-control"
         [(ngModel)]="newMessage"
-        (keyup.enter)="sendMessage()"
-        placeholder="Type your message...">
-      </textarea>
+        placeholder="Type your message..."
+        rows="1"
+        (keydown.enter)="sendMessage()"
+      ></textarea>
       <button class="btn btn-primary" (click)="sendMessage()">Send</button>
     </div>
   </div>
-
 </div>

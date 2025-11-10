@@ -549,3 +549,16 @@ textarea + .text-danger {
   color: red;
   margin-top: 5px;
 }
+
+
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

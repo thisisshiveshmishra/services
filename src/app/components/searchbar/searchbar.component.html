@@ -14,6 +14,12 @@
   <body>
     <div class="s01">
       <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+
+        <!-- 🔴 Cross (Go Home) Button -->
+  <button type="button" class="close-home-btn" (click)="goHome()">
+    &times;
+  </button>
+  
         <fieldset>
           <legend>Discover the Amazing Services</legend>
         </fieldset>
