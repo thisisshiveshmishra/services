@@ -30,7 +30,8 @@
         <div class="error"
           *ngIf="serviceRequestForm.get('surname')?.touched && serviceRequestForm.get('surname')?.invalid">
           <small *ngIf="serviceRequestForm.get('surname')?.errors?.['required']">Surname is required.</small>
-          <small *ngIf="serviceRequestForm.get('surname')?.errors?.['pattern']">Only alphabets and spaces allowed.</small>
+          <small *ngIf="serviceRequestForm.get('surname')?.errors?.['pattern']">Only alphabets and spaces
+            allowed.</small>
           <small *ngIf="serviceRequestForm.get('surname')?.errors?.['maxlength']">Max 30 characters.</small>
         </div>
 
@@ -38,7 +39,8 @@
         <input type="text" placeholder="Contact Number" formControlName="contactNumber" />
         <div class="error"
           *ngIf="serviceRequestForm.get('contactNumber')?.touched && serviceRequestForm.get('contactNumber')?.invalid">
-          <small *ngIf="serviceRequestForm.get('contactNumber')?.errors?.['required']">Contact number is required.</small>
+          <small *ngIf="serviceRequestForm.get('contactNumber')?.errors?.['required']">Contact number is
+            required.</small>
           <small *ngIf="serviceRequestForm.get('contactNumber')?.errors?.['pattern']">Must be a valid 10-digit number
             starting with 6-9.</small>
         </div>
@@ -67,7 +69,8 @@
         <div class="error"
           *ngIf="serviceRequestForm.get('location')?.touched && serviceRequestForm.get('location')?.invalid">
           <small *ngIf="serviceRequestForm.get('location')?.errors?.['required']">Location is required.</small>
-          <small *ngIf="serviceRequestForm.get('location')?.errors?.['pattern']">Only letters, numbers, and commas allowed.</small>
+          <small *ngIf="serviceRequestForm.get('location')?.errors?.['pattern']">Only letters, numbers, and commas
+            allowed.</small>
         </div>
 
         <!-- Category -->
@@ -88,8 +91,8 @@
             *ngIf="serviceRequestForm.get('customCategory')?.touched && serviceRequestForm.get('customCategory')?.invalid">
             <small *ngIf="serviceRequestForm.get('customCategory')?.errors?.['required']">Please enter a custom
               category.</small>
-            <small *ngIf="serviceRequestForm.get('customCategory')?.errors?.['pattern']">Only letters and numbers, 3–50
-              chars.</small>
+            <small *ngIf="serviceRequestForm.get('customCategory')?.errors?.['pattern']"> Please enter a proper category
+              (must be 3–50 characters).</small>
           </div>
         </div>
 

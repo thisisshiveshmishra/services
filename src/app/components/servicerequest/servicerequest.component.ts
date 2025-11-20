@@ -25,7 +25,7 @@ export class ServicerequestComponent {
     private fb: FormBuilder,
     private serviceRequestService: ServiceRequestServiceService,
     private serviceprovider: ServiceProviderService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -48,20 +48,20 @@ export class ServicerequestComponent {
   }
 
   loadCategoriesFromServiceProviders(): void {
-  this.serviceprovider.getAllProviders().subscribe({
-    next: (providers) => {
-      const uniqueCategories = Array.from(
-        new Set(providers.map(p => p.category).filter(Boolean))
-      );
+    this.serviceprovider.getAllProviders().subscribe({
+      next: (providers) => {
+        const uniqueCategories = Array.from(
+          new Set(providers.map(p => p.category).filter(Boolean))
+        );
 
-      // ✅ Sort categories alphabetically (case-insensitive)
-      this.categories = uniqueCategories.sort((a, b) =>
-        a.toLowerCase().localeCompare(b.toLowerCase())
-      );
-    },
-    error: (err) => console.error('Error loading service providers', err)
-  });
-}
+        // ✅ Sort categories alphabetically (case-insensitive)
+        this.categories = uniqueCategories.sort((a, b) =>
+          a.toLowerCase().localeCompare(b.toLowerCase())
+        );
+      },
+      error: (err) => console.error('Error loading service providers', err)
+    });
+  }
 
 
   onCategoryChange(event: Event): void {
@@ -106,6 +106,8 @@ export class ServicerequestComponent {
         alert('✅ Service request submitted successfully!');
         this.serviceRequestForm.reset();
         this.loadAllRequests();
+        // 🔥 Reload entire page
+        window.location.reload();
       },
       error: (err) => {
         this.loading = false;
@@ -114,7 +116,7 @@ export class ServicerequestComponent {
       }
     });
   }
-loadAllRequests(): void {
+  loadAllRequests(): void {
     this.loading = true;
     this.serviceRequestService.getAllRequests().subscribe({
       next: (data) => {

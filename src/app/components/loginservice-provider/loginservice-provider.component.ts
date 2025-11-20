@@ -1,5 +1,6 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 import { ServiceProviderService } from 'src/app/services/service-provider.service';
 
 @Component({
@@ -9,16 +10,13 @@ import { ServiceProviderService } from 'src/app/services/service-provider.servic
 })
 export class LoginserviceProviderComponent {
 
-  // Login fields
   email = '';
   password = '';
   message = '';
 
-  // Password visibility toggles
   showLoginPassword = false;
   showRegisterPassword = false;
 
-  // Registration form
   form: any = {
     firstName: '',
     lastName: '',
@@ -33,7 +31,6 @@ export class LoginserviceProviderComponent {
 
   selectedFile: File | null = null;
 
-  // Error flags
   fileError = false;
   mobileError = false;
   locationError = false;
@@ -42,7 +39,6 @@ export class LoginserviceProviderComponent {
   genderError = false;
   loginEmailError = false;
 
-  // Regex patterns
   namePattern = /^[A-Za-z]{2,30}$/;
   mobilePattern = /^[6-9]\d{9}$/;
   emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,20 +53,17 @@ export class LoginserviceProviderComponent {
     private el: ElementRef
   ) {}
 
-  // Toggle eye icon for login password
   toggleLoginPassword(): void {
     this.showLoginPassword = !this.showLoginPassword;
   }
 
-  // Toggle eye icon for register password
   toggleRegisterPassword(): void {
     this.showRegisterPassword = !this.showRegisterPassword;
   }
 
-  // Validate and store selected file
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 5 * 1024 * 1024;
 
     if (file) {
       const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -84,16 +77,14 @@ export class LoginserviceProviderComponent {
     }
   }
 
-  // Registration submit
-  onSubmit(): void {
-    // Reset error flags
+  onSubmit(registerForm: NgForm): void {
+
     this.mobileError = false;
     this.locationError = false;
     this.categoryError = false;
     this.descriptionError = false;
     this.genderError = false;
 
-    // Validations
     if (!this.namePattern.test(this.form.firstName)) return;
     if (!this.namePattern.test(this.form.lastName)) return;
 
@@ -128,67 +119,60 @@ export class LoginserviceProviderComponent {
 
     if (this.fileError) return;
 
-    // Prepare FormData
     const formData = new FormData();
     const providerJson = JSON.stringify(this.form);
-    const providerBlob = new Blob([providerJson], { type: 'application/json' });
-    formData.append('provider', providerBlob);
+    formData.append('provider', new Blob([providerJson], { type: 'application/json' }));
 
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
 
-    // Call backend API
     this.serviceProviderService.saveProvider(formData).subscribe({
       next: () => {
         alert('Service provider registered successfully, Please wait for admin approval!');
-        this.form = {};
-        this.selectedFile = null;
+
+        registerForm.resetForm();     // Completely resets the form + validation
+        this.selectedFile = null;     
+
+        // Clear the file input UI
+        const fileInput = this.el.nativeElement.querySelector('#businessProfile');
+        if (fileInput) fileInput.value = "";
+
         this.router.navigate(['/loginserviceprovider']);
       },
       error: (err) => {
         console.error('Registration failed:', err);
-        if (err?.error?.message) {
-          alert(err.error.message);
-        } else {
-          alert('Registration failed. Please try again.');
-        }
+        alert(err.error?.message || 'Registration failed. Please try again.');
       }
     });
   }
 
   onLogin(): void {
-  if (!this.emailPattern.test(this.email)) {
-    this.loginEmailError = true;
-    return;
-  }
-  this.loginEmailError = false;
-
-  this.serviceProviderService.login(this.email, this.password).subscribe({
-    next: (response: string) => {
-      this.message = response;   // plain string
-      localStorage.setItem('providerEmail', this.email);
-      this.router.navigate(['/dashboardserviceprovider']);
-    },
-    error: (error) => {
-      this.message = error.error || 'Login failed. Please check your credentials.';
+    if (!this.emailPattern.test(this.email)) {
+      this.loginEmailError = true;
+      return;
     }
-  });
-}
+    this.loginEmailError = false;
 
+    this.serviceProviderService.login(this.email, this.password).subscribe({
+      next: (response: string) => {
+        this.message = response;
+        localStorage.setItem('providerEmail', this.email);
+        this.router.navigate(['/dashboardserviceprovider']);
+      },
+      error: (error) => {
+        this.message = error.error || 'Login failed. Please check your credentials.';
+      }
+    });
+  }
 
-  // Switch UI panels
   toggleSignUp(): void {
     const container = this.el.nativeElement.querySelector('#container');
-    if (container) {
-      this.renderer.addClass(container, 'right-panel-active');
-    }
+    if (container) this.renderer.addClass(container, 'right-panel-active');
   }
 
   toggleSignIn(): void {
     const container = this.el.nativeElement.querySelector('#container');
-    if (container) {
-      this.renderer.removeClass(container, 'right-panel-active');
-    }
-  }
+    if (container) this.renderer.removeClass(container, 'right-panel-active');
+  } 
 }

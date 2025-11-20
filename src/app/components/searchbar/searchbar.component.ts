@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./searchbar.component.css']
 })
 export class SearchbarComponent {
- searchForm!: FormGroup;
+  searchForm!: FormGroup;
   submitted = false;
   loading: boolean = false;  // ✅ add this line
 
@@ -38,7 +38,7 @@ export class SearchbarComponent {
     private router: Router,
     private sharedService: SharedService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
@@ -50,91 +50,91 @@ export class SearchbarComponent {
   }
 
 
-loadFilterOptions(): void {
-  this.serviceProviderService.getAllProviders().subscribe({
-    next: (data) => {
-      console.log('Fetched Data From Backend LoadFilterOpetion',data);
-      const approved = data.filter(p => p.approved === true);
-      this.availableLocations = Array.from(new Set(approved.map(p => p.location).filter(Boolean))).sort();
-      this.availableCategories = Array.from(new Set(approved.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
-    }
-  });
-}
+  loadFilterOptions(): void {
+    this.serviceProviderService.getAllProviders().subscribe({
+      next: (data) => {
+        console.log('Fetched Data From Backend LoadFilterOpetion', data);
+        const approved = data.filter(p => p.approved === true);
+        this.availableLocations = Array.from(new Set(approved.map(p => p.location).filter(Boolean))).sort();
+        this.availableCategories = Array.from(new Set(approved.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
+      }
+    });
+  }
 
 
 
   // ✅ handle search logic
- onSearch(): void {
-  this.submitted = true;
-  this.message = '';
-  this.loading = true; // 🔹 Show loading message immediately
-  this.allResults = []; // clear old results first
+  onSearch(): void {
+    this.submitted = true;
+    this.message = '';
+    this.loading = true; // 🔹 Show loading message immediately
+    this.allResults = []; // clear old results first
 
-  let category = this.searchForm.value.category?.trim() || '';
-  let location = this.searchForm.value.location?.trim() || '';
+    let category = this.searchForm.value.category?.trim() || '';
+    let location = this.searchForm.value.location?.trim() || '';
 
-  if (category === 'ALL' && location === 'ALL') {
-    category = '';
-    location = '';
+    if (category === 'ALL' && location === 'ALL') {
+      category = '';
+      location = '';
+    }
+
+    if (category === 'ALL') category = '';
+    if (location === 'ALL') location = '';
+
+    const searchPayload: SearchRequest = { category, location };
+
+    // Call API
+    this.serviceProviderService.searchProviders(searchPayload).subscribe({
+      next: (data) => {
+        // Simulate 3-second wait before showing results
+        setTimeout(() => {
+          this.allResults = data.filter(p => p.approved === true);
+          this.allResults.sort((a, b) =>
+            (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName)
+          );
+
+          if (this.allResults.length === 0) {
+            this.message = 'No providers found.';
+          }
+
+          this.loading = false; // ✅ Hide loading after 3 sec
+        }, 3000);
+      },
+      error: (err) => {
+        console.error('Search failed:', err);
+        setTimeout(() => {
+          this.loading = false;
+          this.message = 'Error during search';
+          this.allResults = [];
+        }, 3000);
+      },
+    });
   }
-
-  if (category === 'ALL') category = '';
-  if (location === 'ALL') location = '';
-
-  const searchPayload: SearchRequest = { category, location };
-
-  // Call API
-  this.serviceProviderService.searchProviders(searchPayload).subscribe({
-    next: (data) => {
-      // Simulate 3-second wait before showing results
-      setTimeout(() => {
-        this.allResults = data.filter(p => p.approved === true);
-        this.allResults.sort((a, b) =>
-          (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName)
-        );
-
-        if (this.allResults.length === 0) {
-          this.message = 'No providers found.';
-        }
-
-        this.loading = false; // ✅ Hide loading after 3 sec
-      }, 3000);
-    },
-    error: (err) => {
-      console.error('Search failed:', err);
-      setTimeout(() => {
-        this.loading = false;
-        this.message = 'Error during search';
-        this.allResults = [];
-      }, 3000);
-    },
-  });
-}
 
 
 
 
   // ✅ load all providers (approved only)
- getAllProviders(): void {
-  this.serviceProviderService.getAllProviders().subscribe({
-    next: (data) => {
-      this.allResults = data.filter(p => p.approved === true);
-      this.providers = this.allResults;
-      this.availableLocations = Array.from(new Set(this.allResults.map(p => p.location).filter(Boolean))).sort();
-      this.availableCategories = Array.from(new Set(this.allResults.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
+  getAllProviders(): void {
+    this.serviceProviderService.getAllProviders().subscribe({
+      next: (data) => {
+        this.allResults = data.filter(p => p.approved === true);
+        this.providers = this.allResults;
+        this.availableLocations = Array.from(new Set(this.allResults.map(p => p.location).filter(Boolean))).sort();
+        this.availableCategories = Array.from(new Set(this.allResults.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
 
-      // ✅ Sort results alphabetically by provider name
-      this.allResults.sort((a, b) => (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName));
+        // ✅ Sort results alphabetically by provider name
+        this.allResults.sort((a, b) => (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName));
 
-      if (this.allResults.length === 0) this.message = 'No providers found.';
-    },
-    error: (err) => {
-      console.error('Failed to load providers:', err);
-      this.allResults = [];
-      this.message = 'Error loading providers';
-    }
-  });
-}
+        if (this.allResults.length === 0) this.message = 'No providers found.';
+      },
+      error: (err) => {
+        console.error('Failed to load providers:', err);
+        this.allResults = [];
+        this.message = 'Error loading providers';
+      }
+    });
+  }
 
 
   // ✅ autocomplete location
@@ -216,8 +216,8 @@ loadFilterOptions(): void {
     window.open(this.savedLocationUrl, '_blank');
   }
 
-  
+
   goHome(): void {
-  this.router.navigate(['/']);
-}
+    this.router.navigate(['/']);
+  }
 }

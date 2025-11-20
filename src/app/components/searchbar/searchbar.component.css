@@ -626,3 +626,43 @@ background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(180,127,65)' heigh
     text-align: center;
   }
 }
+
+
+
+/* ✅ Make both buttons same size and aligned on mobile */
+@media (max-width: 768px) {
+  .provider-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .provider-actions button {
+    flex: 1;
+    min-width: 48%;
+    font-size: 0.9rem;
+    height: 44px;
+  }
+}
+
+/* ✅ For very small screens (like phones under 480px) */
+@media (max-width: 480px) {
+  .provider-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .provider-actions button {
+    width: 100%;
+    margin-bottom: 8px;
+    height: 46px;
+    font-size: 0.95rem;
+  }
+
+  .provider-actions button:last-child {
+    margin-bottom: 0;
+  }
+}
+
+

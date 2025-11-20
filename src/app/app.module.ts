@@ -31,6 +31,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { TermsconditionComponent } from './components/termscondition/termscondition.component';
 import { FaqComponent } from './components/faq/faq.component';
 import { SolutionsComponent } from './components/solutions/solutions.component';
+import { MaintenanceComponent } from './components/maintenance/maintenance.component';
 
 
 
@@ -60,7 +61,8 @@ import { SolutionsComponent } from './components/solutions/solutions.component';
    PrivacyPolicyComponent,
    TermsconditionComponent,
    FaqComponent,
-   SolutionsComponent
+   SolutionsComponent,
+   MaintenanceComponent
   
   ],
   imports: [

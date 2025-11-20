@@ -1,10 +1,7 @@
-<!-- Feedback Block -->
 <section id="feedback" class="contact-section bg-dark">
   <div id="map" class="bg-overlay"></div>
   <div class="container py-5">
     <div class="col-lg-8 col-md-6 col-sm-10 form-sec bg-white my-5 p-5 mx-auto">
-
-      <!-- ❌ Cross button -->
       <button type="button" class="close-btn" (click)="closeForm()">×</button>
 
       <div *ngIf="showConfirmation" class="alert alert-success text-center" role="alert">
@@ -13,8 +10,6 @@
 
       <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
         <h2 class="mb-4">Give Us Feedback!</h2>
-
-        <!-- Hidden userId field -->
         <input type="hidden" formControlName="userId">
 
         <div class="row">
@@ -59,7 +54,6 @@
           </div>
         </div>
 
-        <!-- Category and Rating -->
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -68,14 +62,10 @@
                 <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
                 <option value="Other">Other</option>
               </select>
-
-              <input *ngIf="showCustomCategoryInput" type="text" formControlName="customCategory"
-                class="form-control mt-2" placeholder="Enter custom category" />
-
+              <input *ngIf="showCustomCategoryInput" type="text" formControlName="customCategory" class="form-control mt-2"
+                placeholder="Enter custom category" />
               <small *ngIf="feedbackForm.get('category')?.invalid && feedbackForm.get('category')?.touched"
-                class="text-danger">
-                Category is required
-              </small>
+                class="text-danger">Category is required</small>
             </div>
           </div>
 
@@ -86,22 +76,24 @@
                 <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }} ★</option>
               </select>
               <small *ngIf="feedbackForm.get('rating')?.invalid && feedbackForm.get('rating')?.touched"
-                class="text-danger">
-                Rating is required
-              </small>
+                class="text-danger">Rating is required</small>
             </div>
           </div>
         </div>
 
-        <!-- Message -->
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <textarea class="form-control" formControlName="message" placeholder="Enter your message here!" rows="4"></textarea>
+              <textarea class="form-control" formControlName="message" placeholder="Enter your message here!" rows="4"     (input)="updateWordCount()"
+></textarea>
               <small *ngIf="feedbackForm.get('message')?.invalid && feedbackForm.get('message')?.touched"
-                class="text-danger">
-                Message is required
-              </small>
+                class="text-danger">Message is required</small>
+
+                <small [ngClass]="{ 'text-danger': wordCount > 200, 'text-muted': wordCount <= 200 }">
+    {{ wordCount }}/200 words
+    <span *ngIf="wordCount > 200"> - Limit exceeded! Please shorten your feedback.</span>
+  </small>
+                
             </div>
 
             <div class="form-group text-center">
@@ -114,11 +106,9 @@
   </div>
 </section>
 
-<!-- footer Block -->
-<div class="copy-footer py-2" style="color: #B47F41;">
+<div class="copy-footer py-2" style="color:#B47F41;">
   <div class="container text-center">
-    &copy;
-    <a href="https://aideorttechnologies.com/" target="_blank" style="color: #B47F41; text-decoration: none;">
+    &copy; <a href="https://aideorttechnologies.com/" target="_blank" style="color:#B47F41;text-decoration:none;">
       Aideort Technologies PVT LTD.
     </a>
     <span id="year"></span>. All rights reserved. Created with <i class="fa fa-heart"></i>

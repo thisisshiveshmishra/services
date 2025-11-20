@@ -13,3 +13,13 @@
 .close-btn:hover {
   color: red;
 }
+
+.text-muted {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.text-danger {
+  font-size: 0.85rem;
+  font-weight: 500;
+}

@@ -5,7 +5,6 @@ import { Serviceprovider } from 'src/app/model/serviceprovider';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { ServiceProviderService } from 'src/app/services/service-provider.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-service-provider',
@@ -21,17 +20,17 @@ export class ServiceProviderComponent implements OnInit {
   selectedProvider: Serviceprovider | null = null;
   providerImages: string[] = [];
   isModalOpen = false;
+  wordCount = 0;
 
   constructor(
     private fb: FormBuilder,
     private feedbackService: FeedbackService,
-    private serviceProviderService: ServiceProviderService,
+    private spService: ServiceProviderService,
     private router: Router,
-    private userService: UserService,
-    private sharedService: SharedService
+    private shared: SharedService
   ) {
     this.feedbackForm = this.fb.group({
-      userId: [null], // 👈 store logged-in user's id
+      userId: [null],
       name: ['', Validators.required],
       contactNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       email: ['', [Validators.required, Validators.email]],
@@ -44,92 +43,71 @@ export class ServiceProviderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCategoriesFromDatabase();
+    this.loadCategories();
     this.prefillUserData();
-
-    this.serviceProviderService.getAllProviders().subscribe((data: Serviceprovider[]) => {
-      this.providers = data.slice(0, 4);
-      this.providers.forEach(provider => {
-        if (provider.profilePicture) {
-          provider.profilePictureBase64 = 'data:image/jpeg;base64,' + provider.profilePicture;
-        }
-      });
+    this.spService.getAllProviders().subscribe(data => {
+      this.providers = data.slice(0, 4).map(p => ({
+        ...p,
+        profilePictureBase64: p.profilePicture ? 'data:image/jpeg;base64,' + p.profilePicture : null
+      }));
     });
   }
+updateWordCount(): void {
+  const messageControl = this.feedbackForm.get('message');
+  if (!messageControl) return;
 
-  /** ✅ Prefill data if user or provider logged in */
+  const message: string = messageControl.value || '';
+  this.wordCount = message.trim() ? message.trim().split(/\s+/).length : 0;
+
+  // 🔒 Enforce 200-word limit
+  if (this.wordCount > 200) {
+    const limitedText = message.trim().split(/\s+/).slice(0, 200).join(' ');
+    messageControl.setValue(limitedText, { emitEvent: false });
+    this.wordCount = 200;
+  }
+}
+
+
+  /** Prefill user/provider data */
   prefillUserData(): void {
-    if (this.isLoggedIn()) {
-      const userData = JSON.parse(localStorage.getItem('user') || '{}');
-          // 👇 Merge name + surname safely
-        const fullName = `${userData?.name || ''} ${userData?.surname || ''}`.trim();
-        this.feedbackForm.patchValue({
-        userId: userData?.id || null,
-        name: fullName,   // 👈 Show merged full name in name field
-        contactNumber: userData?.contactNumber || '',
-        email: userData?.email || '',
-        location: userData?.location || ''
-      });
-      this.disablePrefilledFields();
-    } else if (this.isServiceProviderLoggedIn()) {
-      const providerData = JSON.parse(localStorage.getItem('provider') || '{}');
-      this.feedbackForm.patchValue({
-        name: providerData?.name || providerData?.fullName || '',
-        contactNumber: providerData?.contactNumber || providerData?.phoneNumber || '',
-        email: providerData?.email || ''
-      });
-      this.disablePrefilledFields();
-    }
+    const user = localStorage.getItem('user');
+    const provider = localStorage.getItem('provider');
+    const data = user ? JSON.parse(user) : provider ? JSON.parse(provider) : null;
+    if (!data) return;
+
+    const fullName = user ? `${data.name || ''} ${data.surname || ''}`.trim() : (data.name || data.fullName);
+    this.feedbackForm.patchValue({
+      userId: user ? data.id : null,
+      name: fullName,
+      contactNumber: data.contactNumber || data.phoneNumber || '',
+      email: data.email || '',
+      location: data.location || ''
+    });
+    ['name', 'contactNumber', 'email', 'location'].forEach(f => this.feedbackForm.get(f)?.disable());
   }
 
-  disablePrefilledFields(): void {
-    this.feedbackForm.get('name')?.disable();
-    this.feedbackForm.get('contactNumber')?.disable();
-    this.feedbackForm.get('email')?.disable();
-    this.feedbackForm.get('location')?.disable();
-  }
-
-  loadCategoriesFromDatabase(): void {
-    this.serviceProviderService.getAllProviders().subscribe({
-      next: (providers) => {
-        const uniqueCategories = Array.from(
-          new Set(providers.map(p => p.category).filter(Boolean))
-        );
-        this.categories = uniqueCategories;
-      },
-      error: (err) => console.error('Error fetching categories:', err)
+  loadCategories(): void {
+    this.spService.getAllProviders().subscribe({
+      next: p => this.categories = [...new Set(p.map(x => x.category).filter(Boolean))],
+      error: e => console.error('Error fetching categories:', e)
     });
   }
 
-  onCategoryChange(event: Event): void {
-    const selected = (event.target as HTMLSelectElement).value;
-    const customControl = this.feedbackForm.get('customCategory');
+  onCategoryChange(e: Event): void {
+    const selected = (e.target as HTMLSelectElement).value;
+    const custom = this.feedbackForm.get('customCategory');
     this.showCustomCategoryInput = selected === 'Other';
-
-    if (this.showCustomCategoryInput) {
-      customControl?.setValidators([
-        Validators.required,
-        Validators.pattern(/^[A-Za-z0-9 ]{3,50}$/)
-      ]);
-    } else {
-      customControl?.clearValidators();
-      customControl?.reset();
-    }
-    customControl?.updateValueAndValidity();
+    if (this.showCustomCategoryInput)
+      custom?.setValidators([Validators.required, Validators.pattern(/^[A-Za-z0-9 ]{3,50}$/)]);
+    else custom?.clearValidators(), custom?.reset();
+    custom?.updateValueAndValidity();
   }
 
   onSubmit(): void {
-    if (this.feedbackForm.invalid) {
-      this.feedbackForm.markAllAsTouched();
-      return;
-    }
+    if (this.feedbackForm.invalid) return this.feedbackForm.markAllAsTouched();
 
-    // ✅ Include disabled fields too
-    let feedback = { ...this.feedbackForm.getRawValue() };
-
-    if (feedback.category === 'Other' && feedback.customCategory) {
-      feedback.category = feedback.customCategory;
-    }
+    const feedback = { ...this.feedbackForm.getRawValue() };
+    if (feedback.category === 'Other') feedback.category = feedback.customCategory;
     delete feedback.customCategory;
 
     this.feedbackService.submitFeedback(feedback).subscribe({
@@ -141,41 +119,24 @@ export class ServiceProviderComponent implements OnInit {
           this.router.navigate(['/']);
         }, 3000);
       },
-      error: (err) => {
-        console.error('Error submitting feedback:', err);
+      error: e => {
+        console.error('Error submitting feedback:', e);
         alert('❌ Failed to submit feedback. Please try again.');
       }
     });
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('user');
-  }
-
-  isServiceProviderLoggedIn(): boolean {
-    return !!localStorage.getItem('provider');
-  }
-
-  logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('provider');
-    localStorage.removeItem('providerToken');
+  logout(): void {
+    ['user', 'userToken', 'provider', 'providerToken'].forEach(k => localStorage.removeItem(k));
     this.router.navigate(['/']);
   }
 
   viewProvider(id?: number): void {
     if (!id) return;
-    this.sharedService.setProviderId(id);
-
-    this.serviceProviderService.getProviderById(id).subscribe(provider => {
-      this.selectedProvider = provider;
-      this.providerImages = [];
-
-      if (provider.profilePicture) {
-        this.providerImages.push('data:image/jpeg;base64,' + provider.profilePicture);
-      }
-
+    this.shared.setProviderId(id);
+    this.spService.getProviderById(id).subscribe(p => {
+      this.selectedProvider = p;
+      this.providerImages = p.profilePicture ? ['data:image/jpeg;base64,' + p.profilePicture] : [];
       this.isModalOpen = true;
     });
   }

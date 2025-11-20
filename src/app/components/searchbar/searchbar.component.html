@@ -1,125 +1,99 @@
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="author" content="colorlib.com" />
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    <div class="s01">
-      <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
 
-        <!-- 🔴 Cross (Go Home) Button -->
-  <button type="button" class="close-home-btn" (click)="goHome()">
-    &times;
-  </button>
-  
-        <fieldset>
-          <legend>Discover the Amazing Services</legend>
-        </fieldset>
-        <div class="inner-form">
-          <div class="input-field first-wrap">
-            <select formControlName="category">
-              <option value="">Select Category</option>
-              <option value="ALL">View All</option>
-              <option *ngFor="let cat of availableCategories" [value]="cat">
-                {{ cat }}
-              </option>
-            </select>
-          </div>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="author" content="colorlib.com" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="s01">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+
+      <!-- 🔴 Cross (Go Home) Button -->
+      <button type="button" class="close-home-btn" (click)="goHome()">
+        &times;
+      </button>
+
+      <fieldset>
+        <legend>Discover the Amazing Services</legend>
+      </fieldset>
+      <div class="inner-form">
+        <div class="input-field first-wrap">
+          <select formControlName="category">
+            <option value="">Select Category</option>
+            <option value="ALL">View All</option>
+            <option *ngFor="let cat of availableCategories" [value]="cat">
+              {{ cat }}
+            </option>
+          </select>
+        </div>
 
 
-      <div class="input-field second-wrap">
-        <input
-          type="text"
-          formControlName="location"
-          placeholder="Enter Location"
-          (input)="onLocationInput()"
-          (focus)="showLocationSuggestions = true"
-          (blur)="hideSuggestionsWithDelay()"
-          autocomplete="off"
-        />
+        <div class="input-field second-wrap">
+          <input type="text" formControlName="location" placeholder="Enter Location" (input)="onLocationInput()"
+            (focus)="showLocationSuggestions = true" (blur)="hideSuggestionsWithDelay()" autocomplete="off" />
 
-        <ul
-          class="suggestions"
-          *ngIf="filteredLocations.length && showLocationSuggestions"
-        >
-          <!-- Add View All option manually -->
-          <li (mousedown)="selectLocation('ALL')">View All</li>
+          <ul class="suggestions" *ngIf="showLocationSuggestions">
+            <!-- Always show "View All" -->
+            <li (mousedown)="selectLocation('ALL')">View All</li>
 
-          <!-- Dynamic suggestions -->
-          <li
-            *ngFor="let loc of filteredLocations"
-            (mousedown)="selectLocation(loc)"
-          >
-            {{ loc }}
+            <!-- Show dynamic suggestions (only if available) -->
+            <li *ngFor="let loc of filteredLocations" (mousedown)="selectLocation(loc)">
+              {{ loc }}
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="input-field third-wrap">
+          <button class="btn-search" type="submit">Search</button>
+        </div>
+
+
+
+
+
+      </div>
+
+
+      <!-- 🔹 Loading message -->
+      <div *ngIf="loading" class="loading-message">
+        <i class="fa fa-spinner fa-spin"></i> Please wait a moment, fetching results...
+      </div>
+
+      <!-- ✅ Results -->
+      <div class="results-container" *ngIf="!loading && allResults.length">
+        <h3>Results:</h3>
+        <ul>
+          <li *ngFor="let provider of allResults" (click)="provider.id && viewProvider(provider.id)">
+            {{ provider.firstName }} {{ provider.lastName }} — {{ provider.category }}
+            <br />
+            ({{ provider.location }})
+            <div class="provider-actions">
+              <button (click)="viewProvider(provider.id)" class="btn btn-outline-primary me-2">
+                View Details &nbsp;<i class="bi bi-eye"></i>
+              </button>
+              <button (click)="routeToChat(provider)" class="btn btn-outline-primary">
+                Chat &nbsp;<i class="bi bi-chat-dots"></i>
+              </button>
+            </div>
           </li>
         </ul>
       </div>
 
-      <div class="input-field third-wrap">
-        <button class="btn-search" type="submit">Search</button>
+      <!-- 🚫 No Results -->
+      <div class="no-results" *ngIf="!loading && !allResults.length && submitted" style="color: #7b5728;">
+        {{ message }}
       </div>
 
-     
 
 
-
-    </div>
-
-
-<!-- 🔹 Loading message -->
-<div *ngIf="loading" class="loading-message">
-  <i class="fa fa-spinner fa-spin"></i> Please wait a moment, fetching results...
-</div>
-
-<!-- ✅ Results -->
-<div class="results-container" *ngIf="!loading && allResults.length">
-  <h3>Results:</h3>
-  <ul>
-    <li
-      *ngFor="let provider of allResults"
-      (click)="provider.id && viewProvider(provider.id)"
-    >
-      {{ provider.firstName }} {{ provider.lastName }} — {{ provider.category }}
-      <br />
-      ({{ provider.location }})
-      <div class="provider-actions">
-        <button
-          (click)="viewProvider(provider.id)"
-          class="btn btn-outline-primary me-2"
-        >
-          View Details &nbsp;<i class="bi bi-eye"></i>
-        </button>
-        <button
-          (click)="routeToChat(provider)"
-          class="btn btn-outline-primary"
-        >
-          Chat &nbsp;<i class="bi bi-chat-dots"></i>
-        </button>
-      </div>
-    </li>
-  </ul>
-</div>
-
-<!-- 🚫 No Results -->
-<div
-  class="no-results"
-  *ngIf="!loading && !allResults.length && submitted"
-  style="color: #7b5728;"
->
-  {{ message }}
-</div>
-
-
-    
-    <!-- <div
+      <!-- <div
       class="no-results"
       *ngIf="!allResults.length && submitted"
       style="color: #7b5728;"
@@ -128,15 +102,16 @@
     </div> -->
 
 
-        <!-- 🔹 Loading message
+      <!-- 🔹 Loading message
       <div *ngIf="loading" class="loading-message">
         <i class="fa fa-spinner fa-spin"></i> Please wait a moment, fetching results...
       </div> -->
-  </form>
-</div>
+    </form>
+  </div>
 
 
-  </body>
+</body>
+
 </html>
 
 <!-- Fullscreen Modal -->
@@ -192,7 +167,8 @@
                     <div class="d-flex flex-column">
                       <span class="heading">Map</span>
                       <span class="subheadings">
-                        <a *ngIf="savedLocationUrl" href="{{ savedLocationUrl }}" target="_blank" class="text-decoration-none text-info">
+                        <a *ngIf="savedLocationUrl" href="{{ savedLocationUrl }}" target="_blank"
+                          class="text-decoration-none text-info">
                           View Map <i class="fas fa-map-marker-alt"></i>
                         </a>
                         <span *ngIf="!savedLocationUrl" class="text-muted">Not available</span>
@@ -217,7 +193,8 @@
                     <div class="d-flex flex-column">
                       <span class="heading">Images</span>
                       <div class="d-flex flex-wrap gallery mt-1">
-                        <img *ngFor="let img of providerImages" [src]="'data:image/jpeg;base64,' + img" width="120" class="rounded me-2 mb-2"/>
+                        <img *ngFor="let img of providerImages" [src]="'data:image/jpeg;base64,' + img" width="120"
+                          class="rounded me-2 mb-2" />
                       </div>
                     </div>
                   </td>
@@ -228,19 +205,17 @@
           </div>
         </div>
 
-       <!-- Right Column: Profile Picture -->
-<div class="col-md-3 text-center p-3">
-  <div class="profile">
-    <img
-      [src]="selectedProvider.profilePicture ? 'data:image/jpeg;base64,' + selectedProvider.profilePicture : 'assets/defaultimage.png'"
-      class="rounded-circle img-thumbnail"
-      width="120"
-    />
-    <span class="d-block mt-3 font-weight-bold">
-      {{ selectedProvider.firstName }} {{ selectedProvider.lastName }}
-    </span>
-  </div>
-</div>
+        <!-- Right Column: Profile Picture -->
+        <div class="col-md-3 text-center p-3">
+          <div class="profile">
+            <img
+              [src]="selectedProvider.profilePicture ? 'data:image/jpeg;base64,' + selectedProvider.profilePicture : 'assets/defaultimage.png'"
+              class="rounded-circle img-thumbnail" width="120" />
+            <span class="d-block mt-3 font-weight-bold">
+              {{ selectedProvider.firstName }} {{ selectedProvider.lastName }}
+            </span>
+          </div>
+        </div>
 
 
 

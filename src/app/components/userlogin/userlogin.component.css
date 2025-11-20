@@ -115,3 +115,20 @@
 .forgot-link:hover {
   color: #ad7941;
 }
+
+
+.close-red-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.close-red-btn:hover {
+  transform: scale(1.2);
+  color: #cc0000;
+}

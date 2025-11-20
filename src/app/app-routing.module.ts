@@ -25,6 +25,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { TermsconditionComponent } from './components/termscondition/termscondition.component';
 import { FaqComponent } from './components/faq/faq.component';
 import { SolutionsComponent } from './components/solutions/solutions.component';
+import { MaintenanceComponent } from './components/maintenance/maintenance.component';
 
 
 
@@ -51,6 +52,8 @@ const routes: Routes = [
     {path:'termscondition', component: TermsconditionComponent},
     {path:'faq', component: FaqComponent},
     {path: 'solutions', component: SolutionsComponent },
+    {path: 'maintenance', component: MaintenanceComponent },
+
 
     
 
