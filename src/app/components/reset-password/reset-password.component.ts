@@ -16,11 +16,9 @@ export class ResetPasswordComponent {
   errorMessage: string = '';
   showPassword: boolean = false;
 
-  // Flags for step control
   otpSent: boolean = false;
   otpVerified: boolean = false;
 
-  // ✅ Email + Password validation flags
   isEmailValid = false;
   hasUppercase = false;
   hasLowercase = false;
@@ -29,20 +27,17 @@ export class ResetPasswordComponent {
   isMinLength = false;
   isPasswordValid = false;
 
-  constructor(private forgotService: ForgotpasswordService) {}
+  constructor(private forgotService: ForgotpasswordService) { }
 
-  // Toggle password visibility
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
-  // Validate Email
   validateEmail() {
     const emailPattern = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/;
     this.isEmailValid = emailPattern.test(this.email);
   }
 
-  // Password strength check
   checkPasswordStrength() {
     const password = this.newPassword || '';
     this.hasUppercase = /[A-Z]/.test(password);
@@ -59,7 +54,6 @@ export class ResetPasswordComponent {
       this.isMinLength;
   }
 
-  // 1️⃣ Send OTP
   sendOtp() {
     if (!this.isEmailValid) {
       this.errorMessage = 'Please enter a valid email.';
@@ -80,7 +74,6 @@ export class ResetPasswordComponent {
     });
   }
 
-  // 2️⃣ Verify OTP
   verifyOtp() {
     this.message = '';
     this.errorMessage = '';
@@ -101,7 +94,6 @@ export class ResetPasswordComponent {
     });
   }
 
-  // 3️⃣ Reset Password
   resetPassword() {
     if (!this.isPasswordValid) {
       this.errorMessage = 'Please enter a strong password.';
@@ -112,21 +104,20 @@ export class ResetPasswordComponent {
     this.message = '';
 
     this.forgotService.resetPassword(this.email, this.newPassword).subscribe({
-  next: (res) => {
-    this.message = res;
-    this.errorMessage = '';
-    this.resetForm();
-  },
-  error: (err) => {
-    this.errorMessage = typeof err.error === 'string'
-      ? err.error
-      : 'Failed to reset password.';
-  }
-});
+      next: (res) => {
+        this.message = res;
+        this.errorMessage = '';
+        this.resetForm();
+      },
+      error: (err) => {
+        this.errorMessage = typeof err.error === 'string'
+          ? err.error
+          : 'Failed to reset password.';
+      }
+    });
 
   }
 
-  // Reset all fields and validations
   private resetForm() {
     this.email = '';
     this.otp = '';

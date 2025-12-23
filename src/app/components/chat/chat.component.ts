@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(
     private messageService: MessageService,
     private providerService: ServiceProviderService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.checkScreenSize();
@@ -42,7 +42,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.providerId = provider.id;
         this.fetchMessages();
 
-        // Auto-refresh every 10 seconds
         this.refreshSubscription = interval(10000).subscribe(() => {
           this.fetchMessages();
         });
@@ -56,45 +55,37 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-fetchMessages() {
-  if (!this.chatBody) {
-    // Just fetch normally if chat body not initialized yet
+  fetchMessages() {
+    if (!this.chatBody) {
+      this.messageService.getMessagesByProvider(this.providerId).subscribe((messages) => {
+        this.providerMessages = messages;
+        this.groupedMessages = this.groupByUser(messages);
+      });
+      return;
+    }
+    const chatElement = this.chatBody.nativeElement;
+    const previousScrollHeight = chatElement.scrollHeight;
+    const previousScrollTop = chatElement.scrollTop;
+    const isAtBottom = previousScrollHeight - (previousScrollTop + chatElement.clientHeight) < 100;
+
     this.messageService.getMessagesByProvider(this.providerId).subscribe((messages) => {
       this.providerMessages = messages;
       this.groupedMessages = this.groupByUser(messages);
+
+      setTimeout(() => {
+        const newScrollHeight = chatElement.scrollHeight;
+
+        if (isAtBottom) {
+          chatElement.scrollTop = chatElement.scrollHeight;
+        } else {
+          const scrollDiff = newScrollHeight - previousScrollHeight;
+          chatElement.scrollTop = previousScrollTop + scrollDiff;
+        }
+      }, 200);
     });
-    return;
   }
 
-  // Capture current scroll position before update
-  const chatElement = this.chatBody.nativeElement;
-  const previousScrollHeight = chatElement.scrollHeight;
-  const previousScrollTop = chatElement.scrollTop;
-  const isAtBottom = previousScrollHeight - (previousScrollTop + chatElement.clientHeight) < 100;
 
-  // Fetch new messages
-  this.messageService.getMessagesByProvider(this.providerId).subscribe((messages) => {
-    this.providerMessages = messages;
-    this.groupedMessages = this.groupByUser(messages);
-
-    // After updating messages, wait for DOM to render
-    setTimeout(() => {
-      const newScrollHeight = chatElement.scrollHeight;
-
-      if (isAtBottom) {
-        // ✅ Stay auto-scrolled if already near bottom
-        chatElement.scrollTop = chatElement.scrollHeight;
-      } else {
-        // ✅ Preserve user's position when scrolling up
-        const scrollDiff = newScrollHeight - previousScrollHeight;
-        chatElement.scrollTop = previousScrollTop + scrollDiff;
-      }
-    }, 200);
-  });
-}
-
-
-  // Group messages and replies
   groupByUser(messages: any[]): { [key: string]: any[] } {
     const grouped: { [key: string]: any[] } = {};
 
@@ -103,7 +94,6 @@ fetchMessages() {
       if (!uid) continue;
       if (!grouped[uid]) grouped[uid] = [];
 
-      // user message
       grouped[uid].push({
         id: msg.id,
         userName: msg.userName,
@@ -113,7 +103,6 @@ fetchMessages() {
         isReply: false
       });
 
-      // provider replies
       if (msg.replies?.length) {
         msg.replies.forEach((r: any) => {
           grouped[uid].push({
@@ -127,7 +116,6 @@ fetchMessages() {
       }
     }
 
-    // sort messages chronologically
     for (const uid in grouped) {
       grouped[uid].sort(
         (a, b) => new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
@@ -145,7 +133,6 @@ fetchMessages() {
     });
   }
 
-  // Select user
   selectUser(userId: string) {
     this.selectedUserId = userId;
     this.readUsers.add(userId);
@@ -154,11 +141,9 @@ fetchMessages() {
 
     console.log('Selected user:', userId);
 
-    // Scroll to last message
     setTimeout(() => this.scrollToBottom(true), 150);
   }
 
-  // Send reply
   sendReply(userId: string) {
     const replyText = (this.replies[userId] || '').trim();
     if (!replyText) return;
@@ -169,7 +154,7 @@ fetchMessages() {
     const lastUserMsgId = userMessages[userMessages.length - 1].id;
 
     const replyData = {
-      replyContent: replyText // remove replyTime
+      replyContent: replyText
     };
 
     console.log('Reply Data in Send Reply Method:', replyData);
@@ -178,10 +163,8 @@ fetchMessages() {
       next: (savedReply) => {
         console.log('Reply Data returned from API:', savedReply);
 
-        // Clear input
         this.replies[userId] = '';
 
-        // Push locally for instant update
         this.groupedMessages[userId].push({
           id: savedReply.id,
           userName: 'You',
@@ -190,7 +173,6 @@ fetchMessages() {
           isReply: true
         });
 
-        // Sort and scroll
         this.groupedMessages[userId].sort(
           (a, b) => new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
         );
@@ -236,31 +218,22 @@ fetchMessages() {
 
 
   getUserDisplayName(userId: string): string {
-  const messages = this.groupedMessages[userId];
-  if (!messages || !messages.length) return 'Unknown User';
+    const messages = this.groupedMessages[userId];
+    if (!messages || !messages.length) return 'Unknown User';
 
-  // Find the first actual user message (not a reply)
-  const firstUserMsg = messages.find(m => !m.isReply);
-  if (firstUserMsg) {
-    return `${firstUserMsg.userName} ${firstUserMsg.userSurname || ''}`.trim();
+    const firstUserMsg = messages.find(m => !m.isReply);
+    if (firstUserMsg) {
+      return `${firstUserMsg.userName} ${firstUserMsg.userSurname || ''}`.trim();
+    }
+    return 'User';
   }
 
-  // If only replies exist (edge case)
-  return 'User';
-}
-
-getSelectedUserName(userId: string | null): string {
-  if (!userId || !this.groupedMessages[userId]) return '';
-
-  // Find the first non-reply (actual user) message
-  const firstUserMsg = this.groupedMessages[userId].find(m => !m.isReply);
-  if (firstUserMsg) {
-    return `${firstUserMsg.userName} ${firstUserMsg.userSurname || ''}`.trim();
+  getSelectedUserName(userId: string | null): string {
+    if (!userId || !this.groupedMessages[userId]) return '';
+    const firstUserMsg = this.groupedMessages[userId].find(m => !m.isReply);
+    if (firstUserMsg) {
+      return `${firstUserMsg.userName} ${firstUserMsg.userSurname || ''}`.trim();
+    }
+    return 'User';
   }
-
-  // Fallback if only replies exist
-  return 'User';
-}
-
-
 }

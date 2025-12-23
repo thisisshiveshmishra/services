@@ -14,16 +14,14 @@ import { UserService } from 'src/app/services/user.service';
 export class SearchbarComponent {
   searchForm!: FormGroup;
   submitted = false;
-  loading: boolean = false;  // ✅ add this line
+  loading: boolean = false;
 
-  // data arrays
   allResults: Serviceprovider[] = [];
   providers: Serviceprovider[] = [];
   availableLocations: string[] = [];
   availableCategories: string[] = [];
   filteredLocations: string[] = [];
 
-  // UI states
   showLocationSuggestions = false;
   selectedProvider: Serviceprovider | null = null;
   providerImages: string[] = [];
@@ -45,7 +43,6 @@ export class SearchbarComponent {
       category: [''],
       location: [''],
     });
-    // this.getAllProviders();
     this.loadFilterOptions();
   }
 
@@ -61,14 +58,11 @@ export class SearchbarComponent {
     });
   }
 
-
-
-  // ✅ handle search logic
   onSearch(): void {
     this.submitted = true;
     this.message = '';
-    this.loading = true; // 🔹 Show loading message immediately
-    this.allResults = []; // clear old results first
+    this.loading = true;
+    this.allResults = [];
 
     let category = this.searchForm.value.category?.trim() || '';
     let location = this.searchForm.value.location?.trim() || '';
@@ -83,10 +77,8 @@ export class SearchbarComponent {
 
     const searchPayload: SearchRequest = { category, location };
 
-    // Call API
     this.serviceProviderService.searchProviders(searchPayload).subscribe({
       next: (data) => {
-        // Simulate 3-second wait before showing results
         setTimeout(() => {
           this.allResults = data.filter(p => p.approved === true);
           this.allResults.sort((a, b) =>
@@ -97,7 +89,7 @@ export class SearchbarComponent {
             this.message = 'No providers found.';
           }
 
-          this.loading = false; // ✅ Hide loading after 3 sec
+          this.loading = false;
         }, 3000);
       },
       error: (err) => {
@@ -111,10 +103,6 @@ export class SearchbarComponent {
     });
   }
 
-
-
-
-  // ✅ load all providers (approved only)
   getAllProviders(): void {
     this.serviceProviderService.getAllProviders().subscribe({
       next: (data) => {
@@ -123,7 +111,6 @@ export class SearchbarComponent {
         this.availableLocations = Array.from(new Set(this.allResults.map(p => p.location).filter(Boolean))).sort();
         this.availableCategories = Array.from(new Set(this.allResults.map(p => p.category).filter(Boolean))).sort(); // ✅ ascending order
 
-        // ✅ Sort results alphabetically by provider name
         this.allResults.sort((a, b) => (a.firstName + ' ' + a.lastName).localeCompare(b.firstName + ' ' + b.lastName));
 
         if (this.allResults.length === 0) this.message = 'No providers found.';
@@ -137,7 +124,6 @@ export class SearchbarComponent {
   }
 
 
-  // ✅ autocomplete location
   onLocationInput(): void {
     const input = this.searchForm.get('location')?.value?.toLowerCase() || '';
     const hasAlphabet = /[a-zA-Z]/.test(input);
@@ -161,7 +147,6 @@ export class SearchbarComponent {
     setTimeout(() => this.showLocationSuggestions = false, 200);
   }
 
-  // ✅ provider modal
   viewProvider(id?: number): void {
     if (!id) return;
     this.sharedService.setProviderId(id);
@@ -181,7 +166,6 @@ export class SearchbarComponent {
     this.providerImages = [];
   }
 
-  // ✅ chat
   routeToChat(provider: any) {
     if (!this.userService.isLoggedIn()) {
       alert('Please log in first to chat with the service provider.');
@@ -191,7 +175,6 @@ export class SearchbarComponent {
     this.router.navigate(['/message', provider.id]);
   }
 
-  // ✅ saved map location
   loadSavedLocation(providerId: number) {
     this.serviceProviderService.getAddressByServiceProviderId(providerId).subscribe({
       next: (res) => {

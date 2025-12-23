@@ -51,7 +51,7 @@ export class LoginserviceProviderComponent {
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef
-  ) {}
+  ) { }
 
   toggleLoginPassword(): void {
     this.showLoginPassword = !this.showLoginPassword;
@@ -131,10 +131,9 @@ export class LoginserviceProviderComponent {
       next: () => {
         alert('Service provider registered successfully, Please wait for admin approval!');
 
-        registerForm.resetForm();     // Completely resets the form + validation
-        this.selectedFile = null;     
+        registerForm.resetForm();
+        this.selectedFile = null;
 
-        // Clear the file input UI
         const fileInput = this.el.nativeElement.querySelector('#businessProfile');
         if (fileInput) fileInput.value = "";
 
@@ -174,5 +173,5 @@ export class LoginserviceProviderComponent {
   toggleSignIn(): void {
     const container = this.el.nativeElement.querySelector('#container');
     if (container) this.renderer.removeClass(container, 'right-panel-active');
-  } 
+  }
 }

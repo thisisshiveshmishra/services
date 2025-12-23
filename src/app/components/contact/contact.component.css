@@ -67,7 +67,6 @@
   margin-top: 15px;
 }
 
-/* ✅ Responsive Design */
 @media (max-width: 768px) {
   .career-content {
     padding: 25px;

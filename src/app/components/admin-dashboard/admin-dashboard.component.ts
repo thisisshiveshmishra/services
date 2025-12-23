@@ -19,22 +19,18 @@ export class AdminDashboardComponent {
   filteredRequests: any[] = [];
   message = '';
 
-  // Filters
   providerNameFilter = '';
   providerLocationFilter = '';
   providerCategoryFilter = '';
   requestLocationFilter = '';
   requestCategoryFilter = '';
 
-  // Selected text for modals
   selectedDescription: string | null = null;
   selectedFeedbackMessage: string | null = null;
   selectedRequestQuery: string | null = null;
 
-  // Loader tracking per provider
   loadingProviderIds: { [key: number]: boolean } = {};
 
-  // Debounce subjects
   private providerFilterSubject = new Subject<void>();
   private requestFilterSubject = new Subject<void>();
 
@@ -43,14 +39,13 @@ export class AdminDashboardComponent {
     private service: ServiceProviderService,
     private feedbackService: FeedbackService,
     private adminService: AdminService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadProviders();
     this.loadFeedbacks();
     this.fetchAllServiceRequests();
 
-    // Debounce setup
     this.providerFilterSubject.pipe(debounceTime(300)).subscribe(() => {
       this.applyProviderFilters();
     });
@@ -65,7 +60,6 @@ export class AdminDashboardComponent {
     this.message = '';
   }
 
-  /* ----------------- Providers ----------------- */
   loadProviders() {
     this.service.getAllProviders().subscribe({
       next: (data) => {
@@ -97,45 +91,25 @@ export class AdminDashboardComponent {
     });
   }
 
-  // reject(id: number) {
-  //   this.loadingProviderIds[id] = true;
-  //   this.service.rejectProvider(id).subscribe({
-  //     next: (res) => {
-  //       this.loadingProviderIds[id] = false;
-  //       alert('🚫 ' + res);
-  //       window.location.reload();
-  //     },
-  //     error: (err) => {
-  //       this.loadingProviderIds[id] = false;
-  //       alert('❌ Failed to reject provider.\n' + err.message);
-  //     }
-  //   });
-  // }
-
-
   reject(id: number) {
-  this.loadingProviderIds[id] = true;
+    this.loadingProviderIds[id] = true;
 
-  this.service.rejectProvider(id).subscribe({
-    next: (res: string) => {
-      this.loadingProviderIds[id] = false;
-      window.location.reload();
-
-      // Update the provider status locally without full reload
-      const provider = this.providers.find(p => p.id === id);
-      if (provider) {
-        provider.rejected = true;
+    this.service.rejectProvider(id).subscribe({
+      next: (res: string) => {
+        this.loadingProviderIds[id] = false;
+        window.location.reload();
+        const provider = this.providers.find(p => p.id === id);
+        if (provider) {
+          provider.rejected = true;
+        }
+        alert('🚫 ' + res);
+      },
+      error: (err) => {
+        this.loadingProviderIds[id] = false;
+        alert('❌ Failed to reject provider.\n' + err.message);
       }
-
-      // Show alert with backend message (rejection email sent)
-      alert('🚫 ' + res);
-    },
-    error: (err) => {
-      this.loadingProviderIds[id] = false;
-      alert('❌ Failed to reject provider.\n' + err.message);
-    }
-  });
-}
+    });
+  }
 
 
   filterProviders(): void {
@@ -150,7 +124,6 @@ export class AdminDashboardComponent {
     );
   }
 
-  /* ----------------- Feedback ----------------- */
   loadFeedbacks() {
     this.feedbackService.getAllFeedback().subscribe({
       next: (data) => (this.feedbacks = data),
@@ -158,7 +131,6 @@ export class AdminDashboardComponent {
     });
   }
 
-  /* ----------------- Requests ----------------- */
   fetchAllServiceRequests() {
     this.adminService.getAllServiceRequests().subscribe({
       next: (res) => {
@@ -183,7 +155,6 @@ export class AdminDashboardComponent {
     );
   }
 
-  /* ----------------- Common ----------------- */
   logout() {
     localStorage.clear();
     sessionStorage.clear();
@@ -194,7 +165,6 @@ export class AdminDashboardComponent {
     return Array(5).fill(false).map((_, i) => i < rating);
   }
 
-  /* ----------------- Modal Handlers ----------------- */
   openDescription(desc: string) {
     this.selectedDescription = desc;
   }

@@ -1,39 +1,13 @@
 <div class="container">
   <div class="content">
-    <img
-      src="./assets/serviceprovider 4.jpg"
-      alt="header-image"
-      class="cld-responsive"
-    />
+    <img src="./assets/serviceprovider 4.jpg" alt="header-image" class="cld-responsive" />
     <h1 class="form-title">Register Here</h1>
-    <form
-      (ngSubmit)="onSubmit()"
-      #registerForm="ngForm"
-      enctype="multipart/form-data"
-    >
-      <input
-        type="text"
-        name="firstName"
-        [(ngModel)]="form.firstName"
-        placeholder="First Name"
-        required
-      />
-      <input
-        type="text"
-        name="lastName"
-        [(ngModel)]="form.lastName"
-        placeholder="Last Name"
-        required
-      />
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm" enctype="multipart/form-data">
+      <input type="text" name="firstName" [(ngModel)]="form.firstName" placeholder="First Name" required />
+      <input type="text" name="lastName" [(ngModel)]="form.lastName" placeholder="Last Name" required />
 
       <div class="beside">
-        <input
-          type="text"
-          name="mobileNumber"
-          [(ngModel)]="form.mobileNumber"
-          placeholder="Mobile Number"
-          required
-        />
+        <input type="text" name="mobileNumber" [(ngModel)]="form.mobileNumber" placeholder="Mobile Number" required />
         <select name="gender" [(ngModel)]="form.gender" required>
           <option value="" disabled selected>GENDER</option>
           <option value="Male">MALE</option>
@@ -42,34 +16,16 @@
         </select>
       </div>
 
-      <input
-        type="email"
-        name="email"
-        [(ngModel)]="form.email"
-        placeholder="Email Address"
-        required
-      />
+      <input type="email" name="email" [(ngModel)]="form.email" placeholder="Email Address" required />
 
-      <input
-        type="text"
-        name="location"
-        [(ngModel)]="form.location"
-        placeholder="Location"
-        required
-      />
+      <input type="text" name="location" [(ngModel)]="form.location" placeholder="Location" required />
 
       <select name="category" [(ngModel)]="form.category" required>
         <option value="" disabled selected>Select Category</option>
         <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
       </select>
 
-      <input
-        type="password"
-        name="password"
-        [(ngModel)]="form.password"
-        placeholder="Password"
-        required
-      />
+      <input type="password" name="password" [(ngModel)]="form.password" placeholder="Password" required />
 
       <input type="file" (change)="onFileSelected($event)" required />
 

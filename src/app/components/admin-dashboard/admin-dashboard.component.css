@@ -4,11 +4,10 @@
   font-family: Arial, sans-serif;
 }
 
-/* Sidebar Styling */
+
 .sidebar {
   width: 220px;
   background-color: #04274c;
-  /* Blue background */
   color: white;
   padding: 20px 10px;
   display: flex;
@@ -32,7 +31,6 @@
   background-color: #3399ff;
 }
 
-/* Content Area Styling */
 .content {
   flex: 1;
   padding: 30px;
@@ -45,7 +43,6 @@ h2 {
   color: #333;
 }
 
-/* Table Styling */
 table {
   width: 100%;
   margin-top: 15px;
@@ -77,12 +74,10 @@ tr:nth-child(even) {
 }
 
 button {
-  /* float: right; */
   margin: 10px;
 }
 
 
-/* If you want table action buttons aligned right */
 .table-actions button {
   float: right;
 }
@@ -150,9 +145,6 @@ button {
   }
 }
 
-
-
-/* Wrap the filter inputs in a flex container for better layout */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -160,26 +152,22 @@ button {
   margin-bottom: 20px;
 }
 
-/* Style the inputs */
 .filters input[type="text"] {
   padding: 10px 15px;
   border: none;
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.05);
-  /* light background for contrast */
   color: #333;
   font-size: 14px;
   width: 220px;
   transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
-/* Placeholder style */
 .filters input[type="text"]::placeholder {
   color: #888;
   font-style: italic;
 }
 
-/* Hover/focus styles */
 .filters input[type="text"]:hover,
 .filters input[type="text"]:focus {
   background: rgba(0, 0, 0, 0.1);
@@ -187,9 +175,6 @@ button {
   outline: none;
 }
 
-
-
-/* Filters container — wrap the two filters */
 .requests-filters {
   display: flex;
   flex-wrap: wrap;
@@ -197,7 +182,6 @@ button {
   margin-bottom: 20px;
 }
 
-/* Style the filter inputs */
 .requests-filters input[type="text"] {
   padding: 10px 15px;
   border: none;
@@ -221,7 +205,6 @@ button {
   outline: none;
 }
 
-/* ✅ Logout Button Fixed on Top Right */
 .logout-container {
   position: fixed;
   top: 10px;
@@ -242,21 +225,14 @@ button {
   background: #e60000;
 }
 
-/* ✅ Add padding to content so it starts below the fixed logout button */
 .dashboard-container {
   padding-top: 60px;
-  /* Adjust height to match logout button + gap */
 }
 
-
-
-/* Optional: scrollable table */
 .table-container {
   overflow-x: auto;
 }
 
-
-/* Optional: make table horizontally scrollable */
 .table-container {
   overflow-x: auto;
 }
@@ -275,7 +251,6 @@ button {
 
 .btn-approve {
   background-color: #28a745;
-  /* Green */
 }
 
 .btn-approve:hover {
@@ -284,13 +259,11 @@ button {
 
 .btn-approved {
   background-color: #6c757d;
-  /* Grey */
   cursor: not-allowed;
 }
 
 .btn-reject {
   background-color: #dc3545;
-  /* Red */
 }
 
 .btn-reject:hover {
@@ -299,29 +272,21 @@ button {
 
 .btn-rejected {
   background-color: #6c757d;
-  /* Grey */
   cursor: not-allowed;
 }
 
-/* Make the table horizontally scrollable */
 .content table {
   display: block;
   width: max-content;
-  /* table takes width of content */
   min-width: 100%;
-  /* but at least full container width */
   overflow-x: auto;
   border-collapse: collapse;
 }
 
-/* Description column fix */
 .description-column {
   max-width: 250px;
-  /* column ka maximum width */
   white-space: normal;
-  /* line wrapping allow karega */
   word-wrap: break-word;
-  /* long words bhi tod dega */
   overflow-wrap: break-word;
   text-align: left;
 }
@@ -330,11 +295,7 @@ button {
   .content table {
     overflow-x: auto;
   }
-
-
-
 }
-
 
 .description-column {
   max-width: 280px;
@@ -346,20 +307,15 @@ button {
   transition: all 0.3s ease;
 }
 
-/* When expanded */
 .description-column.expanded {
   white-space: normal;
   overflow: visible;
   text-overflow: unset;
   background-color: #fff3f3;
-  /* light red background for focus */
   border-radius: 6px;
   padding: 5px;
   color: #000;
 }
-
-
-
 
 .modal {
   position: fixed;
@@ -374,7 +330,6 @@ button {
   z-index: 1000;
 }
 
-/* Modal box */
 .modal-content {
   position: relative;
   background: #fff;
@@ -384,14 +339,10 @@ button {
   width: 90%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   text-align: justify;
-  /* ✅ evenly align left-right edges for long text */
   overflow-y: auto;
-  /* ✅ scroll if long content */
   max-height: 80vh;
-  /* ✅ prevent overflow off-screen */
 }
 
-/* Inside text alignment and style */
 .description-text {
   font-size: 18px;
   line-height: 1.8;
@@ -400,10 +351,8 @@ button {
   word-wrap: break-word;
   margin-top: 20px;
   white-space: pre-line;
-  /* ✅ keeps line breaks from message/description */
 }
 
-/* Close button */
 .close {
   position: absolute;
   top: 10px;
@@ -419,81 +368,53 @@ button {
   color: red;
 }
 
-
-
-
-
-/* ----------------- Truncated text ----------------- */
 .description-column,
 .feedback-message,
 .request-query {
   max-width: 280px;
-  /* restrict width */
   white-space: nowrap;
-  /* prevent wrapping */
   overflow: hidden;
-  /* hide overflow */
   text-overflow: ellipsis;
-  /* add "..." at end */
   cursor: pointer;
-  /* indicate clickability */
   color: #333;
-  /* normal text color */
   transition: color 0.2s ease;
 }
 
-/* Hover effect to indicate clickable */
 .description-column:hover,
 .feedback-message:hover,
 .request-query:hover {
   color: red;
-  /* text turns red */
   text-decoration: underline;
-  /* underline appears */
 }
 
-
-
-/* Scrollable container for requests table */
 .table-container {
   width: 100%;
   overflow-x: auto;
 }
 
-/* Make the table take full width but still scrollable if needed */
 .table-container table {
   width: max-content;
-  /* width fits content */
   min-width: 100%;
-  /* but at least full container width */
   border-collapse: collapse;
 }
 
-/* Keep ellipsis for request-query */
 .request-query {
   max-width: 414px;
-  /* adjust width as needed */
   white-space: nowrap;
-  /* keep text in one line */
   overflow: hidden;
-  /* hide overflow */
   text-overflow: ellipsis;
-  /* show "..." */
   cursor: pointer;
   color: #333;
   transition: color 0.2s ease;
 }
 
-/* Hover effect for clickable text */
 .request-query:hover {
   color: red;
   text-decoration: underline;
 }
 
-/* Optional: allow horizontal scroll on small screens */
 @media (max-width: 768px) {
   .table-container table {
     min-width: 700px;
-    /* table scrolls horizontally if small screen */
   }
 }

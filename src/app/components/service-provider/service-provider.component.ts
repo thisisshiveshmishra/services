@@ -52,23 +52,19 @@ export class ServiceProviderComponent implements OnInit {
       }));
     });
   }
-updateWordCount(): void {
-  const messageControl = this.feedbackForm.get('message');
-  if (!messageControl) return;
+  updateWordCount(): void {
+    const messageControl = this.feedbackForm.get('message');
+    if (!messageControl) return;
 
-  const message: string = messageControl.value || '';
-  this.wordCount = message.trim() ? message.trim().split(/\s+/).length : 0;
+    const message: string = messageControl.value || '';
+    this.wordCount = message.trim() ? message.trim().split(/\s+/).length : 0;
 
-  // 🔒 Enforce 200-word limit
-  if (this.wordCount > 200) {
-    const limitedText = message.trim().split(/\s+/).slice(0, 200).join(' ');
-    messageControl.setValue(limitedText, { emitEvent: false });
-    this.wordCount = 200;
+    if (this.wordCount > 200) {
+      const limitedText = message.trim().split(/\s+/).slice(0, 200).join(' ');
+      messageControl.setValue(limitedText, { emitEvent: false });
+      this.wordCount = 200;
+    }
   }
-}
-
-
-  /** Prefill user/provider data */
   prefillUserData(): void {
     const user = localStorage.getItem('user');
     const provider = localStorage.getItem('provider');

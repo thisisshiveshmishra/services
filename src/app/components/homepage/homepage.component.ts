@@ -48,19 +48,18 @@ export class HomepageComponent implements OnInit {
     this.loadCategoriesFromDatabase();
 
     this.serviceProviderService.getAllProviders().subscribe((data: Serviceprovider[]) => {
-  const approved = data.filter(p => p.approved === true);
+      const approved = data.filter(p => p.approved === true);
 
-  // ✅ Sort by id descending (latest entry first)
-  approved.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+      approved.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
 
-  this.providers = approved.slice(0, 4);
+      this.providers = approved.slice(0, 4);
 
-  this.providers.forEach(provider => {
-    if (provider.profilePicture) {
-      provider.profilePictureBase64 = 'data:image/jpeg;base64,' + provider.profilePicture;
-    }
-  });
-});
+      this.providers.forEach(provider => {
+        if (provider.profilePicture) {
+          provider.profilePictureBase64 = 'data:image/jpeg;base64,' + provider.profilePicture;
+        }
+      });
+    });
 
 
   }

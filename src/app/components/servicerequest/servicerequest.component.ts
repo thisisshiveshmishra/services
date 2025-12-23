@@ -18,7 +18,7 @@ export class ServicerequestComponent {
   message = '';
   categories: string[] = [];
   showCustomCategoryInput = false;
-  loading: boolean = true; // ✅ Loader property add ki
+  loading: boolean = true;
 
   constructor(
     private router: Router,
@@ -54,7 +54,6 @@ export class ServicerequestComponent {
           new Set(providers.map(p => p.category).filter(Boolean))
         );
 
-        // ✅ Sort categories alphabetically (case-insensitive)
         this.categories = uniqueCategories.sort((a, b) =>
           a.toLowerCase().localeCompare(b.toLowerCase())
         );
@@ -98,15 +97,14 @@ export class ServicerequestComponent {
 
     delete (newRequest as any).customCategory;
 
-    this.loading = true; // ✅ Loader start
+    this.loading = true;
     this.serviceRequestService.createServiceRequest(newRequest).subscribe({
       next: (res) => {
-        this.loading = false; // ✅ Loader stop
+        this.loading = false;
         this.message = `Service request created with ID: ${res.id}`;
         alert('✅ Service request submitted successfully!');
         this.serviceRequestForm.reset();
         this.loadAllRequests();
-        // 🔥 Reload entire page
         window.location.reload();
       },
       error: (err) => {

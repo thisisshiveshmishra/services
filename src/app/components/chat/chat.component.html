@@ -1,31 +1,25 @@
 <div class="chat-wrapper" *ngIf="hasMessages; else noMessages">
-  <!-- Sidebar -->
-  <div class="chat-sidebar" *ngIf="!isMobile || (isMobile && !selectedUserId)">
+  = <div class="chat-sidebar" *ngIf="!isMobile || (isMobile && !selectedUserId)">
     <h5 class="sidebar-title">Users</h5>
     <ul class="user-list">
-      <li *ngFor="let userId of sortedUserIds"
-    [class.active]="userId === selectedUserId"
-    (click)="selectUser(userId)">
-  <div class="user-item">
-    <div class="user-name">
-      {{ getUserDisplayName(userId) }}
-    </div>
-    <span *ngIf="hasUnread(userId)" class="unread-dot"></span>
-  </div>
-</li>
+      <li *ngFor="let userId of sortedUserIds" [class.active]="userId === selectedUserId" (click)="selectUser(userId)">
+        <div class="user-item">
+          <div class="user-name">
+            {{ getUserDisplayName(userId) }}
+          </div>
+          <span *ngIf="hasUnread(userId)" class="unread-dot"></span>
+        </div>
+      </li>
 
     </ul>
   </div>
 
-  <!-- Chat Area -->
-  <div class="chat-main" *ngIf="!isMobile || (isMobile && selectedUserId)">
+  = <div class="chat-main" *ngIf="!isMobile || (isMobile && selectedUserId)">
     <ng-container *ngIf="selectedUserId; else emptyChat">
       <div class="chat-header">
         <button *ngIf="isMobile" class="back-button" (click)="selectedUserId = null">← Back</button>
         <h5>
-          <!-- {{ groupedMessages[selectedUserId][0]?.userName }}
-          {{ groupedMessages[selectedUserId][0]?.userSurname }} -->
-             {{ getSelectedUserName(selectedUserId) }}
+          {{ getSelectedUserName(selectedUserId) }}
 
         </h5>
       </div>
@@ -36,7 +30,7 @@
             <div class="bubble user-message">
               <strong>{{ msg.userName }}</strong><br />
               {{ msg.content }}
-              <div class="timestamp">{{ msg.sentTime | date: 'MMM d, y, h:mm a'  }}</div>
+              <div class="timestamp">{{ msg.sentTime | date: 'MMM d, y, h:mm a' }}</div>
             </div>
           </div>
 
@@ -44,25 +38,20 @@
             <div class="bubble provider-reply">
               <strong>{{ msg.userName }}</strong><br />
               {{ msg.content }}
-              <div class="timestamp">{{ msg.sentTime | date: 'MMM d, y, h:mm a'  }}</div>
+              <div class="timestamp">{{ msg.sentTime | date: 'MMM d, y, h:mm a' }}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ✅ Press Enter or Click Send -->
       <div class="chat-footer">
-  <input
-    type="text"
-    placeholder="Type a reply..."
-    [(ngModel)]="replies[selectedUserId]"
-    [ngModelOptions]="{ standalone: true }"
-    (keyup.enter)="sendReply(selectedUserId)" />
+        <input type="text" placeholder="Type a reply..." [(ngModel)]="replies[selectedUserId]"
+          [ngModelOptions]="{ standalone: true }" (keyup.enter)="sendReply(selectedUserId)" />
 
-  <button (click)="sendReply(selectedUserId)" class="send-btn">
-    Send <i style="font-size:24px" class="fa">&#xf1d9;</i>
-  </button>
-</div>
+        <button (click)="sendReply(selectedUserId)" class="send-btn">
+          Send <i style="font-size:24px" class="fa">&#xf1d9;</i>
+        </button>
+      </div>
 
     </ng-container>
 

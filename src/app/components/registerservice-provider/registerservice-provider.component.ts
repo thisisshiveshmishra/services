@@ -9,7 +9,7 @@ import { ServiceProviderService } from 'src/app/services/service-provider.servic
 })
 export class RegisterserviceProviderComponent {
   form: any = {
-        firstName: '',
+    firstName: '',
     lastName: '',
     mobileNumber: '',
     email: '',
@@ -40,7 +40,7 @@ export class RegisterserviceProviderComponent {
     'TOURIST_GUIDER'
   ];
 
-  constructor(private serviceProviderService: ServiceProviderService , private router:Router) {}
+  constructor(private serviceProviderService: ServiceProviderService, private router: Router) { }
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];

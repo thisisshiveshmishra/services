@@ -1,69 +1,48 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-
-<!-- Logout Button -->
 <div class="text-end my-3 me-4">
   <button (click)="logout()" class="btn btn-danger logout-button">Logout</button>
 </div>
-
-
- 
-<!-- Chat Button -->
 <div class="text-end me-4 mt-3">
   <button class="btn btn-outline-primary position-relative" [routerLink]="['/chat']">
     <i class="fas fa-envelope fa-lg"></i>
-    <!-- <span *ngIf="providerMessages.length" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-      {{ providerMessages.length }}
-    </span> -->
-     <span *ngIf="providerMessages.length"
-          class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+    <span *ngIf="providerMessages.length"
+      class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
     </span>
   </button>
 </div>
 
-<!-- Store Location Section -->
 <div class="store-location text-end me-4 mt-3 d-flex justify-content-end gap-2">
-  <!-- Save Location -->
   <button type="button" class="btn btn-outline-success" (click)="toggleLocationInput()">
     <i class="fas fa-map-marker-alt"></i> Save Location
   </button>
-
-  <!-- View Location -->
   <button *ngIf="savedLocationUrl" type="button" class="btn btn-outline-info" (click)="viewLocation()">
     <i class="fas fa-map"></i> View Location
   </button>
-
-    <!-- Delete Location -->
   <button *ngIf="savedLocationUrl" type="button" class="btn btn-outline-danger" (click)="deleteLocation()">
     <i class="fas fa-trash"></i> Delete Location
   </button>
 </div>
 
-<!-- Location Input Box -->
 <div *ngIf="showLocationInput" class="location-input mt-3">
-  <input type="text"
-         [(ngModel)]="locationUrl"
-         placeholder="Paste Google Maps URL"
-         class="form-control mb-2" />
+  <input type="text" [(ngModel)]="locationUrl" placeholder="Paste Google Maps URL" class="form-control mb-2" />
 
   <button class="btn btn-primary" (click)="saveLocation()">Save</button>
 </div>
 
 
- 
+
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
   <div class="container">
     <div class="row gutters">
- 
-      <!-- Profile Card Left -->
       <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
         <div class="card h-100">
           <div class="card-body">
             <div class="account-settings">
               <div class="user-profile">
                 <div class="user-avatar">
-                  <img [src]="profileImageUrl" (error)="profileImageUrl='https://bootdey.com/img/Content/avatar/avatar7.png'"
-                       alt="Profile Picture" class="img-fluid rounded-circle" style="width: 300px; height: 300px; object-fit: cover;">
+                  <img [src]="profileImageUrl"
+                    (error)="profileImageUrl='https://bootdey.com/img/Content/avatar/avatar7.png'" alt="Profile Picture"
+                    class="img-fluid rounded-circle" style="width: 300px; height: 300px; object-fit: cover;">
                 </div>
                 <h5 class="user-name">{{ editForm.value.firstName }} {{ editForm.value.lastName }}</h5>
                 <h6 class="user-email">{{ editForm.value.email }}</h6>
@@ -72,12 +51,9 @@
           </div>
         </div>
       </div>
- 
-      <!-- Form Right -->
       <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
         <div class="card h-100">
           <div class="card-body">
-            <!-- Personal Details -->
             <div class="row gutters">
               <div class="col-xl-12">
                 <h6 class="mb-2 text-primary">Personal Details</h6>
@@ -134,65 +110,47 @@
                   <input type="file" (change)="onFileChange($event)" class="form-control" />
                 </div>
               </div>
-  <div class="col-md-12">
-  <div class="form-group">
-    <label>Description</label>
-    <textarea
-      formControlName="description"
-      class="form-control"
-      rows="4"
-      placeholder="Enter Description"
-    ></textarea>
-  </div>
-</div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea formControlName="description" class="form-control" rows="4"
+                    placeholder="Enter Description"></textarea>
+                </div>
+              </div>
 
 
             </div>
- 
-            <!-- Buttons -->
-           <div class="row gutters mt-3">
-  <div class="col-xl-12 text-right">
-    <button type="button" class="btn btn-secondary">Cancel</button>
-    <button type="submit" class="btn btn-primary ms-2" [disabled]="!editForm.dirty && !selectedFile">Update</button>
-  </div>
-</div>
+            <div class="row gutters mt-3">
+              <div class="col-xl-12 text-right">
+                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary ms-2"
+                  [disabled]="!editForm.dirty && !selectedFile">Update</button>
+              </div>
+            </div>
 
           </div>
         </div>
       </div>
- 
+
     </div>
   </div>
 </form>
- 
-<!-- Service Provider Images Section -->
+
 <div class="service-images-section">
   <h6>Upload Service Images</h6>
   <input type="file" class="form-control" (change)="onMultipleFilesSelected($event)" multiple />
- 
-<!-- Preview of Selected Images -->
-<div class="image-preview-container mt-3" *ngIf="selectedImagePreviews.length">
-  <div class="image-preview" *ngFor="let preview of selectedImagePreviews">
-    <img [src]="preview" alt="Preview" />
+  <div class="image-preview-container mt-3" *ngIf="selectedImagePreviews.length">
+    <div class="image-preview" *ngFor="let preview of selectedImagePreviews">
+      <img [src]="preview" alt="Preview" />
+    </div>
   </div>
-</div>
-
- 
-
-
- 
-<!-- Uploaded Images Section -->
-<div class="uploaded-images">
-  <div *ngFor="let img of uploadedImages" class="image-card">
-    <img [src]="img.imageData" alt="Uploaded" />
-    <button (click)="deleteImage(img.id)" class="delete-btn">
-      <i class="fas fa-trash"></i>
-    </button>
+  <div class="uploaded-images">
+    <div *ngFor="let img of uploadedImages" class="image-card">
+      <img [src]="img.imageData" alt="Uploaded" />
+      <button (click)="deleteImage(img.id)" class="delete-btn">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
   </div>
-</div>
-
-  <!-- Upload Button -->
   <button class="upload-btn mt-3" (click)="uploadImages()" [disabled]="!selectedImages.length">Upload Images</button>
 </div>
- 
- 

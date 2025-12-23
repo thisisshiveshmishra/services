@@ -2,12 +2,8 @@
   min-height: 100vh;
   background-image: url("../../../assets/sean-pollock-PhYq704ffdA-unsplash.jpg");
   background-size: cover;
-  /* Scale image to cover entire container */
   background-position: center;
-  /* Center image within the viewport */
   background-repeat: no-repeat;
-  /* Avoid tiling the image */
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,7 +14,6 @@
 
 .card-container {
   position: relative;
-  /* Needed for absolute positioning of button */
   background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 12px;
@@ -31,9 +26,7 @@
 .close-btn {
   position: absolute;
   top: 10px;
-  /* distance from top */
   right: 10px;
-  /* distance from right */
   background: none;
   border: none;
   color: red;
@@ -42,7 +35,6 @@
   line-height: 1;
   padding: 0;
   z-index: 10;
-  /* ensure it's above form content */
 }
 
 .form-content h2.title {
@@ -58,21 +50,18 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 10px !important;
-  /* reduce gap */
   border-radius: 6px;
   border: none;
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   font-size: 14px;
   font-weight: bold;
-  /* Make typed text bold */
 }
 
 .error {
   color: red;
   font-size: 0.85rem;
   margin-bottom: 30px !important;
-  /* small spacing before next input */
 }
 
 .form-content input::placeholder,
@@ -80,18 +69,15 @@
 .form-content textarea::placeholder {
   color: #ffffff;
   font-weight: bold;
-  /* Make placeholder bold */
 }
 
 .form-content select option {
   color: #000;
-  /* dropdown options themselves black text on white */
 }
 
 .form-content button {
 
   background-color: #ff6600;
-  /* accent color similar to earlier designs */
   color: rgb(0, 0, 0);
   border: none;
   padding: 10px;

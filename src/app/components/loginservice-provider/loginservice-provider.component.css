@@ -1,4 +1,3 @@
-/* Reset and Base Styles */
 html,
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -8,7 +7,6 @@ body {
   padding: 0;
 }
 
-/* Container to center the content */
 .container {
   min-height: 100vh;
   display: flex;
@@ -17,7 +15,6 @@ body {
   padding: 20px;
 }
 
-/* Card-style content box */
 .content {
   background-color: white;
   width: 500px;
@@ -26,7 +23,6 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive image styling */
 img.cld-responsive {
   width: 100%;
   height: 180px;
@@ -35,19 +31,16 @@ img.cld-responsive {
   border-top-right-radius: 8px;
 }
 
-/* Form title styling */
 .form-title {
   padding: 10px 40px 0px;
   font-size: 24px;
   font-weight: bold;
 }
 
-/* Form spacing */
 form {
   padding: 0px 40px 20px;
 }
 
-/* Input fields */
 input[type='email'],
 input[type='password'] {
   border: none;
@@ -60,13 +53,11 @@ input[type='password'] {
   background-color: transparent;
 }
 
-/* Hover effect for fields */
 input[type='email']:hover,
 input[type='password']:hover {
   background-color: #f1f1f1;
 }
 
-/* Button styling */
 button {
   color: #ffffff;
   background-color: #121612;
@@ -81,12 +72,10 @@ button {
   transition: background-color 0.4s;
 }
 
-/* Button hover effect */
 button:hover {
   background-color: #333333;
 }
 
-/* Optional: Responsive tweaks */
 @media (max-width: 576px) {
   .content {
     width: 100%;
@@ -102,24 +91,6 @@ button:hover {
     padding: 0px 20px 20px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
@@ -166,7 +137,7 @@ button {
   padding: 13px 48px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  box-shadow: 0 4px 16px rgba(180,127,65,0.13);
+  box-shadow: 0 4px 16px rgba(180, 127, 65, 0.13);
   transition: background 0.2s, transform 80ms ease-in;
   min-height: 44px;
   cursor: pointer;
@@ -217,12 +188,11 @@ textarea[name="description"] {
   resize: vertical;
 }
 
-/* Main container */
 .container {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-              0 10px 10px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+    0 10px 10px rgba(0, 0, 0, 0.22);
   position: relative;
   overflow: hidden;
   width: 968px;
@@ -230,7 +200,6 @@ textarea[name="description"] {
   min-height: 700px;
 }
 
-/* Form containers */
 .form-container {
   position: absolute;
   top: 0;
@@ -242,26 +211,26 @@ textarea[name="description"] {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  overflow-y: auto;   /* ✅ scroll fix */
+  overflow-y: auto;
   padding: 20px 40px;
   box-sizing: border-box;
 }
 
-/* Login form */
 .sign-in-container {
   left: 0;
   z-index: 2;
 }
+
 .container.right-panel-active .sign-in-container {
   transform: translateX(100%);
 }
 
-/* Register form */
 .sign-up-container {
   left: 0;
   opacity: 0;
   z-index: 1;
 }
+
 .container.right-panel-active .sign-up-container {
   transform: translateX(100%);
   opacity: 1;
@@ -269,10 +238,19 @@ textarea[name="description"] {
   animation: show 0.6s;
 }
 
-/* Overlay */
 @keyframes show {
-  0%, 49.99% { opacity: 0; z-index: 1; }
-  50%, 100% { opacity: 1; z-index: 5; }
+
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
 }
 
 .overlay-container {
@@ -285,6 +263,7 @@ textarea[name="description"] {
   transition: transform 0.6s ease-in-out;
   z-index: 100;
 }
+
 .container.right-panel-active .overlay-container {
   transform: translateX(-100%);
 }
@@ -300,6 +279,7 @@ textarea[name="description"] {
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
 }
+
 .container.right-panel-active .overlay {
   transform: translateX(50%);
 }
@@ -317,28 +297,44 @@ textarea[name="description"] {
   width: 50%;
   transition: transform 0.6s ease-in-out;
 }
-.overlay-left { transform: translateX(-20%); }
-.container.right-panel-active .overlay-left { transform: translateX(0); }
-.overlay-right { right: 0; }
-.container.right-panel-active .overlay-right { transform: translateX(20%); }
 
-/* Beside fields (mobile/gender) */
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+}
+
+.container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
 .beside {
   display: flex;
   gap: 10px;
   width: 100%;
 }
-.beside input, .beside select { flex: 1; }
 
-/* Password toggle */
+.beside input,
+.beside select {
+  flex: 1;
+}
+
 .password-container {
   position: relative;
   width: 100%;
 }
+
 .password-container input {
   width: 100%;
   padding-right: 40px;
 }
+
 .toggle-password {
   position: absolute;
   top: 50%;
@@ -349,17 +345,18 @@ textarea[name="description"] {
   font-size: 1.2rem;
 }
 
-/* File upload */
 .business-profile-upload {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
 }
+
 .business-profile-upload label {
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #333;
 }
+
 .business-profile-upload input[type="file"] {
   border: 1px solid #ccc;
   padding: 8px;
@@ -368,18 +365,18 @@ textarea[name="description"] {
   cursor: pointer;
   transition: border-color 0.3s ease;
 }
+
 .business-profile-upload input[type="file"]:hover {
   border-color: #007bff;
 }
 
-/* Error messages */
-.text-danger, .error-message {
+.text-danger,
+.error-message {
   color: red;
   font-size: 0.9rem;
   margin-top: 5px;
 }
 
-/* ✅ Responsive */
 @media (max-width: 768px) {
   .container {
     display: flex;
@@ -390,6 +387,7 @@ textarea[name="description"] {
     box-shadow: none;
     padding: 0;
   }
+
   .form-container {
     position: relative;
     width: 100%;
@@ -401,42 +399,47 @@ textarea[name="description"] {
     box-shadow: none;
     overflow-y: visible;
   }
-  .overlay-container { display: none; }
-  .beside { flex-direction: column; }
-  button { width: 100%; }
-}
 
-
-  /* Input & select full width */
-  input, select {
-    font-size: 16px;
-    padding: 14px 16px;
+  .overlay-container {
+    display: none;
   }
 
-  /* Beside inputs stack */
   .beside {
     flex-direction: column;
   }
 
-  /* Buttons full width */
   button {
     width: 100%;
-    font-size: 16px;
-    padding: 14px;
   }
+}
 
-  /* Footer fixed to bottom on mobile */
-  footer {
-    position: relative;
-    padding: 10px;
-  }
+input,
+select {
+  font-size: 16px;
+  padding: 14px 16px;
+}
+
+.beside {
+  flex-direction: column;
+}
+
+button {
+  width: 100%;
+  font-size: 16px;
+  padding: 14px;
+}
+
+footer {
+  position: relative;
+  padding: 10px;
+}
 
 
 @media (max-width: 480px) {
-  /* Small phones: Reduce font sizes */
   h1 {
     font-size: 20px;
   }
+
   form {
     padding: 0 20px;
   }
@@ -445,17 +448,17 @@ textarea[name="description"] {
 
 
 
- 
+
 .password-wrapper {
   position: relative;
   width: 100%;
 }
- 
+
 .password-wrapper input {
   width: 100%;
-  padding-right: 40px; /* space for eye button */
+  padding-right: 40px;
 }
- 
+
 .password-wrapper .eye-btn {
   position: absolute;
   right: -130px;
@@ -467,20 +470,20 @@ textarea[name="description"] {
   color: #555;
   font-size: 18px;
 }
- 
- 
+
+
 
 .password-container {
   position: relative;
   width: 100%;
   margin-bottom: 15px;
 }
- 
+
 .password-container input {
   width: 100%;
   padding-right: 40px;
 }
- 
+
 .toggle-password {
   position: absolute;
   top: 50%;
@@ -516,20 +519,17 @@ textarea[name="description"] {
   border-color: #007bff;
 }
 
-
-
-/* ===== Description textarea styling ===== */
 textarea[name="description"] {
   background-color: #eee;
   border: none;
   padding: 12px 15px;
   margin: 8px 0;
   width: 100%;
-  min-height: 100px;      /* taller for comfortable typing */
-  max-height: 200px;      /* optional limit */
+  min-height: 100px;
+  max-height: 200px;
   border-radius: 4px;
   font-size: 14px;
-  resize: vertical;       /* allow vertical resize */
+  resize: vertical;
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   color: #333;
@@ -540,11 +540,10 @@ textarea[name="description"]:hover,
 textarea[name="description"]:focus {
   background-color: #f1f1f1;
   outline: none;
-  border: 1px solid #007bff;  /* subtle focus border */
+  border: 1px solid #007bff;
 }
 
-/* Error message under description */
-textarea + .text-danger {
+textarea+.text-danger {
   font-size: 0.9rem;
   color: red;
   margin-top: 5px;

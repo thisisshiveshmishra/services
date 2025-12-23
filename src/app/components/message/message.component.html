@@ -1,14 +1,11 @@
 <div class="chat-container">
-  <!-- 🔹 Chat Header -->
   <div class="chat-header sticky-top shadow-sm">
     <h4 class="mb-0">Chat with {{ providerName }}</h4>
   </div>
- 
-  <!-- 🔹 Chat Messages Area -->
+
   <div class="chat-box" #chatBox>
     <div *ngFor="let message of messages" class="mb-4">
- 
-      <!-- 🧍 User Message -->
+
       <div class="d-flex justify-content-end align-items-start">
         <div class="user-bubble">
           <strong>{{ message.userName || 'You' }}</strong><br />
@@ -19,13 +16,9 @@
         </div>
         <div class="avatar user-avatar ms-2">U</div>
       </div>
- 
-      <!-- 💬 Provider Replies -->
+
       <div *ngIf="message.replies?.length > 0">
-        <div
-          *ngFor="let reply of message.replies"
-          class="d-flex justify-content-start align-items-start mt-2"
-        >
+        <div *ngFor="let reply of message.replies" class="d-flex justify-content-start align-items-start mt-2">
           <div class="avatar provider-avatar me-2">P</div>
           <div class="provider-bubble">
             <strong>{{ providerName }}</strong><br />
@@ -36,20 +29,14 @@
           </div>
         </div>
       </div>
- 
+
     </div>
   </div>
- 
-  <!-- 🔹 Chat Input -->
+
   <div class="chat-input mt-3">
     <div class="input-group">
-      <textarea
-        class="form-control"
-        [(ngModel)]="newMessage"
-        placeholder="Type your message..."
-        rows="1"
-        (keydown.enter)="sendMessage()"
-      ></textarea>
+      <textarea class="form-control" [(ngModel)]="newMessage" placeholder="Type your message..." rows="1"
+        (keydown.enter)="sendMessage()"></textarea>
       <button class="btn btn-primary" (click)="sendMessage()">Send</button>
     </div>
   </div>

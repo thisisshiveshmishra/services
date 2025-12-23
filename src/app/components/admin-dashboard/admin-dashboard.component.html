@@ -1,28 +1,26 @@
-<!-- ✅ Logout Button -->
 <div class="logout-container">
   <button (click)="logout()">Logout</button>
 </div>
 
 <div class="dashboard-container">
-  <!-- Sidebar -->
   <div class="sidebar">
     <button (click)="setActiveSection('providers')">Service Providers</button>
     <button (click)="setActiveSection('feedbacks')">Feedbacks</button>
     <button (click)="setActiveSection('requests')">Service Requests</button>
   </div>
 
-  <!-- Main Content -->
   <div class="content">
     <p *ngIf="message" class="message">{{ message }}</p>
 
-    <!-- Service Providers Section -->
     <div *ngIf="activeSection === 'providers'">
       <h2>Service Providers</h2>
 
       <div class="filters">
         <input type="text" [(ngModel)]="providerNameFilter" placeholder="Filter by Name" (input)="filterProviders()" />
-        <input type="text" [(ngModel)]="providerLocationFilter" placeholder="Filter by Location" (input)="filterProviders()" />
-        <input type="text" [(ngModel)]="providerCategoryFilter" placeholder="Filter by Category" (input)="filterProviders()" />
+        <input type="text" [(ngModel)]="providerLocationFilter" placeholder="Filter by Location"
+          (input)="filterProviders()" />
+        <input type="text" [(ngModel)]="providerCategoryFilter" placeholder="Filter by Category"
+          (input)="filterProviders()" />
       </div>
 
       <table border="1" cellspacing="0" cellpadding="8">
@@ -46,7 +44,7 @@
             <td colspan="11">No data found.</td>
           </tr>
           <tr *ngFor="let provider of filteredProviders; let i = index">
-            <td>{{ i +1  }}</td>
+            <td>{{ i +1 }}</td>
             <td>{{ provider.firstName }} {{ provider.lastName }}</td>
             <td>{{ provider.mobileNumber }}</td>
             <td>{{ provider.email }}</td>
@@ -54,16 +52,14 @@
             <td>{{ provider.gender }}</td>
             <td>{{ provider.location }}</td>
 
-            <td class="description-column" 
-                [title]="provider.description"
-                (click)="openDescription(provider.description)">
+            <td class="description-column" [title]="provider.description"
+              (click)="openDescription(provider.description)">
               {{ provider.description }}
             </td>
 
             <td>
-              <img *ngIf="provider.profilePicture" 
-                   [src]="'data:image/jpeg;base64,' + provider.profilePicture" 
-                   width="100" height="100" />
+              <img *ngIf="provider.profilePicture" [src]="'data:image/jpeg;base64,' + provider.profilePicture"
+                width="100" height="100" />
             </td>
 
             <td>
@@ -71,10 +67,8 @@
             </td>
 
             <td>
-              <button class="btn"
-                      [ngClass]="provider.approved ? 'btn-approved' : 'btn-approve'"
-                      [disabled]="provider.approved || loadingProviderIds[provider.id]"
-                      (click)="approve(provider.id)">
+              <button class="btn" [ngClass]="provider.approved ? 'btn-approved' : 'btn-approve'"
+                [disabled]="provider.approved || loadingProviderIds[provider.id]" (click)="approve(provider.id)">
                 <ng-container *ngIf="loadingProviderIds[provider.id]; else approveText">
                   <i class="fa fa-spinner fa-spin"></i> Processing...
                 </ng-container>
@@ -83,10 +77,8 @@
                 </ng-template>
               </button>
 
-              <button class="btn"
-                      [ngClass]="provider.rejected ? 'btn-rejected' : 'btn-reject'"
-                      [disabled]="provider.rejected || loadingProviderIds[provider.id]"
-                      (click)="reject(provider.id)">
+              <button class="btn" [ngClass]="provider.rejected ? 'btn-rejected' : 'btn-reject'"
+                [disabled]="provider.rejected || loadingProviderIds[provider.id]" (click)="reject(provider.id)">
                 <ng-container *ngIf="loadingProviderIds[provider.id]; else rejectText">
                   <i class="fa fa-spinner fa-spin"></i> Processing...
                 </ng-container>
@@ -100,7 +92,6 @@
       </table>
     </div>
 
-    <!-- Feedback Section -->
     <div *ngIf="activeSection === 'feedbacks'">
       <h2>Feedback List</h2>
       <table border="1" cellspacing="0" cellpadding="8">
@@ -123,16 +114,14 @@
             <td>{{ fb.name }}</td>
             <td>{{ fb.email }}</td>
             <td>{{ fb.contactNumber }}</td>
-        <td>{{ fb.location }}</td>
+            <td>{{ fb.location }}</td>
             <td>{{ fb.category }}</td>
             <td>
               <ng-container *ngFor="let star of getStars(fb.rating)">
                 <i class="fa" [ngClass]="star ? 'fa-star' : 'fa-star-o'" style="color: gold;"></i>
               </ng-container>
             </td>
-            <td class="feedback-message" 
-                [title]="fb.message" 
-                (click)="openFeedbackMessage(fb.message)">
+            <td class="feedback-message" [title]="fb.message" (click)="openFeedbackMessage(fb.message)">
               {{ fb.message }}
             </td>
             <td>{{ fb.submittedAt | date:'dd/MM/yyyy HH:mm' }}</td>
@@ -141,57 +130,54 @@
       </table>
     </div>
 
-    <!-- Requests Section -->
     <div *ngIf="activeSection === 'requests'">
-  <h2>Raised Service Requests</h2>
+      <h2>Raised Service Requests</h2>
 
-  <div class="requests-filters">
-    <input type="text" [(ngModel)]="requestLocationFilter" placeholder="Filter by Location" (input)="filterRequests()" />
-    <input type="text" [(ngModel)]="requestCategoryFilter" placeholder="Filter by Category" (input)="filterRequests()" />
-  </div>
+      <div class="requests-filters">
+        <input type="text" [(ngModel)]="requestLocationFilter" placeholder="Filter by Location"
+          (input)="filterRequests()" />
+        <input type="text" [(ngModel)]="requestCategoryFilter" placeholder="Filter by Category"
+          (input)="filterRequests()" />
+      </div>
 
-  <!-- Add table-container -->
-  <div class="table-container">
-    <table border="1" cellspacing="0" cellpadding="8">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Gender</th>
-          <th>Mobile</th>
-          <th>Category</th>
-          <th>Location</th>
-          <th>Query</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngIf="filteredRequests.length === 0">
-          <td colspan="8">No data found.</td>
-        </tr>
-        <tr *ngFor="let request of filteredRequests">
-          <td>{{ request.id }}</td>
-          <td>{{ request.name }} {{ request.surname }}</td>
-          <td>{{ request.email }}</td>
-          <td>{{ request.gender }}</td>
-          <td>{{ request.contactNumber }}</td>
-          <td>{{ request.category }}</td>
-          <td>{{ request.location }}</td>
-          <td class="request-query" 
-              [title]="request.query"
-              (click)="openRequestQuery(request.query)">
-            {{ request.query }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="table-container">
+        <table border="1" cellspacing="0" cellpadding="8">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Mobile</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Query</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="filteredRequests.length === 0">
+              <td colspan="8">No data found.</td>
+            </tr>
+            <tr *ngFor="let request of filteredRequests">
+              <td>{{ request.id }}</td>
+              <td>{{ request.name }} {{ request.surname }}</td>
+              <td>{{ request.email }}</td>
+              <td>{{ request.gender }}</td>
+              <td>{{ request.contactNumber }}</td>
+              <td>{{ request.category }}</td>
+              <td>{{ request.location }}</td>
+              <td class="request-query" [title]="request.query" (click)="openRequestQuery(request.query)">
+                {{ request.query }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </div>
 
-  </div>
-</div>
-
-<!-- Modals -->
 <div class="modal" *ngIf="selectedDescription">
   <div class="modal-content">
     <span class="close" (click)="closeDescription()">&times;</span>

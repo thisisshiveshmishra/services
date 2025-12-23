@@ -14,7 +14,6 @@
   <div class="s01">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
 
-      <!-- 🔴 Cross (Go Home) Button -->
       <button type="button" class="close-home-btn" (click)="goHome()">
         &times;
       </button>
@@ -39,10 +38,8 @@
             (focus)="showLocationSuggestions = true" (blur)="hideSuggestionsWithDelay()" autocomplete="off" />
 
           <ul class="suggestions" *ngIf="showLocationSuggestions">
-            <!-- Always show "View All" -->
             <li (mousedown)="selectLocation('ALL')">View All</li>
 
-            <!-- Show dynamic suggestions (only if available) -->
             <li *ngFor="let loc of filteredLocations" (mousedown)="selectLocation(loc)">
               {{ loc }}
             </li>
@@ -54,19 +51,13 @@
           <button class="btn-search" type="submit">Search</button>
         </div>
 
-
-
-
-
       </div>
 
 
-      <!-- 🔹 Loading message -->
       <div *ngIf="loading" class="loading-message">
         <i class="fa fa-spinner fa-spin"></i> Please wait a moment, fetching results...
       </div>
 
-      <!-- ✅ Results -->
       <div class="results-container" *ngIf="!loading && allResults.length">
         <h3>Results:</h3>
         <ul>
@@ -86,51 +77,26 @@
         </ul>
       </div>
 
-      <!-- 🚫 No Results -->
       <div class="no-results" *ngIf="!loading && !allResults.length && submitted" style="color: #7b5728;">
         {{ message }}
       </div>
-
-
-
-      <!-- <div
-      class="no-results"
-      *ngIf="!allResults.length && submitted"
-      style="color: #7b5728;"
-    >
-      No providers found.
-    </div> -->
-
-
-      <!-- 🔹 Loading message
-      <div *ngIf="loading" class="loading-message">
-        <i class="fa fa-spinner fa-spin"></i> Please wait a moment, fetching results...
-      </div> -->
     </form>
   </div>
-
-
 </body>
 
 </html>
 
-<!-- Fullscreen Modal -->
 <div *ngIf="isModalOpen" class="modal-backdrop-custom">
   <div class="modal-content-wrapper">
 
-    <!-- Modal Header -->
     <div class="modal-header">
       <h5 class="modal-title">Provider Details</h5>
       <button type="button" class="close" (click)="closeModal()">
         <i class="fa fa-close"></i>
       </button>
     </div>
-
-    <!-- Modal Body -->
     <div class="modal-body" *ngIf="selectedProvider">
       <div class="row g-0">
-
-        <!-- Left Column: Provider Info -->
         <div class="col-md-9 border-end">
           <div class="status p-3">
             <table class="table table-borderless mb-0">
@@ -176,8 +142,6 @@
                     </div>
                   </td>
                 </tr>
-
-                <!-- Description -->
                 <tr>
                   <td colspan="3">
                     <div class="d-flex flex-column">
@@ -186,8 +150,6 @@
                     </div>
                   </td>
                 </tr>
-
-                <!-- Images -->
                 <tr>
                   <td colspan="3">
                     <div class="d-flex flex-column">
@@ -199,13 +161,11 @@
                     </div>
                   </td>
                 </tr>
-
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- Right Column: Profile Picture -->
         <div class="col-md-3 text-center p-3">
           <div class="profile">
             <img
@@ -216,22 +176,8 @@
             </span>
           </div>
         </div>
-
-
-
-
-
       </div>
     </div>
 
   </div>
 </div>
-
-
-
-
-
-
-
-
-<!-- <app-footer></app-footer> -->

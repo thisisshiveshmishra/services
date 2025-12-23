@@ -27,7 +27,6 @@
   min-height: 360px;
 }
 
-/* Button Box */
 .button-box {
   width: 100%;
   display: flex;
@@ -51,13 +50,11 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Toggle Button Active State */
 .toggle-btn.active-toggle {
   background-color: #B47F41;
   color: white;
 }
 
-/* Toggle button transition */
 #btn {
   position: absolute;
   top: 0;
@@ -70,7 +67,6 @@
   z-index: 0;
 }
 
-/* Form Wrapper */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -104,7 +100,6 @@
   transform: translateX(0%);
 }
 
-/* Input Styling */
 .input-field {
   padding: 12px;
   border: 1px solid #ccc;
@@ -114,10 +109,9 @@
   font-size: 15px;
 }
 
-/* Submit Button */
 .submit-btn {
   height: 45px;
-  background-color: #B47F41; /* Main background color */
+  background-color: #B47F41;
   color: white;
   font-weight: bold;
   border: none;
@@ -127,10 +121,9 @@
 }
 
 .submit-btn:hover {
-  background-color: #9f6e35; /* Slightly darker on hover */
+  background-color: #9f6e35;
 }
 
-/* Responsive tweaks */
 @media (max-width: 480px) {
   .form-box {
     padding: 20px 15px 30px;
@@ -145,6 +138,7 @@
     font-size: 14px;
   }
 }
+
 .password-wrapper {
   position: relative;
   width: 100%;
@@ -152,7 +146,7 @@
 
 .password-wrapper .input-field {
   width: 100%;
-  padding-right: 40px; /* space for eye button */
+  padding-right: 40px;
 }
 
 .eye-btn {

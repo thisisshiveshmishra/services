@@ -37,7 +37,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <input class="form-control" formControlName="email" placeholder="Email Address" type="email">
-              <small *ngIf="feedbackForm.get('email')?.invalid && feedbackForm.get('email')?.touched" class="text-danger">
+              <small *ngIf="feedbackForm.get('email')?.invalid && feedbackForm.get('email')?.touched"
+                class="text-danger">
                 Valid email is required
               </small>
             </div>
@@ -62,8 +63,8 @@
                 <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
                 <option value="Other">Other</option>
               </select>
-              <input *ngIf="showCustomCategoryInput" type="text" formControlName="customCategory" class="form-control mt-2"
-                placeholder="Enter custom category" />
+              <input *ngIf="showCustomCategoryInput" type="text" formControlName="customCategory"
+                class="form-control mt-2" placeholder="Enter custom category" />
               <small *ngIf="feedbackForm.get('category')?.invalid && feedbackForm.get('category')?.touched"
                 class="text-danger">Category is required</small>
             </div>
@@ -84,16 +85,16 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <textarea class="form-control" formControlName="message" placeholder="Enter your message here!" rows="4"     (input)="updateWordCount()"
-></textarea>
+              <textarea class="form-control" formControlName="message" placeholder="Enter your message here!" rows="4"
+                (input)="updateWordCount()"></textarea>
               <small *ngIf="feedbackForm.get('message')?.invalid && feedbackForm.get('message')?.touched"
                 class="text-danger">Message is required</small>
 
-                <small [ngClass]="{ 'text-danger': wordCount > 200, 'text-muted': wordCount <= 200 }">
-    {{ wordCount }}/200 words
-    <span *ngIf="wordCount > 200"> - Limit exceeded! Please shorten your feedback.</span>
-  </small>
-                
+              <small [ngClass]="{ 'text-danger': wordCount > 200, 'text-muted': wordCount <= 200 }">
+                {{ wordCount }}/200 words
+                <span *ngIf="wordCount > 200"> - Limit exceeded! Please shorten your feedback.</span>
+              </small>
+
             </div>
 
             <div class="form-group text-center">

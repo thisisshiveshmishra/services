@@ -11,34 +11,31 @@ export class UserloginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  showPassword: boolean = false; // 👁 toggle flag
+  showPassword: boolean = false;
 
-  constructor(private authService: UserService, private router: Router) {}
+  constructor(private authService: UserService, private router: Router) { }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
- loginUser() {
-  this.authService.login(this.email, this.password).subscribe({
-    next: (response) => {
-      // Check if backend returns both token and user details
-      if (response.token && response.user) {
-        // ✅ Save user details and token separately
-        localStorage.setItem('userToken', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-      } else {
-        // ✅ If backend returns only user info
-        localStorage.setItem('user', JSON.stringify(response));
-      }
+  loginUser() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        if (response.token && response.user) {
+          localStorage.setItem('userToken', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
+        } else {
+          localStorage.setItem('user', JSON.stringify(response));
+        }
 
-      console.log('Response from Database:', response);
-      this.router.navigate(['/']); // Redirect after login
-    },
-    error: () => {
-      this.errorMessage = 'Invalid email or password';
-    }
-  });
-}
+        console.log('Response from Database:', response);
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.errorMessage = 'Invalid email or password';
+      }
+    });
+  }
 
 }

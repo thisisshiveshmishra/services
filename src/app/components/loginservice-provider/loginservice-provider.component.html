@@ -1,6 +1,5 @@
 <div class="container" id="container">
 
-  <!-- 📝 Register Form -->
   <div class="form-container sign-up-container">
     <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm" enctype="multipart/form-data">
       <h1>Register Here</h1>
@@ -47,31 +46,20 @@
         Category must contain only letters and spaces.
       </div>
 
-      <textarea
-        name="description"
-        [(ngModel)]="form.description"
-        placeholder="Describe your business / services"
-        required
-      ></textarea>
+      <textarea name="description" [(ngModel)]="form.description" placeholder="Describe your business / services"
+        required></textarea>
       <div *ngIf="descriptionError" class="text-danger">
         Description must be at least 10 characters.
       </div>
 
       <div class="password-container">
-        <input
-          [type]="showRegisterPassword ? 'text' : 'password'"
-          name="password"
-          [(ngModel)]="form.password"
-          placeholder="Password"
-          #pwd="ngModel"
-          required
-        />
+        <input [type]="showRegisterPassword ? 'text' : 'password'" name="password" [(ngModel)]="form.password"
+          placeholder="Password" #pwd="ngModel" required />
         <span class="toggle-password" (click)="toggleRegisterPassword()">
           <i class="fa" [ngClass]="showRegisterPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
         </span>
       </div>
 
-      <!-- Show error if empty -->
       <div *ngIf="pwd.invalid && pwd.touched" class="text-danger">
         Password is required.
       </div>
@@ -82,14 +70,8 @@
 
       <div class="business-profile-upload">
         <label for="businessProfile">Business Profile Image</label>
-        <input
-          type="file"
-          id="businessProfile"
-          name="businessProfile"
-          (change)="onFileSelected($event)"
-          accept=".png, .jpeg, .jpg"
-          required
-        />
+        <input type="file" id="businessProfile" name="businessProfile" (change)="onFileSelected($event)"
+          accept=".png, .jpeg, .jpg" required />
         <div *ngIf="fileError" class="text-danger">
           Only PNG or JPEG images under 5MB are allowed.
         </div>
@@ -99,7 +81,6 @@
     </form>
   </div>
 
-  <!-- 🔐 Login Form -->
   <div class="form-container sign-in-container">
     <form (ngSubmit)="onLogin()">
       <h1>Log in</h1>
@@ -111,13 +92,8 @@
       </div>
 
       <div class="password-container">
-        <input
-          [type]="showLoginPassword ? 'text' : 'password'"
-          placeholder="Password"
-          [(ngModel)]="password"
-          name="password"
-          required
-        />
+        <input [type]="showLoginPassword ? 'text' : 'password'" placeholder="Password" [(ngModel)]="password"
+          name="password" required />
         <span class="toggle-password" (click)="toggleLoginPassword()">
           <i class="fa" [ngClass]="showLoginPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
         </span>
