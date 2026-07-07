@@ -61,7 +61,7 @@
 .error {
   color: red;
   font-size: 0.85rem;
-  margin-bottom: 30px !important;
+  margin-bottom: 10px !important;
 }
 
 .form-content input::placeholder,
